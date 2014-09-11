@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C0562A12-38C7-4808-B714-E4F0427C54A3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>evio-4.3.1</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>279A1D53-C507-42FD-BCDD-0B878165D6AE</key>
+		<string>https://clas12svn.jlab.org/repos/clas12/evio/tags/evio-4.3.1</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>evio-4.3.1.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>279A1D53-C507-42FD-BCDD-0B878165D6AE</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>279A1D53-C507-42FD-BCDD-0B878165D6AE</key>
+		<string>https://clas12svn.jlab.org/repos</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://clas12svn.jlab.org/repos/clas12/evio/tags/evio-4.3.1/evio-4.3.1.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>279A1D53-C507-42FD-BCDD-0B878165D6AE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
+			<string>clas12/evio/tags</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>279A1D53-C507-42FD-BCDD-0B878165D6AE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>evio-4.3.1</string>
+		</dict>
+	</array>
+</dict>
+</plist>

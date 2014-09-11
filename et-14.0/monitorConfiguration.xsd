@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	version="7.0">
+ 
+  <!-- definition of some useful types -->
+
+  <xs:simpleType name="port">
+    <xs:restriction base="xs:unsignedShort">
+      <xs:minInclusive value="1024"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="dimension">
+    <xs:restriction base="xs:unsignedShort">
+      <xs:maxInclusive value="2000"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="orientation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="vertical"/>
+      <xs:enumeration value="horizontal"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="location">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="local"/>
+      <xs:enumeration value="remote"/>
+      <xs:enumeration value="anywhere"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="hostname">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\w+(\.\w+)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="hostnameList">
+    <xs:list itemType="hostname"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="ipAddress">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.){3}([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ipAddressList">
+    <xs:list itemType="ipAddress"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="multicastAddress">
+    <xs:restriction base="ipAddress">
+      <xs:pattern value="(22[4-9]|23\d)(\.\d{1,3}){3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="multicastAddressList">
+    <xs:list itemType="multicastAddress"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="fileNameList">
+    <xs:list itemType="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="ttl">
+    <xs:restriction base="xs:unsignedByte">
+      <xs:maxInclusive value="254"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="color">
+    <xs:attribute name="red"   type="xs:unsignedByte" use="required"/>
+    <xs:attribute name="green" type="xs:unsignedByte" use="required"/>
+    <xs:attribute name="blue"  type="xs:unsignedByte" use="required"/>
+  </xs:complexType>
+
+  <!-- here is where the real elements begin -->
+
+  <xs:element name="configuration">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element name="graphics">
+	  <xs:complexType>
+	    <xs:all>
+	      <xs:element name="width"     type="dimension"/>
+	      <xs:element name="height"    type="dimension"/>
+	      <xs:element name="xPosition" type="dimension"/>
+	      <xs:element name="yPosition" type="dimension"/>
+	      
+	      <!-- optional colors -->
+	      <xs:element name="titleColor"          type="color" minOccurs="0"/>
+	      <xs:element name="backgroundColor"     type="color" minOccurs="0"/>
+	      <xs:element name="selectedTabColor"    type="color" minOccurs="0"/>
+	      <xs:element name="tabsBackgroundColor" type="color" minOccurs="0"/>
+	      <xs:element name="textColor"           type="color" minOccurs="0"/>
+	      <xs:element name="textBackgroundColor" type="color" minOccurs="0"/>
+
+	      <!-- optional lists of extra ET systems & hosts -->
+	      <xs:element name="hostList"     type="hostnameList" minOccurs="0"/>
+	      <xs:element name="fileNameList" type="fileNameList" minOccurs="0"/>
+	    </xs:all>
+	  </xs:complexType>
+	</xs:element>
+
+	<xs:element name="etConnection" minOccurs="0" maxOccurs="unbounded">
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="fileName" type="xs:string"/>
+
+	      <xs:choice>
+	        <xs:element name="broadcasting">
+		  <xs:complexType>
+		    <xs:sequence>
+	              <xs:choice>
+	                <xs:element name="location"           type="location"/>
+	                <xs:element name="host"               type="hostname"/>
+	              </xs:choice>
+	              <xs:element name="broadcastAddressList" type="ipAddressList"/>
+	              <xs:element name="broadcastPort"        type="port"/>
+		    </xs:sequence>
+		  </xs:complexType>
+	        </xs:element>
+		
+	        <xs:element name="multicasting">
+		  <xs:complexType>
+		    <xs:sequence>
+	              <xs:choice>
+	                <xs:element name="location"           type="location"/>
+	                <xs:element name="host"               type="hostname"/>
+	              </xs:choice>
+		      <xs:element name="multicastAddressList" type="multicastAddressList"/>
+	              <xs:element name="multicastPort"        type="port"/>
+	              <xs:element name="ttl"                  type="ttl"/>
+	              <xs:element name="udpPort"              type="port" minOccurs="0"/>
+		    </xs:sequence>
+		  </xs:complexType>
+	        </xs:element>
+		
+	        <xs:element name="broadAndMulticasting">
+		  <xs:complexType>
+		    <xs:sequence>
+	              <xs:choice>
+	                <xs:element name="location"           type="location"/>
+	                <xs:element name="host"               type="hostname"/>
+	              </xs:choice>
+	              <xs:element name="broadcastAddressList" type="ipAddressList"/>
+	              <xs:element name="broadcastPort"        type="port"/>
+		      <xs:element name="multicastAddressList" type="multicastAddressList"/>
+	              <xs:element name="multicastPort"        type="port"/>
+	              <xs:element name="ttl"                  type="ttl"/>
+		    </xs:sequence>
+		  </xs:complexType>
+	        </xs:element>
+		
+	        <xs:element name="direct">
+		  <xs:complexType>
+		    <xs:sequence>
+	              <xs:choice>
+	                <xs:element name="location" type="location" fixed="local"/>
+	                <xs:element name="host"     type="hostname"/>
+	              </xs:choice>
+	              <xs:element name="tcpPort" type="port"/>
+		    </xs:sequence>
+		  </xs:complexType>
+	        </xs:element>
+		
+	        <xs:element name="udpToHost">
+		  <xs:complexType>
+		    <xs:sequence>
+	              <xs:choice>
+	                <xs:element name="location" type="location" fixed="local"/>
+	                <xs:element name="host"     type="hostname"/>
+	              </xs:choice>
+	              <xs:element name="udpPort" type="port"/>
+		    </xs:sequence>
+		  </xs:complexType>
+	        </xs:element>
+	      </xs:choice>
+
+	      <xs:element name="period"          type="xs:nonNegativeInteger"/>
+	      <xs:element name="dividerPosition" type="xs:nonNegativeInteger"/>
+	      <xs:element name="orientation"     type="orientation"/>
+
+	      <!-- optional selection of tree/graph colors -->
+	      <xs:element name="eventColor"          type="color" minOccurs="0"/>
+	      <xs:element name="stationColor"        type="color" minOccurs="0"/>
+	      <xs:element name="stationIdleColor"    type="color" minOccurs="0"/>
+	      <xs:element name="attachmentColor"     type="color" minOccurs="0"/>
+	      <xs:element name="lineColor"           type="color" minOccurs="0"/>
+	      <xs:element name="textColor"           type="color" minOccurs="0"/>
+	      <xs:element name="textBackgroundColor" type="color" minOccurs="0"/>
+	      <xs:element name="backgroundColor"     type="color" minOccurs="0"/>
+	      <xs:element name="treeTextColor"       type="color" minOccurs="0"/>
+	      <xs:element name="treeBackgroundColor" type="color" minOccurs="0"/>
+
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

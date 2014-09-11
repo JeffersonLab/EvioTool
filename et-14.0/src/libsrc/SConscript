@@ -1,0 +1,56 @@
+# scons build file for ET libraries
+Import('env', 'archIncInstallDir', 'incInstallDir', 'libInstallDir', 'archDir', 'debugSuffix')
+
+headerList = ['et.h',
+              'et_private.h',
+              'et_network.h',
+              'etCommonNetwork.h',
+              'et_data.h']
+
+jniFileList = ['et_jni.c']
+
+fileList = ['et_attachment.c',
+            'et_bridge.c',
+            'et_common.c',
+            'et_data.c',
+            'et_event.c',
+            'et_init.c',
+            'et_local.c',
+            'et_mem.c',
+            'et_network.c',
+            'etCommonNetwork.c',
+            'et_noshare.c',
+            'et_openconfig.c',
+            'et_readwrite.c',
+            'et_remote.c',
+            'et_server.c',
+            'et_statconfig.c',
+            'et_station.c',
+            'et_sysconfig.c',
+            'et_system.c']
+
+remoteFileList = ['et_init.c',
+                  'et_network.c',
+                  'etCommonNetwork.c',
+                  'et_openconfig.c',
+                  'et_remote.c',
+                  'et_remoteclient.c',
+                  'et_statconfig.c',
+                  'et_sysconfig.c']
+
+
+env.AppendUnique(CPPPATH = ['.'])
+etLib       = env.SharedLibrary(target = 'et'+debugSuffix,        source = fileList)
+etRemoteLib = env.SharedLibrary(target = 'et_remote'+debugSuffix, source = remoteFileList)
+jniLib      = env.SharedLibrary(target = 'et_jni'+debugSuffix,    source = jniFileList,
+                                LIBS = ['et'+debugSuffix], LIBPATH = [libInstallDir, '#src/libsrc/'+archDir])
+
+if 'install' in COMMAND_LINE_TARGETS:
+#    env.Alias("install", env.Install(target = [incInstallDir, archIncInstallDir], source = headerList))
+    env.Alias("install", env.Install(target = libInstallDir, source = etLib))
+    env.Alias("install", env.Install(target = libInstallDir, source = etRemoteLib))
+    env.Alias("install", env.Install(target = libInstallDir, source = jniLib))
+
+# make libraries by default, but do not install anything (even headers)
+Default(etLib, etRemoteLib, jniLib)
+

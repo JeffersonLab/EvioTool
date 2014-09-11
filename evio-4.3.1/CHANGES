@@ -1,0 +1,8 @@
+~2/12/14
+	Java, check lengths when parsing evio so bad values are caught if possible
+	fix bug if trying to unpack strings from rawbytes with too few bytes
+	fix bug when checking lengths during event parsing
+2/24/14
+	fix bug which did not take padding into account when getting data buffer of node
+2/26/14
+	fix bug in which after adding a structure, the node list was not updated

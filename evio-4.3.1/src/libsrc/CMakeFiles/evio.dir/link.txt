@@ -1,0 +1,1 @@
+/usr/bin/cc   -Wall -O3 -DNDEBUG -dynamiclib -Wl,-headerpad_max_install_names   -o libevio.dylib -install_name /data/CLAS12/evio-4.3.1/src/libsrc/libevio.dylib CMakeFiles/evio.dir/evio.c.o CMakeFiles/evio.dir/evioswap.c.o CMakeFiles/evio.dir/eviofmt.c.o CMakeFiles/evio.dir/eviofmtswap.c.o 

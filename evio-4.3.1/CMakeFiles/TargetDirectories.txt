@@ -1,0 +1,7 @@
+/data/CLAS12/evio-4.3.1/doc/doxygen/CMakeFiles/doc.dir
+/data/CLAS12/evio-4.3.1/src/libsrc/CMakeFiles/evio.dir
+/data/CLAS12/evio-4.3.1/src/execsrc/CMakeFiles/evio2xml.dir
+/data/CLAS12/evio-4.3.1/src/execsrc/CMakeFiles/evioCat.dir
+/data/CLAS12/evio-4.3.1/src/execsrc/CMakeFiles/eviocopy.dir
+/data/CLAS12/evio-4.3.1/src/libsrc++/CMakeFiles/evioxx.dir
+/data/CLAS12/evio-4.3.1/src/execsrc/CMakeFiles/xml2evio.dir

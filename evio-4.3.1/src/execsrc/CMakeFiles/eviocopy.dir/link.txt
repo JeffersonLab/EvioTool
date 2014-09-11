@@ -1,0 +1,1 @@
+/usr/bin/cc   -Wall -O3 -DNDEBUG -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/eviocopy.dir/eviocopy.c.o  -o eviocopy  ../libsrc/libevio.dylib 

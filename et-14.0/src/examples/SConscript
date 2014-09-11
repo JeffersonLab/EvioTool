@@ -1,0 +1,43 @@
+# scons build file for ET examples
+Import('env', 'libInstallDir', 'binInstallDir', 'archDir', 'execLibs', 'debugSuffix')
+
+
+
+# List of all C and C++ files.
+allFileList = Glob('*.c', strings=True) + Glob('*.cc', strings=True)
+
+# List of all vxworks files.
+# All vxworks files start by convention with case-independent 'vx'.
+vxFileList = Glob('[vV][xX]*.c', strings=True) + Glob('[vV][xX]*.cc', strings=True)
+
+# List of files containing user-defined event selection routines.
+myUserSelectionFiles = ['et_userfunction.c']
+
+
+
+# Filter out all user-defined selection routines & vxworks files.
+fileList = filter( (lambda a : (a not in vxFileList) and (a not in  myUserSelectionFiles)), allFileList)
+
+
+
+# For each file, create executable of the same name,
+# and install that executable if "scons examples" is command.
+for fileName in fileList:
+    compiledFile = env.Program(source  = fileName,
+                               LIBS    = ['et'+ debugSuffix] + execLibs,
+                               LIBPATH = ['#src/libsrc/' + archDir],
+                               CPPPATH = ['.','#src/libsrc'])
+    
+    if 'install' in COMMAND_LINE_TARGETS:
+        env.Alias('install', env.Install(target = binInstallDir + '/examples', source = compiledFile))
+
+
+
+##################################################################
+# Example of how to compile a user-defined event selection routine
+##################################################################
+if False:
+    userLibName = 'myLibrary'
+    env.AppendUnique(CPPPATH = ['.', '#src/libsrc'])
+    myLib = env.SharedLibrary(target = userLibName+debugSuffix, source = myUserSelectionFiles)
+    env.Alias("examples", env.Install(target = libInstallDir, source = myLib))

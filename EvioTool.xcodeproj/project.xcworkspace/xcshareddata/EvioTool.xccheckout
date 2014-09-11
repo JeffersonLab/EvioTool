@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F793C7FB-6D8F-4AAE-96A3-8F487950CA35</string>
+	<key>IDESourceControlProjectName</key>
+	<string>EvioTool</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>709ED032-03A8-44C5-B89D-FD200027B0BB</key>
+		<string>https://clas12svn.jlab.org/repos/clas12/evio/tags/evio-4.3.1</string>
+		<key>D78BC083-93A0-4A30-9BE0-053FD16F76ED</key>
+		<string>svn+ssh://taro.unh.edu/net/home/svn/HPS/trunk/EvioTool</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>EvioTool.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>709ED032-03A8-44C5-B89D-FD200027B0BB</key>
+		<string>../../../../../../../data/CLAS12/CODA/evio-4.3.1</string>
+		<key>D78BC083-93A0-4A30-9BE0-053FD16F76ED</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>709ED032-03A8-44C5-B89D-FD200027B0BB</key>
+		<string>https://clas12svn.jlab.org/repos</string>
+		<key>D78BC083-93A0-4A30-9BE0-053FD16F76ED</key>
+		<string>svn+ssh://taro.unh.edu/net/home/svn/HPS</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>svn+ssh://taro.unh.edu/net/home/svn/HPS/trunk/EvioTool/EvioTool.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D78BC083-93A0-4A30-9BE0-053FD16F76ED</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
+			<string>clas12/evio/tags</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>709ED032-03A8-44C5-B89D-FD200027B0BB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>evio-4.3.1</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
+			<string>tags</string>
+			<key>IDESourceControlRepositoryTrunkRelativeLocationKey</key>
+			<string>trunk</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D78BC083-93A0-4A30-9BE0-053FD16F76ED</string>
+			<key>IDESourceControlWCCName</key>
+			<string>EvioTool</string>
+		</dict>
+	</array>
+</dict>
+</plist>

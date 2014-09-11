@@ -1,0 +1,11 @@
+//
+//  Project_Debug.xcconfig
+//  EvioTool
+//
+//  Created by Maurik Holtrop on 5/5/14.
+//  Copyright (c) 2014 UNH. All rights reserved.
+//
+#include "Project.xcconfig"
+
+CODA_ET_LIB = ${CODA_ET}/build/Debug/libet-14.0.dylib
+

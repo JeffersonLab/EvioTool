@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/data/CLAS12/evio-4.3.1/src/execsrc/eviocopy.c
+evio.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+
+src/libsrc/evio.h
+stdio.h
+-
+pthread.h
+-
+sys/param.h
+-
+stddef.h
+-
+msinttypes.h
+src/libsrc/msinttypes.h
+stdint.h
+-
+
+src/libsrc/msinttypes.h
+BaseTsd.h
+-
+limits.h
+-
+wchar.h
+-
+

@@ -1,0 +1,29 @@
+file /data/CLAS12/CODA/evio-4.3.1/coda.py,line 100:
+	Configure(confdir = .sconf_temp)
+scons: Configure: Checking for 64/32 bits ...
+scons: Configure: ".sconf_temp/conftest_0.c" is up to date.
+scons: Configure: The original builder output was:
+  |.sconf_temp/conftest_0.c <-
+  |  |
+  |  |#include <stdio.h>
+  |  |int main(int argc, char **argv) {
+  |  |  printf("%d", 8*sizeof(0L));
+  |  |  return 0;
+  |  |}
+  |  |
+  |
+scons: Configure: ".sconf_temp/conftest_0.o" is up to date.
+scons: Configure: The original builder output was:
+  |gcc -o .sconf_temp/conftest_0.o -c .sconf_temp/conftest_0.c
+  |
+scons: Configure: ".sconf_temp/conftest_0" is up to date.
+scons: Configure: The original builder output was:
+  |gcc -o .sconf_temp/conftest_0 .sconf_temp/conftest_0.o
+  |
+scons: Configure: ".sconf_temp/conftest_0.out" is up to date.
+scons: Configure: The original builder output was:
+  |.sconf_temp/conftest_0 > .sconf_temp/conftest_0.out
+  |
+scons: Configure: (cached) 64
+
+

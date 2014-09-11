@@ -1,0 +1,29 @@
+//
+//  Project.xcconfig
+//  EvioTool
+//
+//  Created by Maurik Holtrop on 5/5/14.
+//  Copyright (c) 2014 UNH. All rights reserved.
+//
+GCC_WARN_ABOUT_RETURN_TYPE = YES;
+GCC_WARN_UNUSED_VARIABLE = YES;
+GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+
+ROOTSYS=/Users/maurik/root/root.git
+EVIO=/data/CLAS12/CODA/evio-4.3.1
+EVIO_LIB=/data/CLAS12/Darwin-x86_64/lib 
+
+CODA_ET=/data/CLAS12/CODA/et-14.0
+
+CODA_ET_LIB = ${CODA_ET}/build/Release/libet-14.0.dylib
+
+
+GCC_WARN_64_TO_32_BIT_CONVERSION = NO
+
+CLANG_CXX_LIBRARY = libc++
+CLANG_CXX_LANGUAGE_STANDARD = gnu++0x
+
+
+LIBRARY_SEARCH_PATHS=${ROOTSYS}/lib
+HEADER_SEARCH_PATHS=${ROOTSYS}/include $EVIO/src/libsrc $EVIO/src/libsrc++ ${CODA_ET}/common/include

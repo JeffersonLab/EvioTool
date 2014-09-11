@@ -1,0 +1,12 @@
+# scons build file for ET - vxworks
+Import('env', 'binInstallDir')
+
+# List of all vxworks files.
+# All vxworks files start by convention with case-independent 'vx'.
+vxfileList = Glob('[vV][xX]*.c', strings=True) + Glob('[vV][xX]*.cc', strings=True)
+
+# for vxworks all we need is the object
+for fileName in vxfileList:
+    objectFile = env.Object(env.AppendUnique(CPPPATH = ['.', '#src/libsrc']), source = fileName)
+    if 'install' in COMMAND_LINE_TARGETS:
+        env.Alias('install', env.Install(target = binInstallDir, source = objectFile))

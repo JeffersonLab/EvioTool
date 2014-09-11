@@ -1,0 +1,16 @@
+//
+//  libevio.xcconfig
+//  evio-4.3.1
+//
+//  Created by Maurik Holtrop on 4/20/14.
+//  Copyright (c) 2014 Jlab. All rights reserved.
+//
+
+EXECUTABLE_EXTENSION= so;
+EXECUTABLE_PREFIX= lib;
+
+CLANG_CXX_LIBRARY = libc++
+CLANG_CXX_LANGUAGE_STANDARD = gnu++0x
+
+OTHER_LDFLAGS=  -lexpat -lz
+

@@ -1,0 +1,13 @@
+//
+//  EvioTool.xcconfig
+//  EvioTool
+//
+//  Created by Maurik Holtrop on 5/5/14.
+//  Copyright (c) 2014 UNH. All rights reserved.
+//
+
+EXECUTABLE_PREFIX=lib
+EXECUTABLE_EXTENSION=dylib
+
+
+OTHER_LDFLAGS= -L${ROOTSYS}/lib -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lRMySQL -lThread -lm -ldl -lexpat -lz

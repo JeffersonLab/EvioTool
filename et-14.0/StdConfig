@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="monitorConfiguration.xsd">
+
+  <graphics>
+    <width>1100</width>
+    <height>700</height>
+    <xPosition>0</xPosition>
+    <yPosition>22</yPosition>
+    <fileNameList>
+      /tmp/ETBuffer
+    </fileNameList>
+  </graphics>
+
+  <etConnection>
+    <fileName>/tmp/ETBuffer</fileName>
+    <direct>
+      <location>local</location>
+      <tcpPort>11111</tcpPort>
+    </direct>
+    <period>5</period>
+    <dividerPosition>550</dividerPosition>
+    <orientation>horizontal</orientation>
+  </etConnection>
+
+</configuration>

@@ -1,0 +1,28 @@
+Changes from the previous version:
+
+- in C code, add mutex protection when calling et_close and other routines
+  so there is much more thread safety. It is necessary to run this version
+  of ET (14.0) in order not to crash the emu with a JVM seg fault.
+  
+- in C code, after et_close() is called, its et id cannot be used,
+  returns new error, ET_ERROR_CLOSED
+  
+- in C and Java, when broad/multicasting to connect to an ET system, an
+  ET client will use all the IP addresses sent by the ET system to try and
+  connect, starting with addresses on the same subnets. A timeout of 3 seconds
+  maximum exists for each address tried.
+
+- the "scons install" option now installs et_start and et_monitor but the examples
+  must now be installed by doing "scons examples"
+
+- add scons options:
+    -- to remove documentation
+    -- It now installs into $CODA unless --prefix given on cmd line.
+       It can also install into --incdir, --bindir, and --libdir if
+       more installation control is needed
+
+- add ant options to:
+    -- remove documentation
+    -- install & uninstall jar files
+    -- install into CODA env var or into --prefix
+

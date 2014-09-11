@@ -1,0 +1,8 @@
+//
+//  et-14.0.xcconfig
+//  et-14.0
+//
+//  Created by Maurik Holtrop on 5/1/14.
+//  Copyright (c) 2014 JLab. All rights reserved.
+//
+HEADER_SEARCH_PATHS=/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/include /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/include/darwin
