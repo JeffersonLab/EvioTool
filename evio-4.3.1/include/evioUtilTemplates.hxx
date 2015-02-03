@@ -816,7 +816,7 @@ template <class Predicate> evioDOMNodeP evioDOMTree::findFirstNode(evioDOMNodeP 
 template <typename T> vector<T> *evioDOMTree::getVectorUnique(void) throw(evioException) {
 
   evioDOMNodeListP l = getNodeList(typeIs<T>());
-  int s = l->size();
+  size_t s = l->size();
 
   if(s==0) {
     return(NULL);
