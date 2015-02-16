@@ -24,20 +24,21 @@ CREATED_EXE3=EvioTool_Test
 #EXE_LIBS3=$(OBJ_SHLIB)
 #CREATED_EXE3= gemcFilter
 
-ROOT_VERION_MAJOR=`root-config --verion | perl -e '<> =~ /([0-9])\.([0-9]+)\/([0-9]+)/; print $1;'`
-ROOT_VERION_MINOR=`root-config --verion | perl -e '<> =~ /([0-9])\.([0-9]+)\/([0-9]+)/; print $2;'`
-ROOT_VERION_SUBMINOR=`root-config --verion | perl -e '<> =~ /([0-9])\.([0-9]+)\/([0-9]+)/; print $3;'`
+ROOT_VERSION=$(shell root-config --version)
+ROOT_VERSION_MAJOR=$(shell root-config --version | gawk -F. '{print $$1}' )
+ROOT_VERSION_MINOR=$(shell root-config --version | gawk -F. '{print $$2}' )
+ROOT_VERSION_SUBMINOR=$(shell root-config --version | gawk -F. '{print $$1}' )
 
 OS_NAME=$(shell uname -s)
 ARCH=$(shell uname -m)
 MACHINE=$(OS_NAME)-$(ARCH)
 
-EVIO= ./evio-4.3.1         # /data/CLAS12/CODA/evio-4.3.1
-EVIO_LIB=./evio-4.3.1/li   # /data/CLAS12/$(MACHINE)/lib
-ET= ./et-14.0              # /data/CLAS12/CODA/et-14.0
-ET_LIB= ./et-14.0/lib      #/data/CLAS12/$(MACHINE)/lib
+EVIO=./evio-4.3.1
+EVIO_LIB=./evio-4.3.1/lib
+ET=./et-14.0
+ET_LIB= ./et-14.0/$(MACHINE)/lib
 
-OTHERLOADLIBS= $(EVIO_LIB)/libevioxx.a $(EVIO_LIB)/libevio.a -L$(ET_LIB) -let -lexpat -lz
+OTHERLOADLIBS= $(EVIO_LIB)/libevioxx.a $(EVIO_LIB)/libevio.a $(ET_LIB)/libet.a -lexpat -lz
 
 #
 # "Path" to search for include files 
@@ -102,7 +103,6 @@ CXXFLAGS += -KPIC $(ROOTCFLAGS)
 LD  = CC
 LDFLAGS += $(ROOTLDFLAGS)
 SOFLAGS = -G
-BOSLIB += -lnsl
 
 ObjSuf        = o
 SrcSuf        = cc
@@ -159,10 +159,17 @@ OBJ_FILES3=$(addprefix $(localobjs)/,$(SRC_FILES3:.cc=.o))
 #
 OBJ_CLASS = $(addprefix $(localobjs)/,$(SRC_CLASS:.cc=.o))
 DICTS_SOURCE = $(addprefix $(localdicts)/,$(SRC_CLASS:.cc=Dict.cc))
+DICTS_PCM=$(addprefix $(localdicts)/,$(SRC_CLASS:.cc=Dict_rdict.pcm))
 DICTS_INCLUDE = $(addprefix $(localdicts)/,$(SRC_CLASS:.cc=Dict.h))
 OBJ_DICTS = $(addprefix $(localobjs)/,$(SRC_CLASS:.cc=Dict.o))
 OBJ_SHLIB = $(OBJ_CLASS)  $(OBJ_DICTS)
 
+ifeq "$(ROOT_VERSION_MAJOR)" "6"
+	DICTS_EXTRA=$(DICTS_PCM)
+	DICTS_PCM_INSTALL=$(addprefix $(localslib)/,$(notdir $(DICTS_PCM)))
+else
+	DICTS_EXTRA=$(DICTS_INCLUDE)
+endif
 #
 # Bottom part of the makefiles.
 #
@@ -182,6 +189,7 @@ help:
 	@echo ''
 	@echo 'OS_NAME     :'$(OS_NAME)
 	@echo 'MACHINE     :'$(MACHINE)
+	@echo 'ROOT_VERSION_MAJOR: ' $(ROOT_VERSION_MAJOR)
 
 	@echo 'localdicts  :'$(localdicts)
 	@echo 'EXE_NAME     :'$(EXE_NAME)
@@ -197,6 +205,9 @@ help:
 	@echo 'SRC_CLASS    :'$(SRC_CLASS)
 	@echo 'DICTS_SOURCE :'$(DICTS_SOURCE)
 	@echo 'DICTS_INCLUD :'$(DICTS_INCLUDE)
+	@echo 'DICTS_EXTRA  :'$(DICTS_EXTRA)
+	@echo 'DICTS_PCM    :'$(DICTS_PCM)
+	@echo 'DICTS_PCM_INS:'$(DICTS_PCM_INSTALL)
 	@echo 'INC_FILES    :'$(INC_FILES)
 	@echo 'OBJ_CLASS    :'$(OBJ_CLASS)
 	@echo 'OBJ_DICTS    :'$(OBJ_DICTS)
@@ -208,22 +219,25 @@ help:
 	@echo 'LDFLAGS      :'$(LDFLAGS)
 	@echo 'SOFLAGS      :'$(SOFLAGS)
 
-shlib: Makefile_depends $(localslib)/$(CREATED_SHLIB) 
+shlib: Makefile_depends $(localslib)/$(CREATED_SHLIB)  $(DICTS_PCM_INSTALL)
 
 #
 # Note: adding $(DICTS_*) here insures that make will not consider the dictionaries
 # as intermediate files, and so will not erase them when done.
 #
-$(localslib)/$(CREATED_SHLIB): $(OBJ_SHLIB) $(DICTS_SOURCE) $(DICTS_INCLUDE)
+$(localslib)/$(CREATED_SHLIB): $(OBJ_SHLIB) $(DICTS_SOURCE) $(DICTS_EXTRA)
 	@test -d $(localslib) || mkdir -p $(localslib)
 	$(LD) $(SOFLAGS) $(LDFLAGS)  $(OBJ_SHLIB) $(ROOTLIBS) -o $(localslib)/$(CREATED_SHLIB) $(OTHERLOADLIBS)
-	$(POST_LINK_COMMAND)
+
+$(DICTS_PCM_INSTALL): $(DICTS_PCM)
+	@test -d $(localslib) || mkdir -p $(localslib)
+	 cp -f  $(DICTS_PCM) $(localslib)
 
 lib: Makefile_depends $(localslib)/$(CREATED_LIB)
 
-#$(locallib)/$(CREATED_LIB):  $(OBJ_SHLIB)
-#	@test -d $(locallib) || mkdir -p $(locallib)
-#	ar r $(locallib)/$(CREATED_LIB) $(OBJ_SHLIB) 
+$(locallib)/$(CREATED_LIB):  $(OBJ_SHLIB)
+	@test -d $(locallib) || mkdir -p $(locallib)
+	ar r $(locallib)/$(CREATED_LIB) $(OBJ_SHLIB) 
 
 #
 # Add the correct path to all the executables made here.
@@ -282,8 +296,9 @@ clean:
 
 distclean: clean
 	@rm -f Makefile_depends 
-	@test -z $(CREATED_LIB)   || rm -f $(locallib)/$(CREATED_LIB) 
+	@test -z $(CREATED_LIB)   || rm -f $(locallib)/$(CREATED_LIB)
 	@test -z $(CREATED_SHLIB) || rm -f $(localslib)/$(CREATED_SHLIB)
+	@test -z "$(DICTS_PCM_INSTALL)" || rm -f   $(DICTS_PCM_INSTALL)
 	@test -z $(CREATED_EXE)   || rm -f $(localbin)/$(CREATED_EXE)
 	@test -z $(CREATED_EXE2)  || rm -f $(localbin)/$(CREATED_EXE2)
 	@test -z $(CREATED_EXE3)  || rm -f $(localbin)/$(CREATED_EXE3)
@@ -291,9 +306,15 @@ distclean: clean
 #
 #_______________________________________________________
 
-$(localdicts)/%Dict.cc $(localdicts)/%Dict.h: %.h
+$(localdicts)/%Dict.cc: %.h
 	@test -d $(dir $@) || mkdir -p $(dir $@)
 	$(ROOTSYS)/bin/rootcint -f $@ -c -p $(INCLUDES) $< $(<:.h=_Linkdef.h)
+
+$(localdicts)/%Dict.h: $(localdicts)/%Dict.cc
+	@echo $@ " is not there? Please run make clean and try again."
+
+$(localdicts)/%Dict_rdict.pcm: $(localdicts)/%Dict.cc
+	@echo $@ "  is not there? Please run make clean and try again."
 
 $(localobjs)/%Dict.o: $(localdicts)/%Dict.cc
 	@test -d $(dir $@) || mkdir -p $(dir $@)
