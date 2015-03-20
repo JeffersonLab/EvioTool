@@ -5,4 +5,4 @@
 //  Created by Maurik Holtrop on 5/5/14.
 //  Copyright (c) 2014 UNH. All rights reserved.
 //
-OTHER_LDFLAGS= -lm -ldl ${CODA_ET_LIB} -lexpat -lz
+OTHER_LDFLAGS= -lm -ldl ${EVIO_LIB} ${CODA_ET_LIB} -lexpat -lz
