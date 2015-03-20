@@ -1,3 +1,19 @@
+**/.Darwin-*
+**/.Linux-*
+et-14.0/.sconf_temp
+et-14.0/.sconsign.dblite
+et-14.0/Darwin-x86_64
+et-14.0/coda.pyc
+et-14.0/config.log
+et-14.0/java
+evio-4.3.1/install_manifest.txt
+evio-4.3.1/src/execsrc/evio2xml
+evio-4.3.1/src/execsrc/eviocopy
+evio-4.3.1/src/execsrc/xml2evio
+evio-4.3.1/src/libsrc++/CMakeFiles
+evio-4.3.1/src/libsrc/CMakeFiles
+
+
 # Compiled Object files
 *.slo
 *.lo
