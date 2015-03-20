@@ -1,0 +1,19 @@
+//
+//  libevio.xcconfig
+//  evio-4.3.1
+//
+//  Created by Maurik Holtrop on 4/20/14.
+//  Copyright (c) 2014 Jlab. All rights reserved.
+//
+
+EXECUTABLE_EXTENSION= dylib;
+EXECUTABLE_PREFIX= lib;
+
+CLANG_CXX_LIBRARY = libc++
+CLANG_CXX_LANGUAGE_STANDARD = c++11
+
+OTHER_LDFLAGS=  -lexpat -lz
+
+DYLIB_INSTALL_NAME_BASE=/data/CLAS12/CODA/evio-4.4.5/build/Debug
+INSTALL_PATH=/data/CLAS12/CODA/evio-4.4.5/lib
+
