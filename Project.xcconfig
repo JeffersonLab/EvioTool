@@ -10,13 +10,13 @@ GCC_WARN_UNUSED_VARIABLE = YES;
 GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 
-ROOTSYS=/Users/maurik/root/root.git
-EVIO=/data/CLAS12/CODA/evio-4.3.1
-EVIO_LIB=/data/CLAS12/Darwin-x86_64/lib 
+ROOTSYS=/Users/maurik/root/root_v6.0.2
+EVIO= ${PROJECT_DIR}/evio-4.3.1
+EVIO_LIB=${EVIO}/lib/libevio.a ${EVIO}/lib/libevioxx.a
 
-CODA_ET=/data/CLAS12/CODA/et-14.0
+CODA_ET=${PROJECT_DIR}/et-14.0
 
-CODA_ET_LIB = ${CODA_ET}/build/Release/libet-14.0.dylib
+CODA_ET_LIB = ${CODA_ET}/Darwin-x86_64/lib/libet.a
 
 
 GCC_WARN_64_TO_32_BIT_CONVERSION = NO
@@ -24,6 +24,8 @@ GCC_WARN_64_TO_32_BIT_CONVERSION = NO
 CLANG_CXX_LIBRARY = libc++
 CLANG_CXX_LANGUAGE_STANDARD = gnu++0x
 
+OTHER_CPLUSPLUSFLAGS= -pthread
+
 
 LIBRARY_SEARCH_PATHS=${ROOTSYS}/lib
-HEADER_SEARCH_PATHS=${ROOTSYS}/include $EVIO/src/libsrc $EVIO/src/libsrc++ ${CODA_ET}/common/include
+HEADER_SEARCH_PATHS=${ROOTSYS}/include $EVIO/src/libsrc $EVIO/src/libsrc++ ${CODA_ET}/common/include /Users/maurik/Documents/codes/EvioTool
