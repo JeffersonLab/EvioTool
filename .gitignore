@@ -6,14 +6,19 @@ et-14.0/Darwin-x86_64
 et-14.0/coda.pyc
 et-14.0/config.log
 et-14.0/java
-evio-4.3.1/install_manifest.txt
-evio-4.3.1/src/execsrc/evio2xml
-evio-4.3.1/src/execsrc/eviocopy
-evio-4.3.1/src/execsrc/xml2evio
-evio-4.3.1/src/libsrc++/CMakeFiles
-evio-4.3.1/src/libsrc/CMakeFiles
-
-
+evio-4.4.5/install_manifest.txt
+evio-4.4.5/src/execsrc/evio2xml
+evio-4.4.5/src/execsrc/eviocopy
+evio-4.4.5/src/execsrc/xml2evio
+evio-4.4.5/src/libsrc++/CMakeFiles
+evio-4.4.5/src/libsrc/CMakeFiles
+evio-4.4.5/.sconf_temp/
+evio-4.4.5/.sconsign.dblite
+evio-4.4.5/coda.pyc
+evio-4.4.5/config.log
+evio-4.4.5/Darwin-x86_64
+#
+#
 # Compiled Object files
 *.slo
 *.lo

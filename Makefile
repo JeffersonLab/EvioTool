@@ -33,8 +33,8 @@ OS_NAME=$(shell uname -s)
 ARCH=$(shell uname -m)
 MACHINE=$(OS_NAME)-$(ARCH)
 
-EVIO=./evio-4.3.1
-EVIO_LIB=./evio-4.3.1/lib
+EVIO=./evio-4.4.5
+EVIO_LIB=./evio-4.4.5/lib
 ET=./et-14.0
 ET_LIB= ./et-14.0/$(MACHINE)/lib
 
@@ -49,7 +49,6 @@ SEARCH_INCLUDES +=
 #
 INCLUDES=-I. -I./EvioTool  -I$(EVIO)/src/libsrc -I$(EVIO)/src/libsrc -I$(EVIO)/src/libsrc++ -I$(ET)/$(MACHINE)/include
 #
-
 
 all: shlib exe exe2 exe3
 
