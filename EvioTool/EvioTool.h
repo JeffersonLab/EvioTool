@@ -7,17 +7,16 @@
  *
  */
 
-#ifndef EvioTool_
-#define EvioTool_
+#ifndef __EvioTool__EvioTool__
+#define __EvioTool__EvioTool__
 
 // #define EVIO_V4_0
-
-/* The classes below are exported */
-#pragma GCC visibility push(default)
-
 #ifndef __clang__
 #define nullptr  NULL
 #endif
+
+/* The classes below are exported */
+#pragma GCC visibility push(default)
 
 // -- Include the EVIO headers -- //
 #ifndef __CINT__                  // CINT is not able to parse the horrible EVIO gobledigook.
@@ -40,7 +39,7 @@ using namespace std;
 
 #include "EvioEvent.h"
 
-#ifndef __CINT__
+#ifndef __CINT__   // Needed for ROOT 5, not for ROOT 6.
 #include "et.h"
 #endif
 

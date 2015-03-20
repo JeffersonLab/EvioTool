@@ -16,10 +16,48 @@
 #ifndef __EvioTool__EvioEvent__
 #define __EvioTool__EvioEvent__
 
+#ifndef __clang__
+#define nullptr  NULL
+#endif
+
+/* The classes below are exported */
+#pragma GCC visibility push(default)
+
 #include <stdio.h>
 #include <iostream>
 #include <vector>
 using namespace std;
+
+#define EVIO_EVENT_HEADER 0xC000  // 49152
+#define EVIO_FADC_1_BANK	0xE101  // 57601
+#define EVIO_FADC_3_BANK	0xE103  // 57603
+#define EVIO_FADC_7_BANK	0xE102  // 57602
+#define EVIO_TI_BANK	  	0xE10A  // 57610
+#define EVIO_SSP_BANK			0xE10C  // 57612
+#define EVIO_CFG_BANK		  0xE10E  // 57514
+
+// HPS TEST RUN
+#define EVIO_ECAL_FADC_CRATE_1     1   // ECAL Crate 1
+#define EVIO_ECAL_FADC_CRATE_2     2   // ECAL Crate 2
+#define EVIO_SVT_CRATE             3   // SVT Crate
+
+#define EVIO_PRESTART 17
+#define EVIO_GO       18
+
+// HPS Engineering RUN
+
+static const int ECAL_FADC_MASTER=46;
+static const int ECAL_FADC_CRATE1=37;
+static const int ECAL_FADC_CRATE2=39;
+static const int ECAL_FADC_GTP1=38;
+static const int ECAL_FADC_GTP2=40;
+
+#define EVIO_ROC_HPS1			37
+#define EVIO_ROC_HPS2			39
+#define EVIO_ROC_HPS11		46
+#define EVIO_ROC_HPS12		58
+
+// HPS TEST RUN SVT Definitions
 
 #define MAX_NUM_FADC   25        // Depending on the implementation detail, this may be a "reserve" and not a "max".
 #define MAX_NUM_SVT_FPGA 7
@@ -115,5 +153,5 @@ void EvioEventClear(EVIO_Event_t *evt);
 void EvioEventInit(EVIO_Event_t *evt);
 void EvioEventPrint(EVIO_Event_t *evt, int level=0);
 
-
+#pragma GCC visibility pop
 #endif /* defined(__EvioTool__EvioEvent__) */

@@ -299,7 +299,7 @@ bool EvioTool::read(){
       cout << "EvioTool::read() -- It appears as if this data needs swapping.\n";
     }
     if(fDebug>1){
-      printf("ET data: pointer %10x  length= %3zu \n",et_data,et_data_len);
+      printf("ET data: pointer %10lx  length= %3zu \n",(unsigned long)et_data,et_data_len);
     }
     et_events_remaining--;
     
@@ -329,6 +329,7 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
 //
 // A better parser than could be merged in is in the AprimeAna library. To be done later.
 //
+  
   try{
     if( buff == nullptr){
       if(get_events_from_et){
@@ -362,12 +363,12 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
   evt->topnode_tag = topnode->tag;
   
   if(topnode->isLeaf()){
-    if(topnode->tag == 17){         ////////////////////  Prestart Event. ////////////////
+    if(topnode->tag == EVIO_PRESTART){         ////////////////////  Prestart Event. ////////////////
       vector<unsigned int> *cc = topnode->getVector<unsigned int>();
       evt->start_time = start_time = (*cc)[0];
       evt->run_number = run_number  = (*cc)[1];
       evt->file_number= file_number= (*cc)[2];
-    }else if(topnode->tag == 18){ /////////////////////   Go Event ////////////////////
+    }else if(topnode->tag == EVIO_GO){ /////////////////////   Go Event ////////////////////
 //      vector<unsigned int> *cc = topnode->getVector<unsigned int>();
     }
   }
@@ -375,7 +376,7 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
   if(topnode->isContainer()){   ///////////////////////// Data Events ////////////////////
     for(iter=c->begin(); iter!=c->end(); iter++) {
       
-      if((*iter)->tag == 49152){  ////////////////// Event Header ////////////////////
+      if((*iter)->tag == EVIO_EVENT_HEADER){  ////////////////// Event Header ////////////////////
         vector<unsigned int> *cc = (*iter)->getVector<unsigned int>();
         if(fDebug>1) cout << "Event " << (*cc)[0] << endl;
         if(fDebug>3){
@@ -399,8 +400,7 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
 #define GET_INT(b,i)  ((int *)(&b[i]))[0];i+=4;
 #define GET_L64(b,i) ((unsigned long long *)(&b[i]))[0];i+=8;
 
-      if((*iter)->tag == 1 || (*iter)->tag == 2)         ////////////////  ECAL Crate 1 & 2////////////////////
-      {
+      else if((*iter)->tag == EVIO_ECAL_FADC_CRATE_1 || (*iter)->tag == EVIO_ECAL_FADC_CRATE_2){
         if((*iter)->isContainer()) {
           const evioDOMContainerNode *container = static_cast<const evioDOMContainerNode*>(*iter);
           evioDOMNodeList::const_iterator leaf;
@@ -509,7 +509,8 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
         }
         
       }
-      else if((*iter)->tag == 3){ /////////////////////  SVT Crate 3  ///////////////////////////
+      else if((*iter)->tag == 3)
+      {                             /////////////////////  SVT Crate 3  ///////////////////////////
 
         int n_sfpga=0;
         
@@ -654,6 +655,9 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
             }            
           }
         }
+      }
+      else{
+        cout << "\n\n Unexpected primary container (crate): " << (*iter)->tag;
       }
     }
   }
