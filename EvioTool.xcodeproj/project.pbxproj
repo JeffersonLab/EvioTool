@@ -25,10 +25,6 @@
 
 /* Begin PBXBuildFile section */
 		400D8BC2190F33CC00416CD8 /* EvioTool.h in Sources */ = {isa = PBXBuildFile; fileRef = 40E49D0519034D3E00390847 /* EvioTool.h */; };
-		405680CE194641FA00E8BA40 /* evio.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E746561923E269008E4235 /* evio.c */; };
-		405680CF1946421100E8BA40 /* evioswap.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E7465A1923E269008E4235 /* evioswap.c */; };
-		405680D01946421700E8BA40 /* eviofmtswap.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E746591923E269008E4235 /* eviofmtswap.c */; };
-		405680D11946421B00E8BA40 /* eviofmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E746581923E269008E4235 /* eviofmt.c */; };
 		40E49D0819034D3E00390847 /* EvioTool.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E49D0719034D3E00390847 /* EvioTool.cc */; };
 		40E6BFED1917E1F400BF03CA /* et_evio_blaster.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */; };
 		40E6BFEF1917E1F400BF03CA /* et_evio_blaster.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E6BFEE1917E1F400BF03CA /* et_evio_blaster.1 */; };
@@ -40,17 +36,6 @@
 		40E7463A191DA8F0008E4235 /* et_evio_test_consumer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */; };
 		40E746551923E093008E4235 /* libet-14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E746541923E093008E4235 /* libet-14.0.dylib */; };
 		40E746761923E2EE008E4235 /* EvioTool_Test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74625191B0BFC008E4235 /* EvioTool_Test.cc */; };
-		40E746771923E323008E4235 /* evio.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E746561923E269008E4235 /* evio.c */; };
-		40E746781923E323008E4235 /* eviofmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E746581923E269008E4235 /* eviofmt.c */; };
-		40E746791923E323008E4235 /* eviofmtswap.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E746591923E269008E4235 /* eviofmtswap.c */; };
-		40E7467A1923E323008E4235 /* evioswap.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E7465A1923E269008E4235 /* evioswap.c */; };
-		40E7467B1923E323008E4235 /* evioBankIndex.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E7465C1923E269008E4235 /* evioBankIndex.cc */; };
-		40E7467C1923E323008E4235 /* evioBufferChannel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E7465E1923E269008E4235 /* evioBufferChannel.cc */; };
-		40E7467D1923E323008E4235 /* evioDictionary.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E746611923E269008E4235 /* evioDictionary.cc */; };
-		40E7467E1923E323008E4235 /* evioException.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E746631923E269008E4235 /* evioException.cc */; };
-		40E7467F1923E323008E4235 /* evioFileChannel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E746651923E269008E4235 /* evioFileChannel.cc */; };
-		40E746801923E323008E4235 /* evioSocketChannel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E746671923E269008E4235 /* evioSocketChannel.cc */; };
-		40E746811923E323008E4235 /* evioUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E7464F1923DED1008E4235 /* evioUtil.cc */; };
 		40E746821923E3DF008E4235 /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
 /* End PBXBuildFile section */
 
@@ -65,7 +50,7 @@
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)_Dict.cpp",
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)_Dict.h",
 			);
-			script = "# echo ${ROOTSYS}/bin/rootcint -f ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}_Dict.cpp -c -I${HEADER_SEARCH_PATHS// / -I} ${INPUT_FILE_DIR}/${INPUT_FILE_BASE}_Linkdef.h ${INPUT_FILE_PATH}\n${ROOTSYS}/bin/rootcint -f ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}_Dict.cpp -c -I${HEADER_SEARCH_PATHS// / -I}  ${INPUT_FILE_PATH} ${INPUT_FILE_DIR}/${INPUT_FILE_BASE}_Linkdef.h";
+			script = "echo ${ROOTSYS}/bin/rootcint -f ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}_Dict.cpp -c -I${HEADER_SEARCH_PATHS// / -I} ${INPUT_FILE_DIR}/${INPUT_FILE_BASE}_Linkdef.h ${INPUT_FILE_PATH}\n${ROOTSYS}/bin/rootcint -f ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}_Dict.cpp -c -I${HEADER_SEARCH_PATHS// / -I}  ${INPUT_FILE_PATH} ${INPUT_FILE_DIR}/${INPUT_FILE_BASE}_Linkdef.h";
 		};
 /* End PBXBuildRule section */
 
@@ -170,30 +155,7 @@
 		40E74635191DA8F0008E4235 /* et_evio_test_consumer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = et_evio_test_consumer; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_test_consumer.cc; sourceTree = "<group>"; };
 		40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = et_evio_test_consumer.1; sourceTree = "<group>"; };
-		40E7464F1923DED1008E4235 /* evioUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioUtil.cc; path = EvioTool_Test/evioUtil.cc; sourceTree = "<group>"; };
-		40E746501923DED1008E4235 /* evioUtil.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioUtil.hxx; path = EvioTool_Test/evioUtil.hxx; sourceTree = "<group>"; };
 		40E746541923E093008E4235 /* libet-14.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libet-14.0.dylib"; path = "/Users/maurik/Documents/codes/EvioTool/../../../../../data/CLAS12/CODA/et-14.0/build/Debug/libet-14.0.dylib"; sourceTree = "<absolute>"; };
-		40E746561923E269008E4235 /* evio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = evio.c; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc/evio.c"; sourceTree = "<absolute>"; };
-		40E746571923E269008E4235 /* evio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = evio.h; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc/evio.h"; sourceTree = "<absolute>"; };
-		40E746581923E269008E4235 /* eviofmt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = eviofmt.c; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc/eviofmt.c"; sourceTree = "<absolute>"; };
-		40E746591923E269008E4235 /* eviofmtswap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = eviofmtswap.c; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc/eviofmtswap.c"; sourceTree = "<absolute>"; };
-		40E7465A1923E269008E4235 /* evioswap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = evioswap.c; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc/evioswap.c"; sourceTree = "<absolute>"; };
-		40E7465B1923E269008E4235 /* msinttypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = msinttypes.h; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc/msinttypes.h"; sourceTree = "<absolute>"; };
-		40E7465C1923E269008E4235 /* evioBankIndex.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioBankIndex.cc; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioBankIndex.cc"; sourceTree = "<absolute>"; };
-		40E7465D1923E269008E4235 /* evioBankIndex.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioBankIndex.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioBankIndex.hxx"; sourceTree = "<absolute>"; };
-		40E7465E1923E269008E4235 /* evioBufferChannel.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioBufferChannel.cc; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioBufferChannel.cc"; sourceTree = "<absolute>"; };
-		40E7465F1923E269008E4235 /* evioBufferChannel.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioBufferChannel.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioBufferChannel.hxx"; sourceTree = "<absolute>"; };
-		40E746601923E269008E4235 /* evioChannel.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioChannel.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioChannel.hxx"; sourceTree = "<absolute>"; };
-		40E746611923E269008E4235 /* evioDictionary.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioDictionary.cc; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioDictionary.cc"; sourceTree = "<absolute>"; };
-		40E746621923E269008E4235 /* evioDictionary.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioDictionary.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioDictionary.hxx"; sourceTree = "<absolute>"; };
-		40E746631923E269008E4235 /* evioException.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioException.cc; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioException.cc"; sourceTree = "<absolute>"; };
-		40E746641923E269008E4235 /* evioException.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioException.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioException.hxx"; sourceTree = "<absolute>"; };
-		40E746651923E269008E4235 /* evioFileChannel.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioFileChannel.cc; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioFileChannel.cc"; sourceTree = "<absolute>"; };
-		40E746661923E269008E4235 /* evioFileChannel.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioFileChannel.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioFileChannel.hxx"; sourceTree = "<absolute>"; };
-		40E746671923E269008E4235 /* evioSocketChannel.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioSocketChannel.cc; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioSocketChannel.cc"; sourceTree = "<absolute>"; };
-		40E746681923E269008E4235 /* evioSocketChannel.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioSocketChannel.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioSocketChannel.hxx"; sourceTree = "<absolute>"; };
-		40E746691923E26A008E4235 /* evioTypedefs.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioTypedefs.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioTypedefs.hxx"; sourceTree = "<absolute>"; };
-		40E746741923E281008E4235 /* evioUtilTemplates.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioUtilTemplates.hxx; path = "/data/CLAS12/CODA/evio-4.3.1/src/libsrc++/evioUtilTemplates.hxx"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,7 +207,6 @@
 			isa = PBXGroup;
 			children = (
 				40E746541923E093008E4235 /* libet-14.0.dylib */,
-				40E746751923E2A2008E4235 /* evio */,
 				409A4A1B19086D81001AF63B /* Config */,
 				40E49D0019034D3E00390847 /* EvioTool */,
 				40E6BFEB1917E1F400BF03CA /* et_evio_blaster */,
@@ -314,36 +275,6 @@
 				40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */,
 			);
 			path = et_evio_test_consumer;
-			sourceTree = "<group>";
-		};
-		40E746751923E2A2008E4235 /* evio */ = {
-			isa = PBXGroup;
-			children = (
-				40E746741923E281008E4235 /* evioUtilTemplates.hxx */,
-				40E746561923E269008E4235 /* evio.c */,
-				40E746571923E269008E4235 /* evio.h */,
-				40E746581923E269008E4235 /* eviofmt.c */,
-				40E746591923E269008E4235 /* eviofmtswap.c */,
-				40E7465A1923E269008E4235 /* evioswap.c */,
-				40E7465B1923E269008E4235 /* msinttypes.h */,
-				40E7465C1923E269008E4235 /* evioBankIndex.cc */,
-				40E7465D1923E269008E4235 /* evioBankIndex.hxx */,
-				40E7465E1923E269008E4235 /* evioBufferChannel.cc */,
-				40E7465F1923E269008E4235 /* evioBufferChannel.hxx */,
-				40E746601923E269008E4235 /* evioChannel.hxx */,
-				40E746611923E269008E4235 /* evioDictionary.cc */,
-				40E746621923E269008E4235 /* evioDictionary.hxx */,
-				40E746631923E269008E4235 /* evioException.cc */,
-				40E746641923E269008E4235 /* evioException.hxx */,
-				40E746651923E269008E4235 /* evioFileChannel.cc */,
-				40E746661923E269008E4235 /* evioFileChannel.hxx */,
-				40E746671923E269008E4235 /* evioSocketChannel.cc */,
-				40E746681923E269008E4235 /* evioSocketChannel.hxx */,
-				40E746691923E26A008E4235 /* evioTypedefs.hxx */,
-				40E7464F1923DED1008E4235 /* evioUtil.cc */,
-				40E746501923DED1008E4235 /* evioUtil.hxx */,
-			);
-			name = evio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -466,17 +397,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40E746771923E323008E4235 /* evio.c in Sources */,
-				40E746781923E323008E4235 /* eviofmt.c in Sources */,
-				40E746791923E323008E4235 /* eviofmtswap.c in Sources */,
-				40E7467A1923E323008E4235 /* evioswap.c in Sources */,
-				40E7467B1923E323008E4235 /* evioBankIndex.cc in Sources */,
-				40E7467C1923E323008E4235 /* evioBufferChannel.cc in Sources */,
-				40E7467D1923E323008E4235 /* evioDictionary.cc in Sources */,
-				40E7467E1923E323008E4235 /* evioException.cc in Sources */,
-				40E7467F1923E323008E4235 /* evioFileChannel.cc in Sources */,
-				40E746801923E323008E4235 /* evioSocketChannel.cc in Sources */,
-				40E746811923E323008E4235 /* evioUtil.cc in Sources */,
 				40E49D0819034D3E00390847 /* EvioTool.cc in Sources */,
 				40E7461D191B0228008E4235 /* EvioEvent.cc in Sources */,
 				400D8BC2190F33CC00416CD8 /* EvioTool.h in Sources */,
@@ -488,11 +408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				405680CE194641FA00E8BA40 /* evio.c in Sources */,
-				405680CF1946421100E8BA40 /* evioswap.c in Sources */,
 				40E6BFED1917E1F400BF03CA /* et_evio_blaster.cc in Sources */,
-				405680D11946421B00E8BA40 /* eviofmt.c in Sources */,
-				405680D01946421700E8BA40 /* eviofmtswap.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,6 +655,7 @@
 				40C13D2F19704834008307A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		40E49CF919034D3E00390847 /* Build configuration list for PBXProject "EvioTool" */ = {
 			isa = XCConfigurationList;

@@ -5,59 +5,51 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>F793C7FB-6D8F-4AAE-96A3-8F487950CA35</string>
+	<string>77617478-510B-40E3-8E10-853900D3FFE9</string>
 	<key>IDESourceControlProjectName</key>
 	<string>EvioTool</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>709ED032-03A8-44C5-B89D-FD200027B0BB</key>
+		<key>A4585486A97B7DB0DF2EA90006CD1E793642F4AE</key>
+		<string>https://github.com/mholtrop/EvioTool.git</string>
+		<key>b9d438ff-8729-0410-a4ab-d2f36c9c72ed++7524</key>
 		<string>https://clas12svn.jlab.org/repos/clas12/evio/tags/evio-4.3.1</string>
-		<key>D78BC083-93A0-4A30-9BE0-053FD16F76ED</key>
-		<string>svn+ssh://taro.unh.edu/net/home/svn/HPS/trunk/EvioTool</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>EvioTool.xcodeproj/project.xcworkspace</string>
+	<string>EvioTool.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>709ED032-03A8-44C5-B89D-FD200027B0BB</key>
-		<string>../../../../../../../data/CLAS12/CODA/evio-4.3.1</string>
-		<key>D78BC083-93A0-4A30-9BE0-053FD16F76ED</key>
+		<key>A4585486A97B7DB0DF2EA90006CD1E793642F4AE</key>
 		<string>../..</string>
+		<key>b9d438ff-8729-0410-a4ab-d2f36c9c72ed++7524</key>
+		<string>../../../data/CLAS12/CODA/evio-4.3.1</string>
 	</dict>
 	<key>IDESourceControlProjectRepositoryRootDictionary</key>
 	<dict>
-		<key>709ED032-03A8-44C5-B89D-FD200027B0BB</key>
+		<key>b9d438ff-8729-0410-a4ab-d2f36c9c72ed++7524</key>
 		<string>https://clas12svn.jlab.org/repos</string>
-		<key>D78BC083-93A0-4A30-9BE0-053FD16F76ED</key>
-		<string>svn+ssh://taro.unh.edu/net/home/svn/HPS</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>svn+ssh://taro.unh.edu/net/home/svn/HPS/trunk/EvioTool/EvioTool.xcodeproj</string>
+	<string>https://github.com/mholtrop/EvioTool.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>D78BC083-93A0-4A30-9BE0-053FD16F76ED</string>
+	<string>A4585486A97B7DB0DF2EA90006CD1E793642F4AE</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.subversion</string>
-			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
-			<string>clas12/evio/tags</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>709ED032-03A8-44C5-B89D-FD200027B0BB</string>
+			<string>b9d438ff-8729-0410-a4ab-d2f36c9c72ed++7524</string>
 			<key>IDESourceControlWCCName</key>
 			<string>evio-4.3.1</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
-			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
-			<string>tags</string>
-			<key>IDESourceControlRepositoryTrunkRelativeLocationKey</key>
-			<string>trunk</string>
+			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D78BC083-93A0-4A30-9BE0-053FD16F76ED</string>
+			<string>A4585486A97B7DB0DF2EA90006CD1E793642F4AE</string>
 			<key>IDESourceControlWCCName</key>
 			<string>EvioTool</string>
 		</dict>
