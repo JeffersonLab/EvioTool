@@ -221,19 +221,15 @@ def getInstallationDirs(osname, prefix, incdir, libdir, bindir):
     
     # Get CODA env variable if any         
     codaHomeEnv = os.getenv('CODA','')
+    if codaHomeEnv == "":
+        codaHomeEnv=os.getenv('PWD','')
     
     # The installation directory is the user-specified "prefix"
     # by first choice, "CODA" secondly.
     # Any user specified command line installation path overrides default
     if (prefix == None) or (prefix == ''):
         # prefix not defined try CODA env var
-        if codaHomeEnv == "":
-            if (incdir == None) or (libdir == None) or (bindir == None):
-                print "\nNeed to define CODA, or use the --prefix option,"
-                print "or all the --incdir, --libdir, and --bindir options.\n"
-                raise SystemExit
-        else:
-            prefix = codaHomeEnv
+        prefix = codaHomeEnv
     
     osDir = prefix + "/" + osname
     

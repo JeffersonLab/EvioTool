@@ -41,6 +41,7 @@ remoteFileList = ['et_init.c',
 
 env.AppendUnique(CPPPATH = ['.'])
 etLib       = env.SharedLibrary(target = 'et'+debugSuffix,        source = fileList)
+etLib_static= env.StaticLibrary(target = 'et'+debugSuffix,        source = fileList)
 etRemoteLib = env.SharedLibrary(target = 'et_remote'+debugSuffix, source = remoteFileList)
 jniLib      = env.SharedLibrary(target = 'et_jni'+debugSuffix,    source = jniFileList,
                                 LIBS = ['et'+debugSuffix], LIBPATH = [libInstallDir, '#src/libsrc/'+archDir])
@@ -48,6 +49,7 @@ jniLib      = env.SharedLibrary(target = 'et_jni'+debugSuffix,    source = jniFi
 if 'install' in COMMAND_LINE_TARGETS:
 #    env.Alias("install", env.Install(target = [incInstallDir, archIncInstallDir], source = headerList))
     env.Alias("install", env.Install(target = libInstallDir, source = etLib))
+    env.Alias("install", env.Install(target = libInstallDir, source = etLib_static))
     env.Alias("install", env.Install(target = libInstallDir, source = etRemoteLib))
     env.Alias("install", env.Install(target = libInstallDir, source = jniLib))
 
