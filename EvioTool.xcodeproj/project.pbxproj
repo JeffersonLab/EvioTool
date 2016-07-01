@@ -25,6 +25,15 @@
 
 /* Begin PBXBuildFile section */
 		400D8BC2190F33CC00416CD8 /* EvioTool.h in Sources */ = {isa = PBXBuildFile; fileRef = 40E49D0519034D3E00390847 /* EvioTool.h */; };
+		40C763861ABCECA400410152 /* EvioParser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40C763831ABCECA400410152 /* EvioParser.cc */; };
+		40C763871ABCECA400410152 /* EvioParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C763841ABCECA400410152 /* EvioParser.h */; };
+		40C7638C1ABCED7100410152 /* Leaf.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40C763891ABCED7100410152 /* Leaf.cc */; };
+		40C7638D1ABCED7100410152 /* Leaf.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C7638A1ABCED7100410152 /* Leaf.h */; };
+		40C763921ABCED8600410152 /* Bank.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40C7638F1ABCED8600410152 /* Bank.cc */; };
+		40C763931ABCED8600410152 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C763901ABCED8600410152 /* Bank.h */; };
+		40C763941ABCEFDB00410152 /* Bank.h in Sources */ = {isa = PBXBuildFile; fileRef = 40C763901ABCED8600410152 /* Bank.h */; };
+		40C763951ABCEFDB00410152 /* Leaf.h in Sources */ = {isa = PBXBuildFile; fileRef = 40C7638A1ABCED7100410152 /* Leaf.h */; };
+		40C763961ABCEFDB00410152 /* EvioParser.h in Sources */ = {isa = PBXBuildFile; fileRef = 40C763841ABCECA400410152 /* EvioParser.h */; };
 		40E49D0819034D3E00390847 /* EvioTool.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E49D0719034D3E00390847 /* EvioTool.cc */; };
 		40E6BFED1917E1F400BF03CA /* et_evio_blaster.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */; };
 		40E6BFEF1917E1F400BF03CA /* et_evio_blaster.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E6BFEE1917E1F400BF03CA /* et_evio_blaster.1 */; };
@@ -34,7 +43,6 @@
 		40E7462E191BB02C008E4235 /* EvioEvent.h in Sources */ = {isa = PBXBuildFile; fileRef = 40E7461C191B0228008E4235 /* EvioEvent.h */; };
 		40E74638191DA8F0008E4235 /* et_evio_test_consumer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */; };
 		40E7463A191DA8F0008E4235 /* et_evio_test_consumer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */; };
-		40E746551923E093008E4235 /* libet-14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E746541923E093008E4235 /* libet-14.0.dylib */; };
 		40E746761923E2EE008E4235 /* EvioTool_Test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74625191B0BFC008E4235 /* EvioTool_Test.cc */; };
 		40E746821923E3DF008E4235 /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
 /* End PBXBuildFile section */
@@ -48,7 +56,7 @@
 			isEditable = 1;
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)_Dict.cpp",
-				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)_Dict.h",
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)_Dict_rdict.pcm",
 			);
 			script = "echo ${ROOTSYS}/bin/rootcint -f ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}_Dict.cpp -c -I${HEADER_SEARCH_PATHS// / -I} ${INPUT_FILE_DIR}/${INPUT_FILE_BASE}_Linkdef.h ${INPUT_FILE_PATH}\n${ROOTSYS}/bin/rootcint -f ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}_Dict.cpp -c -I${HEADER_SEARCH_PATHS// / -I}  ${INPUT_FILE_PATH} ${INPUT_FILE_DIR}/${INPUT_FILE_BASE}_Linkdef.h";
 		};
@@ -133,6 +141,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		40C763821ABCECA400410152 /* EvioParser_Linkdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvioParser_Linkdef.h; sourceTree = "<group>"; };
+		40C763831ABCECA400410152 /* EvioParser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EvioParser.cc; sourceTree = "<group>"; };
+		40C763841ABCECA400410152 /* EvioParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvioParser.h; sourceTree = "<group>"; };
+		40C763881ABCED7100410152 /* Leaf_Linkdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leaf_Linkdef.h; sourceTree = "<group>"; };
+		40C763891ABCED7100410152 /* Leaf.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Leaf.cc; sourceTree = "<group>"; };
+		40C7638A1ABCED7100410152 /* Leaf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leaf.h; sourceTree = "<group>"; };
+		40C7638E1ABCED8600410152 /* Bank_Linkdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bank_Linkdef.h; sourceTree = "<group>"; };
+		40C7638F1ABCED8600410152 /* Bank.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bank.cc; sourceTree = "<group>"; };
+		40C763901ABCED8600410152 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bank.h; sourceTree = "<group>"; };
 		40E49CFE19034D3E00390847 /* libEvioTool.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libEvioTool.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E49D0219034D3E00390847 /* EvioTool-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EvioTool-Prefix.pch"; sourceTree = "<group>"; };
 		40E49D0519034D3E00390847 /* EvioTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EvioTool.h; sourceTree = "<group>"; };
@@ -155,7 +172,6 @@
 		40E74635191DA8F0008E4235 /* et_evio_test_consumer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = et_evio_test_consumer; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_test_consumer.cc; sourceTree = "<group>"; };
 		40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = et_evio_test_consumer.1; sourceTree = "<group>"; };
-		40E746541923E093008E4235 /* libet-14.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libet-14.0.dylib"; path = "/Users/maurik/Documents/codes/EvioTool/../../../../../data/CLAS12/CODA/et-14.0/build/Debug/libet-14.0.dylib"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,7 +179,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40E746551923E093008E4235 /* libet-14.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,7 +221,6 @@
 		40E49CF519034D3E00390847 = {
 			isa = PBXGroup;
 			children = (
-				40E746541923E093008E4235 /* libet-14.0.dylib */,
 				409A4A1B19086D81001AF63B /* Config */,
 				40E49D0019034D3E00390847 /* EvioTool */,
 				40E6BFEB1917E1F400BF03CA /* et_evio_blaster */,
@@ -230,6 +244,15 @@
 		40E49D0019034D3E00390847 /* EvioTool */ = {
 			isa = PBXGroup;
 			children = (
+				40C7638E1ABCED8600410152 /* Bank_Linkdef.h */,
+				40C7638F1ABCED8600410152 /* Bank.cc */,
+				40C763901ABCED8600410152 /* Bank.h */,
+				40C763881ABCED7100410152 /* Leaf_Linkdef.h */,
+				40C763891ABCED7100410152 /* Leaf.cc */,
+				40C7638A1ABCED7100410152 /* Leaf.h */,
+				40C763821ABCECA400410152 /* EvioParser_Linkdef.h */,
+				40C763831ABCECA400410152 /* EvioParser.cc */,
+				40C763841ABCECA400410152 /* EvioParser.h */,
 				40E49D1119044F4B00390847 /* EvioTool_Linkdef.h */,
 				40E7462D191B1323008E4235 /* EvioEvent_Linkdef.h */,
 				40E49D0619034D3E00390847 /* EvioToolPriv.h */,
@@ -284,6 +307,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40C7638D1ABCED7100410152 /* Leaf.h in Headers */,
+				40C763871ABCECA400410152 /* EvioParser.h in Headers */,
+				40C763931ABCED8600410152 /* Bank.h in Headers */,
 				40E7461E191B0228008E4235 /* EvioEvent.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,6 +324,7 @@
 				40E49CFA19034D3E00390847 /* Sources */,
 				40E49CFB19034D3E00390847 /* Frameworks */,
 				40E49CFC19034D3E00390847 /* Headers */,
+				40C763A71ABCF3DD00410152 /* ShellScript */,
 			);
 			buildRules = (
 				400D8BC1190F337100416CD8 /* PBXBuildRule */,
@@ -392,15 +419,37 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		40C763A71ABCF3DD00410152 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Custom script to copy those pesky ROOT 6 *.pcm files to the library directory.\necho cp ${DERIVED_FILES_DIR}/*_Dict_rdict.pcm ${BUILD_PRODUCTS_DIR}\ncp ${DERIVED_FILES_DIR}/*_Dict_rdict.pcm ${BUILT_PRODUCTS_DIR}";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		40E49CFA19034D3E00390847 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40C763941ABCEFDB00410152 /* Bank.h in Sources */,
+				40C763951ABCEFDB00410152 /* Leaf.h in Sources */,
+				40C763961ABCEFDB00410152 /* EvioParser.h in Sources */,
 				40E49D0819034D3E00390847 /* EvioTool.cc in Sources */,
 				40E7461D191B0228008E4235 /* EvioEvent.cc in Sources */,
+				40C763861ABCECA400410152 /* EvioParser.cc in Sources */,
+				40C7638C1ABCED7100410152 /* Leaf.cc in Sources */,
 				400D8BC2190F33CC00416CD8 /* EvioTool.h in Sources */,
 				40E7462E191BB02C008E4235 /* EvioEvent.h in Sources */,
+				40C763921ABCED8600410152 /* Bank.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,6 +606,7 @@
 					"$(inherited)",
 					"/data/CLAS12/CODA/evio-4.3.1/build/Debug",
 					"/data/CLAS12/CODA/et-14.0/build/Debug",
+					"$(PROJECT_DIR)/evio-4.4.5/Darwin-x86_64/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -570,6 +620,7 @@
 					"$(inherited)",
 					"/data/CLAS12/CODA/evio-4.3.1/build/Debug",
 					"/data/CLAS12/CODA/et-14.0/build/Debug",
+					"$(PROJECT_DIR)/evio-4.4.5/Darwin-x86_64/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

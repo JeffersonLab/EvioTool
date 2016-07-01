@@ -12,8 +12,6 @@
 	<dict>
 		<key>A4585486A97B7DB0DF2EA90006CD1E793642F4AE</key>
 		<string>https://github.com/mholtrop/EvioTool.git</string>
-		<key>b9d438ff-8729-0410-a4ab-d2f36c9c72ed++7524</key>
-		<string>https://clas12svn.jlab.org/repos/clas12/evio/tags/evio-4.3.1</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>EvioTool.xcodeproj</string>
@@ -21,13 +19,6 @@
 	<dict>
 		<key>A4585486A97B7DB0DF2EA90006CD1E793642F4AE</key>
 		<string>../..</string>
-		<key>b9d438ff-8729-0410-a4ab-d2f36c9c72ed++7524</key>
-		<string>../../../data/CLAS12/CODA/evio-4.3.1</string>
-	</dict>
-	<key>IDESourceControlProjectRepositoryRootDictionary</key>
-	<dict>
-		<key>b9d438ff-8729-0410-a4ab-d2f36c9c72ed++7524</key>
-		<string>https://clas12svn.jlab.org/repos</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/mholtrop/EvioTool.git</string>
@@ -37,14 +28,6 @@
 	<string>A4585486A97B7DB0DF2EA90006CD1E793642F4AE</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>b9d438ff-8729-0410-a4ab-d2f36c9c72ed++7524</string>
-			<key>IDESourceControlWCCName</key>
-			<string>evio-4.3.1</string>
-		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

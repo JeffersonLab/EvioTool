@@ -13,6 +13,7 @@
 			buildPhases = (
 			);
 			dependencies = (
+				401CBA871AF1A8A4000E393E /* PBXTargetDependency */,
 				40A42B3D196C434000C16416 /* PBXTargetDependency */,
 				40E6BFE51915E72100BF03CA /* PBXTargetDependency */,
 				40E6BFE31915E71D00BF03CA /* PBXTargetDependency */,
@@ -28,6 +29,36 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		401CBA671AF1A7D4000E393E /* et_attachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0019128337004B41EB /* et_attachment.c */; };
+		401CBA681AF1A7D4000E393E /* et_bridge.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0119128337004B41EB /* et_bridge.c */; };
+		401CBA691AF1A7D4000E393E /* et_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0219128337004B41EB /* et_common.c */; };
+		401CBA6A1AF1A7D4000E393E /* et_data.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0319128337004B41EB /* et_data.c */; };
+		401CBA6B1AF1A7D4000E393E /* et_event.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0519128337004B41EB /* et_event.c */; };
+		401CBA6C1AF1A7D4000E393E /* et_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0619128337004B41EB /* et_init.c */; };
+		401CBA6D1AF1A7D4000E393E /* et_local.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0819128337004B41EB /* et_local.c */; };
+		401CBA6E1AF1A7D4000E393E /* et_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0919128337004B41EB /* et_mem.c */; };
+		401CBA6F1AF1A7D4000E393E /* et_network.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0A19128337004B41EB /* et_network.c */; };
+		401CBA701AF1A7D4000E393E /* etCommonNetwork.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F1719128337004B41EB /* etCommonNetwork.c */; };
+		401CBA711AF1A7D4000E393E /* et_noshare.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0C19128337004B41EB /* et_noshare.c */; };
+		401CBA721AF1A7D4000E393E /* et_openconfig.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0D19128337004B41EB /* et_openconfig.c */; };
+		401CBA731AF1A7D4000E393E /* et_readwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0F19128337004B41EB /* et_readwrite.c */; };
+		401CBA741AF1A7D4000E393E /* et_remote.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F1019128337004B41EB /* et_remote.c */; };
+		401CBA751AF1A7D4000E393E /* et_server.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F1219128337004B41EB /* et_server.c */; };
+		401CBA761AF1A7D4000E393E /* et_statconfig.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F1319128337004B41EB /* et_statconfig.c */; };
+		401CBA771AF1A7D4000E393E /* et_station.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F1419128337004B41EB /* et_station.c */; };
+		401CBA781AF1A7D4000E393E /* et_sysconfig.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F1519128337004B41EB /* et_sysconfig.c */; };
+		401CBA791AF1A7D4000E393E /* et_system.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F1619128337004B41EB /* et_system.c */; };
+		401CBA7C1AF1A7D4000E393E /* et_network.h in Headers */ = {isa = PBXBuildFile; fileRef = 40907F0B19128337004B41EB /* et_network.h */; };
+		401CBA7D1AF1A7D4000E393E /* etCommonNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 40907F1819128337004B41EB /* etCommonNetwork.h */; };
+		401CBA7E1AF1A7D4000E393E /* et_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 40907F0E19128337004B41EB /* et_private.h */; };
+		401CBA7F1AF1A7D4000E393E /* org_jlab_coda_et_EtJniAccess.h in Headers */ = {isa = PBXBuildFile; fileRef = 40907F1919128337004B41EB /* org_jlab_coda_et_EtJniAccess.h */; };
+		401CBA801AF1A7D4000E393E /* et.h in Headers */ = {isa = PBXBuildFile; fileRef = 40907EFF19128337004B41EB /* et.h */; };
+		401CBA811AF1A7D4000E393E /* et_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 40907F0419128337004B41EB /* et_data.h */; };
+		401CBA881AF1A95F000E393E /* libet-14.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 401CBA851AF1A7D4000E393E /* libet-14.0.a */; };
+		401CBA891AF1A969000E393E /* libet-14.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 401CBA851AF1A7D4000E393E /* libet-14.0.a */; };
+		401CBA8A1AF1A974000E393E /* libet-14.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 401CBA851AF1A7D4000E393E /* libet-14.0.a */; };
+		401CBA8B1AF1A97D000E393E /* libet-14.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 401CBA851AF1A7D4000E393E /* libet-14.0.a */; };
+		401CBA8C1AF1A986000E393E /* libet-14.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 401CBA851AF1A7D4000E393E /* libet-14.0.a */; };
 		40907F3419128337004B41EB /* et.h in Headers */ = {isa = PBXBuildFile; fileRef = 40907EFF19128337004B41EB /* et.h */; };
 		40907F3519128337004B41EB /* et_attachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0019128337004B41EB /* et_attachment.c */; };
 		40907F3619128337004B41EB /* et_bridge.c in Sources */ = {isa = PBXBuildFile; fileRef = 40907F0119128337004B41EB /* et_bridge.c */; };
@@ -65,18 +96,20 @@
 		40907F7F19128BDA004B41EB /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40907F7E19128BDA004B41EB /* JavaVM.framework */; };
 		40907F8019128BEE004B41EB /* libet-14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40907ED519128223004B41EB /* libet-14.0.dylib */; };
 		40E6BFA119131A2200BF03CA /* et_start.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BF1C191318C400BF03CA /* et_start.c */; };
-		40E6BFA219131A2D00BF03CA /* libet-14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40907ED519128223004B41EB /* libet-14.0.dylib */; };
 		40E6BFB219131B6E00BF03CA /* et_monitor.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BF1B191318C400BF03CA /* et_monitor.c */; };
-		40E6BFB319131B7400BF03CA /* libet-14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40907ED519128223004B41EB /* libet-14.0.dylib */; };
 		40E6BFC319131CB800BF03CA /* et_producer.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BF07191318C400BF03CA /* et_producer.c */; };
-		40E6BFC619131CC300BF03CA /* libet-14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40907ED519128223004B41EB /* libet-14.0.dylib */; };
 		40E6BFD41915D33700BF03CA /* et_producer1.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BF08191318C400BF03CA /* et_producer1.c */; };
-		40E6BFD51915D33E00BF03CA /* libet-14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40907ED519128223004B41EB /* libet-14.0.dylib */; };
 		40E7464B19228090008E4235 /* et_consumer.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BF05191318C400BF03CA /* et_consumer.c */; };
-		40E7464E192280BC008E4235 /* libet-14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40907ED519128223004B41EB /* libet-14.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		401CBA861AF1A8A4000E393E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40907ECD19128223004B41EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 401CBA651AF1A7D4000E393E;
+			remoteInfo = "et-14.0 Static";
+		};
 		40A42B38196C430000C16416 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 40907ECD19128223004B41EB /* Project object */;
@@ -219,6 +252,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		401CBA851AF1A7D4000E393E /* libet-14.0.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libet-14.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40907ED519128223004B41EB /* libet-14.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libet-14.0.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40907EFF19128337004B41EB /* et.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = et.h; sourceTree = "<group>"; };
 		40907F0019128337004B41EB /* et_attachment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = et_attachment.c; sourceTree = "<group>"; };
@@ -290,6 +324,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		401CBA7A1AF1A7D4000E393E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40907ED219128223004B41EB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -317,7 +358,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40E6BFA219131A2D00BF03CA /* libet-14.0.dylib in Frameworks */,
+				401CBA8B1AF1A97D000E393E /* libet-14.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,7 +366,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40E6BFB319131B7400BF03CA /* libet-14.0.dylib in Frameworks */,
+				401CBA8C1AF1A986000E393E /* libet-14.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,7 +374,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40E6BFC619131CC300BF03CA /* libet-14.0.dylib in Frameworks */,
+				401CBA881AF1A95F000E393E /* libet-14.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +382,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40E6BFD51915D33E00BF03CA /* libet-14.0.dylib in Frameworks */,
+				401CBA891AF1A969000E393E /* libet-14.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,7 +390,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40E7464E192280BC008E4235 /* libet-14.0.dylib in Frameworks */,
+				401CBA8A1AF1A974000E393E /* libet-14.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +420,7 @@
 				40E6BFBA19131BC800BF03CA /* et_producer */,
 				40E6BFCB1915D32500BF03CA /* et_producer1 */,
 				40E7464219228068008E4235 /* et_consumer */,
+				401CBA851AF1A7D4000E393E /* libet-14.0.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -484,6 +526,19 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		401CBA7B1AF1A7D4000E393E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				401CBA7C1AF1A7D4000E393E /* et_network.h in Headers */,
+				401CBA7D1AF1A7D4000E393E /* etCommonNetwork.h in Headers */,
+				401CBA7E1AF1A7D4000E393E /* et_private.h in Headers */,
+				401CBA7F1AF1A7D4000E393E /* org_jlab_coda_et_EtJniAccess.h in Headers */,
+				401CBA801AF1A7D4000E393E /* et.h in Headers */,
+				401CBA811AF1A7D4000E393E /* et_data.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40907ED319128223004B41EB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -514,6 +569,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		401CBA651AF1A7D4000E393E /* et-14.0 Static */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 401CBA821AF1A7D4000E393E /* Build configuration list for PBXNativeTarget "et-14.0 Static" */;
+			buildPhases = (
+				401CBA661AF1A7D4000E393E /* Sources */,
+				401CBA7A1AF1A7D4000E393E /* Frameworks */,
+				401CBA7B1AF1A7D4000E393E /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "et-14.0 Static";
+			productName = "et-14.0";
+			productReference = 401CBA851AF1A7D4000E393E /* libet-14.0.a */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		40907ED419128223004B41EB /* et-14.0 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40907EE219128223004B41EB /* Build configuration list for PBXNativeTarget "et-14.0" */;
@@ -677,6 +749,7 @@
 			projectRoot = "";
 			targets = (
 				40907ED419128223004B41EB /* et-14.0 */,
+				401CBA651AF1A7D4000E393E /* et-14.0 Static */,
 				40907F5619128A69004B41EB /* et-remote */,
 				40907F6F19128B9F004B41EB /* et-jni */,
 				40E6BEE7191318A900BF03CA /* et_start */,
@@ -690,6 +763,32 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		401CBA661AF1A7D4000E393E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				401CBA671AF1A7D4000E393E /* et_attachment.c in Sources */,
+				401CBA681AF1A7D4000E393E /* et_bridge.c in Sources */,
+				401CBA691AF1A7D4000E393E /* et_common.c in Sources */,
+				401CBA6A1AF1A7D4000E393E /* et_data.c in Sources */,
+				401CBA6B1AF1A7D4000E393E /* et_event.c in Sources */,
+				401CBA6C1AF1A7D4000E393E /* et_init.c in Sources */,
+				401CBA6D1AF1A7D4000E393E /* et_local.c in Sources */,
+				401CBA6E1AF1A7D4000E393E /* et_mem.c in Sources */,
+				401CBA6F1AF1A7D4000E393E /* et_network.c in Sources */,
+				401CBA701AF1A7D4000E393E /* etCommonNetwork.c in Sources */,
+				401CBA711AF1A7D4000E393E /* et_noshare.c in Sources */,
+				401CBA721AF1A7D4000E393E /* et_openconfig.c in Sources */,
+				401CBA731AF1A7D4000E393E /* et_readwrite.c in Sources */,
+				401CBA741AF1A7D4000E393E /* et_remote.c in Sources */,
+				401CBA751AF1A7D4000E393E /* et_server.c in Sources */,
+				401CBA761AF1A7D4000E393E /* et_statconfig.c in Sources */,
+				401CBA771AF1A7D4000E393E /* et_station.c in Sources */,
+				401CBA781AF1A7D4000E393E /* et_sysconfig.c in Sources */,
+				401CBA791AF1A7D4000E393E /* et_system.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40907ED119128223004B41EB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -782,6 +881,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		401CBA871AF1A8A4000E393E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 401CBA651AF1A7D4000E393E /* et-14.0 Static */;
+			targetProxy = 401CBA861AF1A8A4000E393E /* PBXContainerItemProxy */;
+		};
 		40A42B39196C430000C16416 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 40907F5619128A69004B41EB /* et-remote */;
@@ -850,6 +954,34 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		401CBA831AF1A7D4000E393E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_EXTENSION = a;
+				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/src/libsrc/.Darwin-x86_64",
+				);
+				MACH_O_TYPE = staticlib;
+				PRODUCT_NAME = "et-14.0";
+			};
+			name = Debug;
+		};
+		401CBA841AF1A7D4000E393E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_EXTENSION = a;
+				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/src/libsrc/.Darwin-x86_64",
+				);
+				MACH_O_TYPE = staticlib;
+				PRODUCT_NAME = "et-14.0";
+			};
+			name = Release;
+		};
 		40907EE019128223004B41EB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40907F52191285E0004B41EB /* et-14.0.xcconfig */;
@@ -1095,6 +1227,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		401CBA821AF1A7D4000E393E /* Build configuration list for PBXNativeTarget "et-14.0 Static" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				401CBA831AF1A7D4000E393E /* Debug */,
+				401CBA841AF1A7D4000E393E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		40907ED019128223004B41EB /* Build configuration list for PBXProject "et-14.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
