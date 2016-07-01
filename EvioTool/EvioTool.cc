@@ -321,14 +321,6 @@ bool EvioTool::read(){
 int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
 // If buff=Null, parse the contends of the internal evio buffer (from "read()")
 // If buff is a buffer, parse that buffer.
-
-  
-// Currently we use the "Util" from the EVIO libraries to parse the contents of the buffer.
-// This is called automatically at the creation of the evioDOMTree, which we must then process
-// It would probably be a bit faster to process the buffer directly.
-//
-// A better parser than could be merged in is in the AprimeAna library. To be done later.
-//
   
   try{
     if( buff == nullptr){

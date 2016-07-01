@@ -95,7 +95,7 @@ private:
   int    et_num_read;
   int    et_events_remaining;
 
-#ifndef __CINT__                  // CINT is not able to parse the horrible EVIO gobledigook.
+#ifndef __CINT__                  // CINT prior to ROOT 6 is not able to parse the horrible EVIO gobledigook.
   // We thus hide all the EVIO components from CINT.
   evioFileChannel *EvioChan;
   evioDOMTree     *ETree;

@@ -34,7 +34,7 @@ ARCH=$(shell uname -m)
 MACHINE=$(OS_NAME)-$(ARCH)
 
 EVIO=./evio-4.4.5
-EVIO_LIB=./evio-4.4.5/lib
+EVIO_LIB=./evio-4.4.5/$(MACHINE)/lib
 ET=./et-14.0
 ET_LIB= ./et-14.0/$(MACHINE)/lib
 
