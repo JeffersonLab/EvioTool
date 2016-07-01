@@ -1,5 +1,6 @@
 **/.Darwin-*
 **/.Linux-*
+**/xcshareddata/*
 et-14.0/.sconf_temp
 et-14.0/.sconsign.dblite
 et-14.0/Darwin-x86_64
