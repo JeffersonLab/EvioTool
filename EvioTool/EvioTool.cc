@@ -1,12 +1,30 @@
 /*
- *  EvioTool.cp
+ *  EvioTool.cc
  *  EvioTool
  *
  *  Created by Maurik Holtrop on 4/19/14.
  *  Copyright (c) 2014 UNH. All rights reserved.
+ */
+
+/* Note from the author:
+ * If you look at this code and think "There should be a way to implement this more easily!", then I whole heartedly agree with you.
+ * Go and complain to the CODA group that their implementation of EVIO in C++ is completely idiotic, and I am with you. Even with
+ * the way EVIO is implemented by the CODA group, this code could be simplified and streamlined and be made more user friendly,
+ * but unfortunately, I don't quite have the time for that. My apologies for the lack the clarity.
  *
+ * I did spend some time and effort on making this code efficient, see the timing stats below.
+ *
+ * If you need faster code, don't use any C++ and use the bare-bones C inplementation of EVIO. That is better maintained too.
+ * This is just an attempt to make a workable version of EVIO that plays (reasobably) nice in a ROOT environment.
+ * Any suggestions to improving this code are very welcome. Better yet if you can make a pull request.
+ *
+ * Thanks!
+ *     - Maurik
+ */
+ 
+ 
  // Timing on version using vector<> and push_back:
-                                              9.6 kHz, or  103 micro seconds/event. (-O3)
+ //                                           9.6 kHz, or  103 micro seconds/event. (-O3)
  // With all push_back calls commented out:   117 kHz, or  8.5 micro seconds/event
  //
  // Not storing the SVT.push_back(sfpga): 11.4328 kHz, or 87.4678 micro seconds
@@ -26,10 +44,10 @@
  // The same, but using a safer "late pushback"
  //         build/Release/EvioTool_Test: 99.55 kHz,  100.5 kHz Avg. Event: 649998
  //
- // This last version seems to be the best choice. The penalty one additional SVT_chan_t object copy onto the vector each push_back seems small enough, and the code is a lot safer.
- */
+ // This last version seems to be the best choice.
+ // The penalty one additional SVT_chan_t object copy onto the vector each push_back seems small enough, and the code is a lot safer.
+
 #include "EvioTool.h"
-#include "EvioToolPriv.h"
 
 EvioTool::EvioTool(const char *filename, const char *dictf){
 //
@@ -332,7 +350,7 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
         }
         printf("\n");
 
-        ETree = new evioDOMTree(et_data);
+          ETree = new evioDOMTree(et_data);   // This uses the EVIO C++ implementation to parse the data. TODO: Replace evioDOMTree code.
       }else{
         ETree = new evioDOMTree(EvioChan);
       }

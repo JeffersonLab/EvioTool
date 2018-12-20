@@ -32,6 +32,7 @@ public:
   virtual void Clear(Option_t *){;};
   virtual int Get_size(void){return(0);};
   virtual void Print(Option_t *op) const {;};
+  ClassDef(Leaf_base,1);
 };
 
 template <class T> class Leaf : public Leaf_base {

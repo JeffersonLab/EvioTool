@@ -37,7 +37,10 @@ using namespace evio;
 #include <vector>
 using namespace std;
 
+#include "Leaf.h"
+#include "Bank.h"
 #include "EvioEvent.h"
+#include "EvioParser.h"   // This needs to be here for dictionary generation.
 
 #ifndef __CINT__   // Needed for ROOT 5, not for ROOT 6.
 #include "et.h"

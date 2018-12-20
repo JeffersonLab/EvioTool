@@ -66,7 +66,7 @@ int EvioParser::Next(){
     if(fFullErase) Clear("Full"); // Clear out old data.
     else Clear();
     
-    ParseBank(evio_buf,BANK,0,this);
+    ParseBank(evio_buf,BANKNUM,0,this);
     
     return 1;
 }

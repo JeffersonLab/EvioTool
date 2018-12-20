@@ -30,6 +30,10 @@
 		40CB862E1A75C0AB00A3EE12 /* evioUtil.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 40E49DA7190495A100390847 /* evioUtil.hxx */; };
 		40CB862F1A75C0AB00A3EE12 /* evioBankIndex.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 40E49D99190495A100390847 /* evioBankIndex.hxx */; };
 		40CB86301A75C0AB00A3EE12 /* evioUtilTemplates.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 40E49DA8190495A100390847 /* evioUtilTemplates.hxx */; };
+		40D9689721C862AC0075DF34 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9689621C862AC0075DF34 /* libexpat.tbd */; };
+		40D9689921C862B90075DF34 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9689821C862B90075DF34 /* libz.tbd */; };
+		40D9689A21C862D30075DF34 /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9689621C862AC0075DF34 /* libexpat.tbd */; };
+		40D9689B21C862DB0075DF34 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9689821C862B90075DF34 /* libz.tbd */; };
 		40E49DA9190495A100390847 /* evio.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E49D92190495A100390847 /* evio.c */; };
 		40E49DAA190495A100390847 /* evio.h in Headers */ = {isa = PBXBuildFile; fileRef = 40E49D93190495A100390847 /* evio.h */; };
 		40E49DAB190495A100390847 /* eviofmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 40E49D94190495A100390847 /* eviofmt.c */; };
@@ -57,6 +61,8 @@
 
 /* Begin PBXFileReference section */
 		40CB86341A75C0AB00A3EE12 /* libevio-4.4.5.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libevio-4.4.5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		40D9689621C862AC0075DF34 /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
+		40D9689821C862B90075DF34 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40E49D81190494FE00390847 /* libevio-4.4.5.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libevio-4.4.5.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E49D911904956400390847 /* libevio.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = libevio.xcconfig; sourceTree = SOURCE_ROOT; };
 		40E49D92190495A100390847 /* evio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = evio.c; path = src/libsrc/evio.c; sourceTree = SOURCE_ROOT; };
@@ -89,6 +95,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40D9689A21C862D30075DF34 /* libexpat.tbd in Frameworks */,
+				40D9689B21C862DB0075DF34 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,18 +104,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40D9689721C862AC0075DF34 /* libexpat.tbd in Frameworks */,
+				40D9689921C862B90075DF34 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		40D9689521C862AB0075DF34 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				40D9689821C862B90075DF34 /* libz.tbd */,
+				40D9689621C862AC0075DF34 /* libexpat.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		40E49D78190494FE00390847 = {
 			isa = PBXGroup;
 			children = (
 				40E49D911904956400390847 /* libevio.xcconfig */,
 				40E49D83190494FE00390847 /* evio-4.4.4 */,
 				40E49D82190494FE00390847 /* Products */,
+				40D9689521C862AB0075DF34 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -202,6 +222,7 @@
 				40CB86171A75C0AB00A3EE12 /* Sources */,
 				40CB86231A75C0AB00A3EE12 /* Frameworks */,
 				40CB86241A75C0AB00A3EE12 /* Headers */,
+				40D9688F21C85D3E0075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -219,6 +240,7 @@
 				40E49D7D190494FE00390847 /* Sources */,
 				40E49D7E190494FE00390847 /* Frameworks */,
 				40E49D7F190494FE00390847 /* Headers */,
+				40D9688E21C85D1F0075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -255,6 +277,45 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		40D9688E21C85D1F0075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D9688F21C85D3E0075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		40CB86171A75C0AB00A3EE12 /* Sources */ = {
@@ -299,20 +360,16 @@
 		40CB86321A75C0AB00A3EE12 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_EXTENSION = a;
 				MACH_O_TYPE = staticlib;
-				PRODUCT_NAME = "evio-4.4.5";
 			};
 			name = Debug;
 		};
 		40CB86331A75C0AB00A3EE12 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_EXTENSION = a;
 				MACH_O_TYPE = staticlib;
-				PRODUCT_NAME = "evio-4.4.5";
 			};
 			name = Release;
 		};
@@ -320,36 +377,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40E49D911904956400390847 /* libevio.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -357,46 +384,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40E49D911904956400390847 /* libevio.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		40E49D8F190494FE00390847 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				PRODUCT_NAME = "evio-4.4.5";
 			};
 			name = Debug;
 		};
 		40E49D90190494FE00390847 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				PRODUCT_NAME = "evio-4.4.5";
 			};
 			name = Release;
 		};

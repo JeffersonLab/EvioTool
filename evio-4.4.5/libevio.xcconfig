@@ -5,15 +5,14 @@
 //  Created by Maurik Holtrop on 4/20/14.
 //  Copyright (c) 2014 Jlab. All rights reserved.
 //
+#include "../../master.xcconfig"
 
-EXECUTABLE_EXTENSION= dylib;
-EXECUTABLE_PREFIX= lib;
+PRODUCT_NAME = evio-4.4.5
+EXECUTABLE_PREFIX=lib
+EXECUTABLE_EXTENSION = dylib
 
-CLANG_CXX_LIBRARY = libc++
-CLANG_CXX_LANGUAGE_STANDARD = c++11
+DYLIB_COMPATIBILITY_VERSION=0
+DYLIB_CURRENT_VERSION=0
 
-OTHER_LDFLAGS=  -lexpat -lz
-
-DYLIB_INSTALL_NAME_BASE=/data/CLAS12/CODA/evio-4.4.5/build/Debug
-INSTALL_PATH=/data/CLAS12/CODA/evio-4.4.5/lib
+//OTHER_LDFLAGS= $(inherited)  -lexpat -lz
 

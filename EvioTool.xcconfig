@@ -5,9 +5,29 @@
 //  Created by Maurik Holtrop on 5/5/14.
 //  Copyright (c) 2014 UNH. All rights reserved.
 //
-
+#include "../master.xcconfig"
+//:configuration = Debug
+PRODUCT_NAME = EvioTool   // ${TARGET_NAME}
 EXECUTABLE_PREFIX=lib
 EXECUTABLE_EXTENSION=dylib
 
-//OTHER_LDFLAGS= -L${ROOTSYS}/lib -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lRMySQL -lThread -lm -ldl -lexpat -lz
-OTHER_LDFLAGS= ${EVIO_LIB} ${CODA_ET_LIB} -L${ROOTSYS}/lib  -lCore -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lpthread -stdlib=libc++ -lm -ldl -lexpat -lz
+DYLIB_COMPATIBILITY_VERSION=0
+DYLIB_CURRENT_VERSION=0
+
+// === Add EVIO and ET =======
+EVIO= ${PROJECT_DIR}/evio-4.4.5
+//EVIO_LIB=${EVIO}/Darwin-x86_64/lib/libevio.a ${EVIO}/Darwin-x86_64/lib/libevioxx.a
+//EVIO_LIB=${EVIO}/build/Release/libevio-4.4.5.a
+
+CODA_ET=${PROJECT_DIR}/et-14.0
+
+//CODA_ET_LIB = ${CODA_ET}/Darwin-x86_64/lib/libet.a
+//CODA_ET_LIB[config=Release]=${CODA_ET}/build/Release/libet-14.0.a
+//CODA_ET_LIB[config=Debug]=  ${CODA_ET}/build/Debug/libet-14.0.dylib
+OTHER_LDFLAGS= $(inherited) -lexpat -lz
+HEADER_SEARCH_PATHS= $(inherited) $EVIO/src/libsrc $EVIO/src/libsrc++ ${CODA_ET}/common/include
+//
+//For Dictionary generation. This is clumsy to pass info to dict generation step
+ROOT_DICT_NAME_BASE=EvioTool
+ROOT_DICT_HDRS_DIR=${LOCROOT}/EvioTool
+ROOT_DICT_HDRS= Leaf.h  EvioParser.h EvioTool.h EvioEvent.h Bank.h

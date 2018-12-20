@@ -15,6 +15,7 @@ template<> int Leaf<float>::Get_type(void){ return(Leaf_Float); };
 template<> int Leaf<double>::Get_type(void){ return(Leaf_Double); };
 template<> int Leaf<string>::Get_type(void){ return(Leaf_String); };
 
+ClassImp(Leaf_base);
 ClassImp(Leaf<int>);
 ClassImp(Leaf<uint32_t>);
 ClassImp(Leaf<float>);

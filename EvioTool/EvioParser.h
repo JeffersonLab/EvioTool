@@ -47,7 +47,7 @@ using namespace std;
 #include "Leaf.h"
 #include "Bank.h"
 
-#define BANK 0x0e
+#define BANKNUM 0x0e
 
 enum DebugType_t {
   Debug_Info  = 0x01,

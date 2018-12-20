@@ -576,6 +576,7 @@
 				401CBA661AF1A7D4000E393E /* Sources */,
 				401CBA7A1AF1A7D4000E393E /* Frameworks */,
 				401CBA7B1AF1A7D4000E393E /* Headers */,
+				40D9689321C85F6F0075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -593,6 +594,7 @@
 				40907ED119128223004B41EB /* Sources */,
 				40907ED219128223004B41EB /* Frameworks */,
 				40907ED319128223004B41EB /* Headers */,
+				40D9689221C85F630075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -610,6 +612,7 @@
 				40907F5319128A69004B41EB /* Sources */,
 				40907F5419128A69004B41EB /* Frameworks */,
 				40907F5519128A69004B41EB /* Headers */,
+				40D9689C21C88EB90075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -627,6 +630,7 @@
 				40907F6C19128B9F004B41EB /* Sources */,
 				40907F6D19128B9F004B41EB /* Frameworks */,
 				40907F6E19128B9F004B41EB /* Headers */,
+				40D9689D21C88EC80075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -644,6 +648,7 @@
 				40E6BEE4191318A900BF03CA /* Sources */,
 				40E6BEE5191318A900BF03CA /* Frameworks */,
 				40E6BEE6191318A900BF03CA /* CopyFiles */,
+				40D9689E21C88EDB0075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -662,6 +667,7 @@
 				40E6BFA519131B5700BF03CA /* Sources */,
 				40E6BFA619131B5700BF03CA /* Frameworks */,
 				40E6BFA719131B5700BF03CA /* CopyFiles */,
+				40D9689F21C88EE50075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -680,6 +686,7 @@
 				40E6BFB619131BC800BF03CA /* Sources */,
 				40E6BFB719131BC800BF03CA /* Frameworks */,
 				40E6BFB819131BC800BF03CA /* CopyFiles */,
+				40D968A021C88EEF0075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -698,6 +705,7 @@
 				40E6BFC71915D32500BF03CA /* Sources */,
 				40E6BFC81915D32500BF03CA /* Frameworks */,
 				40E6BFC91915D32500BF03CA /* CopyFiles */,
+				40D968A121C88EF90075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -716,6 +724,7 @@
 				40E7463E19228068008E4235 /* Sources */,
 				40E7463F19228068008E4235 /* Frameworks */,
 				40E7464019228068008E4235 /* CopyFiles */,
+				40D968A221C88F030075DF34 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -761,6 +770,171 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		40D9689221C85F630075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D9689321C85F6F0075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D9689C21C88EB90075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D9689D21C88EC80075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D9689E21C88EDB0075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D9689F21C88EE50075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D968A021C88EEF0075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D968A121C88EF90075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		40D968A221C88F030075DF34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		401CBA661AF1A7D4000E393E /* Sources */ = {
@@ -986,38 +1160,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40907F52191285E0004B41EB /* et-14.0.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1025,58 +1167,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40907F52191285E0004B41EB /* et-14.0.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		40907EE319128223004B41EB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EXECUTABLE_EXTENSION = dylib;
-				EXECUTABLE_PREFIX = lib;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/src/libsrc/.Darwin-x86_64",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
 		40907EE419128223004B41EB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EXECUTABLE_EXTENSION = dylib;
-				EXECUTABLE_PREFIX = lib;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/src/libsrc/.Darwin-x86_64",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -1123,6 +1225,8 @@
 		40E6BEEE191318A900BF03CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1134,6 +1238,8 @@
 		40E6BEEF191318A900BF03CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1141,6 +1247,8 @@
 		40E6BFB019131B5700BF03CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1152,6 +1260,8 @@
 		40E6BFB119131B5700BF03CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1159,6 +1269,8 @@
 		40E6BFC119131BC800BF03CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1170,6 +1282,8 @@
 		40E6BFC219131BC800BF03CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1177,6 +1291,8 @@
 		40E6BFD21915D32500BF03CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1188,6 +1304,8 @@
 		40E6BFD31915D32500BF03CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1209,6 +1327,8 @@
 		40E7464819228068008E4235 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1220,6 +1340,8 @@
 		40E7464919228068008E4235 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_EXTENSION = "";
+				EXECUTABLE_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

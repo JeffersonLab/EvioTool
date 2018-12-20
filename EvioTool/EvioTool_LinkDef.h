@@ -1,20 +1,19 @@
 //
-//  Bank_Linkdef.h
-//  AprimeAna
+//  EvioTool_Linkdef.h
+//  EvioTool
 //
-//  Created by Maurik Holtrop on 5/19/14.
-//  Copyright (c) 2014 University of New Hampshire. All rights reserved.
+//  Created by Maurik Holtrop on 4/20/14.
+//  Copyright (c) 2014 UNH. All rights reserved.
 //
-
-#ifndef AprimeAna_Bank_Linkdef_h
-#define AprimeAna_Bank_Linkdef_h
-
-#ifdef __CINT__
+#ifdef __ROOTCLING__
 #pragma link off all globals;
 #pragma link off all classes;
 #pragma link off all functions;
+#pragma link off all typedef;
+
 
 #pragma link C++ class Bank+;
+#pragma link C++ class vector<Bank>;
 #pragma link C++ function Bank::Add_Leaf<int>;
 #pragma link C++ function Bank::Add_Leaf<float>;
 #pragma link C++ function Bank::Add_Leaf<double>;
@@ -40,9 +39,25 @@
 #pragma link C++ function Bank::Get_data_vector<double>;
 #pragma link C++ function Bank::Get_data_vector<string>;
 
-#pragma link C++ class vector<Bank>;
+#pragma link C++ class EvioTool-;  // Don't try to make a streamer!
+#pragma link C++ class EvioParser+;
 
-#endif
-
-
+#pragma link C++ struct EVIO_Event_t;
+#pragma link C++ struct FADC_chan_f13_t;
+#pragma link C++ struct FADC_chan_f15_t;
+#pragma link C++ struct FADC_data_f13_t;
+#pragma link C++ struct FADC_data_f15_t;
+#pragma link C++ struct SVT_chan_t;
+#pragma link C++ struct SVT_FPGA_t;
+#pragma link C++ class vector<FADC_chan_f13_t>;
+#pragma link C++ class vector<FADC_chan_f15_t>;
+#pragma link C++ class vector<FADC_data_f13_t>;
+#pragma link C++ class vector<FADC_data_f15_t>;
+#pragma link C++ class vector<SVT_chan_t>;
+#pragma link C++ class vector<SVT_FPGA_t>;
+//
+#pragma link C++ function EvioEventClear;
+#pragma link C++ function EvioEventInit;
+#pragma link C++ function EvioEventPrint;
+//
 #endif
