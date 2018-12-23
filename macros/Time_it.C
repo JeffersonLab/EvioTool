@@ -1,7 +1,9 @@
-{
-  gSystem->Load("build/Release/libEvioTool.so");
+R__LOAD_LIBRARY(libEvioTool);
+
+void Time_it(){
+  //  gSystem->Load("Release/libEvioTool.so");
   EVIO_Event_t *evt=new EVIO_Event_t;
-  EvioTool *ev=new EvioTool("/data/HPS/data/hps_001360.evio.0");
+  EvioTool *ev=new EvioTool("/data/HPS/data/engrun2015/evio/hps_005772.evio.0");
   ev->fDebug=0;
   int i=0;
   TStopwatch st;

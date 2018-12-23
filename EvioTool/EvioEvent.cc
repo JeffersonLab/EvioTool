@@ -24,15 +24,6 @@ void EvioEventInit(EVIO_Event_t *evt){
   evt->FADC_13.reserve(MAX_NUM_FADC);
   evt->FADC_15.clear();
   evt->FADC_15.reserve(MAX_NUM_FADC);
-  for(int i=0;i<MAX_NUM_SVT_FPGA;++i){
-    evt->SVT[i].fpga=0;
-    evt->SVT[i].trigger=0;
-    for(int j=0;j<NUM_FPGA_TEMPS;++j){
-      evt->SVT[i].temps[j]=0;
-    }
-//    evt->SVT[i].data.clear();
-//    evt->SVT[i].data.reserve(MAX_SVT_DATA);
-  }
 //  memset(evt->SVT,0,MAX_NUM_SVT_FPGA*sizeof(SVT_FPGA_t));
   evt->SVT_data.clear();
   evt->SVT_data.reserve(MAX_SVT_DATA);
@@ -53,17 +44,7 @@ void EvioEventClear(EVIO_Event_t *evt){
   evt->trig_time=0;
   evt->FADC_13.clear();
   evt->FADC_15.clear();
-  for(int i=0;i<MAX_NUM_SVT_FPGA;++i){
-    evt->SVT[i].fpga=0;
-    evt->SVT[i].trigger=0;
-    for(int j=0;j<NUM_FPGA_TEMPS;++j){
-      evt->SVT[i].temps[j]=0;
-    }
-//    evt->SVT[i].data.clear();
-  }
-//  memset(evt->SVT,0,MAX_NUM_SVT_FPGA*sizeof(SVT_FPGA_t));
   evt->SVT_data.clear();
-//  evt->SVT.clear();
 }
 
 void EvioEventPrint(EVIO_Event_t *evt, int level){

@@ -22,7 +22,7 @@
  *     - Maurik
  */
  
- 
+// TEST RUN DATA: RUN 1360
  // Timing on version using vector<> and push_back:
  //                                           9.6 kHz, or  103 micro seconds/event. (-O3)
  // With all push_back calls commented out:   117 kHz, or  8.5 micro seconds/event
@@ -46,7 +46,12 @@
  //
  // This last version seems to be the best choice.
  // The penalty one additional SVT_chan_t object copy onto the vector each push_back seems small enough, and the code is a lot safer.
-
+//
+//  ENGINEERING RUN 2015 DATA, RUN 5772:
+//
+//  Not parsing SVT or ECAL: 39.7781 kHz 25.1394 micro seconds
+//  With parsing:            22.4607 kHz 44.5221 micro seconds
+//
 #include "EvioTool.h"
 
 EvioTool::EvioTool(const char *filename, const char *dictf){
@@ -339,7 +344,7 @@ bool EvioTool::read(){
 int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
 // If buff=Null, parse the contends of the internal evio buffer (from "read()")
 // If buff is a buffer, parse that buffer.
-  
+
   try{
     if( buff == nullptr){
       if(get_events_from_et){
@@ -378,16 +383,29 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
       evt->start_time = start_time = (*cc)[0];
       evt->run_number = run_number  = (*cc)[1];
       evt->file_number= file_number= (*cc)[2];
+      if(fDebug>1){
+        cout << "Prestart: start_time = " << start_time << "  run_number = " << run_number << "  file number = " << file_number << endl;
+      }
     }else if(topnode->tag == EVIO_GO){ /////////////////////   Go Event ////////////////////
-//      vector<unsigned int> *cc = topnode->getVector<unsigned int>();
+      if(fDebug>1){
+        cout << "Go Event. " << file_number << endl;
+      }
     }
   }
   
   if(topnode->isContainer()){   ///////////////////////// Data Events ////////////////////
+#ifdef DEBUG
+    if(fDebug>6) cout << "Container event. Tag = " << topnode->tag << endl;
+#endif
     for(iter=c->begin(); iter!=c->end(); iter++) {
       
+#ifdef DEBUG
+      if(fDebug>6) cout << "Tag = " << (*iter)->tag << endl;
+#endif
+
       if((*iter)->tag == EVIO_EVENT_HEADER){  ////////////////// Event Header ////////////////////
         vector<unsigned int> *cc = (*iter)->getVector<unsigned int>();
+#ifdef DEBUG
         if(fDebug>1) cout << "Event " << (*cc)[0] << endl;
         if(fDebug>3){
           cout << "      size=" << cc->size() << "[";
@@ -397,6 +415,7 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
           }
           cout << "]\n";
         }
+#endif
         evt->event_number = (*cc)[0];
         evt->event_type   = (*cc)[1];
         evt->file_number  = (*cc)[2];
@@ -410,26 +429,34 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
 #define GET_INT(b,i)  ((int *)(&b[i]))[0];i+=4;
 #define GET_L64(b,i) ((unsigned long long *)(&b[i]))[0];i+=8;
 
-      else if((*iter)->tag == EVIO_ECAL_FADC_CRATE_1 || (*iter)->tag == EVIO_ECAL_FADC_CRATE_2){
+      else if((*iter)->tag == EVIO_EVENT_TRIGGER ){          ///////////////////////   TRIGGER INFORMATION BANK   /////////////////////////////
+#ifdef DEBUG
+        if(fDebug){cout << "Trigger bank (46) not parsed!!\n";}
+#endif
+      }
+      else if( (*iter)->tag == EVIO_ECAL_FADC_CRATE_1 || (*iter)->tag == EVIO_ECAL_FADC_CRATE_2){ ///////////////// ECAL DATA BANKS ////////////////
         if((*iter)->isContainer()) {
           const evioDOMContainerNode *container = static_cast<const evioDOMContainerNode*>(*iter);
           evioDOMNodeList::const_iterator leaf;
           
-          for(leaf=container->childList.begin(); leaf!=container->childList.end(); leaf++)
-          {
+          for(leaf=container->childList.begin(); leaf!=container->childList.end(); leaf++){
+#ifdef DEBUG
             if(fDebug>4)cout << "     Crate:" <<(*iter)->tag <<" tag=" << (*leaf)->tag << "  num=" << (int)(*leaf)->num << "  type="
               << (*leaf)->getContentType() << "  size: " << (*leaf)->getSize()
               << endl;
-            
-            if((*leaf)->tag == 57603 || (*leaf)->tag == 57601){  // Normal Integral mode (57603) or RAW (57601) mode ECAL data
+#endif
+            if((*leaf)->tag == 57610){
+#ifdef DEBUG
+              if(fDebug>10) cout << "  ECAL Header banks 57610 not parsed \n";
+#endif
+            }else if((*leaf)->tag == 57603 || (*leaf)->tag == 57601){  // Normal Integral mode (57603) or RAW (57601) mode ECAL data
               evioCompositeDOMLeafNode *ecal=(evioCompositeDOMLeafNode *)(*leaf);
               
               unsigned int buflen = ecal->data.size()*4 - 4;
               unsigned char *buf=(unsigned char *) ecal->data.data();
               unsigned int indx= 0; // sizeof(ECAL_Header);
               
-              while(indx < buflen)
-              {
+              while(indx < buflen){
                 // Format = c,i,l,N(c,N(s,i))   slot,trig,time,N *(chan, N*( samples))
 
                 char slot = GET_CHAR(buf,indx);
@@ -481,15 +508,19 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
                   }
                   
                   evt->FADC_15.push_back(e15_data);
-                  
-                  }
+#ifdef DEBUG
+                }else{
+                  cout <<  "Encountered unexpected type of ECAL data. formatTag =  " << ecal->formatTag << endl;
                 }
-            }
-            else if((*leaf)->tag == 57606)
-            {
+#else
+              }
+#endif
+              }
+            }else if((*leaf)->tag == 57606){
               // Trigger information bank.
               
               vector<unsigned int> *trig_data = (*leaf)->getVector<unsigned int>();
+#ifdef DEBUG
               if(fDebug>2){
                 cout << "Trig data len =" << (*trig_data).size() << "  [";
                 for(unsigned int i=0;i<(*trig_data).size();i++){
@@ -497,6 +528,7 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
                 }
                 cout << "]\n";
               }
+#endif
 //              int trig_event_number = (*trig_data)[0] & 0x0ffffff;
 //              int trig_unk1 = ((*trig_data)[0]>> 24) & 0x0ffffff;
 //              int trig_unk2 = (*trig_data)[1];
@@ -506,21 +538,23 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
               evt->bottom_bits = (*trig_data)[5];
               evt->pair_bits = (*trig_data)[6];
               evt->trig_time      = (*trig_data)[7];
-              
+
             }
+#ifdef DEBUG
             else{
                cout << "Unknown ECAL bank with tag = " << (*leaf)->tag << endl;
             }
-          }
-          
+#endif
+          } // for(leaf=container->childList.begin();
         }
+#ifdef DEBUG
         else{
           cout << "\n\n Expected a container for tag==1,2 ECAL, but got leaf.\n\n";
         }
-        
+#endif
       }
-      else if((*iter)->tag == 3)
-      {                             /////////////////////  SVT Crate 3  ///////////////////////////
+      else if( (*iter)->tag >= EVIO_SVT_CRATE_MIN && (*iter)->tag <= EVIO_SVT_CRATE_MAX )
+      {                             /////////////////////  SVT Data  ///////////////////////////
 
         int n_sfpga=0;
         
@@ -528,147 +562,73 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
           const evioDOMContainerNode *container = static_cast<const evioDOMContainerNode*>(*iter);
           evioDOMNodeList::const_iterator s;
           for(s=container->childList.begin(); s!=container->childList.end(); s++){
+#ifdef DEBUG
             if(fDebug>4)cout << "     SVT: tag=" << (*s)->tag << "  num=" << (int)(*s)->num << "  type="
                               << (*s)->getContentType() << "  size: " << (*s)->getSize()
                               << endl;
-            
-            n_sfpga = (int)(*s)->num;  // FPGA number.
-            if(n_sfpga > MAX_NUM_SVT_FPGA ){
-              cout << " ERROR -- FPGA number " << n_sfpga << " is too large for event: " << evt->event_number << endl;
-              delete ETree;
-              return(0);
-            }
-
-            vector<unsigned int> *svt_data = (*s)->getVector<unsigned int>();
-            if(fDebug>4)cout << "SVT["<< n_sfpga <<"] data len =" << (*svt_data).size()<< endl;
-            
-            /////////////// Store Temperatures /////////////////////
-            //SVT_FPGA_t sfpga;
-            evt->SVT[n_sfpga].fpga = (*s)->tag;
-            //sfpga.fpga = (*s)->tag;
-            
-            //sfpga.trigger = (*svt_data)[0];
-            evt->SVT[n_sfpga].trigger = (*svt_data)[0];
-            for(int i=1;i<NUM_FPGA_TEMPS;i++){
-              //int temp=(*svt_data)[i];
-              //sfpga.temps.push_back(temp);
-              evt->SVT[n_sfpga].temps[i] =(*svt_data)[i];
-            }
-            
-            /////////////// Data ///////////////////////////////////
-#define Vector_push_late
-            
-#ifdef Vector_push_late
-            SVT_chan_t cn;
-            evt->SVT_data.reserve(MAX_SVT_DATA);
-
-#else
-//            evt->SVT[n_sfpga].data.reserve(MAX_SVT_DATA);
-            evt->SVT_data.reserve(MAX_SVT_DATA);
-            SVT_chan_t cn;
 #endif
-            unsigned int data_end;
-            if( (*svt_data).size()-1 > MAX_SVT_DATA +7 ){
-              data_end = MAX_SVT_DATA+7-5;
-              cout << "WARNING: Truncating the SVT Data on event :" << evt->event_number << " Size: :" << (*svt_data).size() -1 << endl;
-            }else{
-              data_end = (*svt_data).size()-1;
-            }
-            
-            if(fDebug>4) cout <<"SVT["<< n_sfpga <<"] data_end = " << data_end << endl;
-            for(unsigned int i=7;i< data_end ;){
+            if((*s)->tag == 57610){            //////////////// Bank header.
+            } else if( (*s)->tag == 57607){    //////////////// Mystery information bank.... temperatures?
+            } else if( (*s)->tag == 3){        //////////////// SVT Data container
               
-              unsigned int decode = (*svt_data)[i++];                                     // Word 1
-              if( (*s)->tag != (decode&0xffff) ){
-                cout << "SVT Data decoding error ! i="<<i<<" (*s)->tag = "<< (*s)->tag << " decode fpga=" << (decode&0xffff) << " \n";
+//              n_sfpga = (int)(*s)->num;  // FPGA number.
+//              if(n_sfpga > MAX_NUM_SVT_FPGA ){
+//                cout << " ERROR -- FPGA number " << n_sfpga << " is too large for event: " << evt->event_number << endl;
+//                delete ETree;
+//                return(0);
+//              }
+//
+              vector<unsigned int> *svt_data = (*s)->getVector<unsigned int>();
+#ifdef DEBUG
+              if(fDebug>4)cout << "SVT["<< n_sfpga <<"] data len =" << (*svt_data).size()<< endl;
+#endif
+              
+//              /////////////// Store Temperatures /////////////////////
+//              //SVT_FPGA_t sfpga;
+//              evt->SVT[n_sfpga].fpga = (*s)->tag;
+//              //sfpga.fpga = (*s)->tag;
+//
+//              //sfpga.trigger = (*svt_data)[0];
+//              evt->SVT[n_sfpga].trigger = (*svt_data)[0];
+//              for(int i=1;i<NUM_FPGA_TEMPS;i++){
+//                //int temp=(*svt_data)[i];
+//                //sfpga.temps.push_back(temp);
+//                evt->SVT[n_sfpga].temps[i] =(*svt_data)[i];
+//              }
+              
+              /////////////// Data ///////////////////////////////////
+              
+              evt->SVT_data.reserve(MAX_SVT_DATA);
+              int data_end = (*svt_data).size()-1;
+              
+              // int header = (*svt_data)[0];          // HEADER for block.
+              // int tail   = (*svt_data)[data_end];   // TAIL for the block.
+              for(unsigned int i=1;i< data_end ; i+=4){
+                SVT_chan_t *cn = (SVT_chan_t *)&(*svt_data)[i];
+                if( !cn->head.isHeader && !cn->head.isTail){
+                  evt->SVT_data.push_back( *cn);               // The push_back copies the data onto SVT_data;
+                }
               }
-#ifdef Vector_push_late
-              cn.fpga = n_sfpga;
-              cn.chan = (decode>>16)&0x7f;
-              cn.apv  = (decode>>24)&0x07;
-              cn.hybrid=(decode>>28)&0x03;
-
-#else
-//              evt->SVT[n_sfpga].data.push_back(cn);
-//              evt->SVT[n_sfpga].data[i-7].chan = (decode>>16)&0x7f;
-//              evt->SVT[n_sfpga].data[i-7].apv  = (decode>>24)&0x07;
-//              evt->SVT[n_sfpga].data[i-7].hybrid=(decode>>28)&0x03;
-              evt->SVT_data.push_back(cn);
-              evt->SVT_data[evt->SVT_data.size()-1].fpga = n_sfpga;
-              evt->SVT_data[evt->SVT_data.size()-1].chan =(decode>>16)&0x7f;
-              evt->SVT_data[evt->SVT_data.size()-1].apv  =(decode>>24)&0x07;
-              evt->SVT_data[evt->SVT_data.size()-1].hybrid=(decode>>28)&0x03;
-#endif
-              int sample=0;
-              decode = (*svt_data)[i++];                                                  // Word 2
-              sample = decode&0x3fff;
-#ifdef Vector_push_late
-              cn.samples[0] = sample;
-#else
-//              evt->SVT[n_sfpga].data[i-7].samples[0] = sample;
-              evt->SVT_data[evt->SVT_data.size()-1].samples[0] = sample;
-#endif
-              sample = (decode>>16)&0x3fff;
-#ifdef Vector_push_late
-              cn.samples[1] = sample;
-#else
-//              evt->SVT[n_sfpga].data[i-7].samples[1] = sample;
-              evt->SVT_data[evt->SVT_data.size()-1].samples[1] = sample;
-#endif
               
-              decode = (*svt_data)[i++];                                                  // Word 3
-              sample = decode&0x3fff;
-#ifdef Vector_push_late
-              cn.samples[2] = sample;
-#else
-//              evt->SVT[n_sfpga].data[i-7].samples[2] = sample;
-              evt->SVT_data[evt->SVT_data.size()-1].samples[2] = sample;
-#endif
-              sample = (decode>>16)&0x3fff;
-#ifdef Vector_push_late
-              cn.samples[3] = sample;
-#else
-//              evt->SVT[n_sfpga].data[i-7].samples[3] = sample;
-              evt->SVT_data[evt->SVT_data.size()-1].samples[3] = sample;
-#endif
-
-              decode = (*svt_data)[i++];                                                  // Word 4
-              sample = decode&0x3fff;
-#ifdef Vector_push_late
-              cn.samples[4] = sample;
-#else
-//              evt->SVT[n_sfpga].data[i-7].samples[4] = sample;
-              evt->SVT_data[evt->SVT_data.size()-1].samples[4] = sample;
-#endif
-              sample = (decode>>16)&0x3fff;
-#ifdef Vector_push_late
-              cn.samples[5] = sample;
-#else
-//              evt->SVT[n_sfpga].data[i-7].samples[5] = sample;
-              evt->SVT_data[evt->SVT_data.size()-1].samples[5] = sample;
-#endif
-
-#ifdef Vector_push_late
-//              evt->SVT[n_sfpga].data.push_back(cn);
-              evt->SVT_data.push_back(cn);
-#endif
-
             }
-            
-//            evt->SVT[n_sfpga++]=sfpga;
-// Better not to copy at ALL!!!
-// memcpy does not work! We don't know proper size of sfpga!!!
-//            memcpy((void *)&evt->SVT[n_sfpga++],(void *)&sfpga,sizeof(sfpga));
-
-            if(fDebug && ((*svt_data)[(*svt_data).size()-1])!= 0){
-              printf(" Event= %7d  ==== Data Decoding error on SVT. Last word %3d !=0 \n",evt->event_number,(*svt_data)[(*svt_data).size()-1]);
-            }            
+#ifdef DEBUG
+            else{
+              cout << " SVT Bank with unknown container tag = " << (*s)->tag << endl;
+            }
+#endif
           }
         }
+#ifdef DEBUG
+        else{ // (*iter)->isContainer()
+          cout << "Expected container for SVT crate, but got leaf! \n";
+        }
+#endif
       }
+#ifdef DEBUG
       else{
-        cout << "\n\n Unexpected primary container (crate): " << (*iter)->tag;
+        cout << "\n\n Unexpected primary container (crate): " << (*iter)->tag << endl;
       }
+#endif
     }
   }
   delete ETree;

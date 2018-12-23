@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 UNH. All rights reserved.
 //
 #include "../master.xcconfig"
-//:configuration = Debug
+
 PRODUCT_NAME = EvioTool   // ${TARGET_NAME}
 EXECUTABLE_PREFIX=lib
 EXECUTABLE_EXTENSION=dylib
 
 DYLIB_COMPATIBILITY_VERSION=0
 DYLIB_CURRENT_VERSION=0
+
+GCC_UNROLL_LOOPS = Yes
 
 // === Add EVIO and ET =======
 EVIO= ${PROJECT_DIR}/evio-4.4.5

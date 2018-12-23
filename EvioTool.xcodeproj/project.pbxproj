@@ -830,12 +830,15 @@
 		40E49D0C19034D3E00390847 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_UNROLL_LOOPS = YES;
 			};
 			name = Debug;
 		};
 		40E49D0D19034D3E00390847 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_UNROLL_LOOPS = YES;
 			};
 			name = Release;
 		};

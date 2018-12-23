@@ -76,6 +76,7 @@ int main(int argc, const char * argv[])
   long totalT=0;
   
   while(etool->read()){
+    if(args.debug) cout<<"EVIO Event " << evt_count << endl;
     etool->parse(evt);
     evt_count++;
     

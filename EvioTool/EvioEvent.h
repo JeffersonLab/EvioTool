@@ -28,18 +28,20 @@
 #include <vector>
 using namespace std;
 
-#define EVIO_EVENT_HEADER 0xC000  // 49152
-#define EVIO_FADC_1_BANK	0xE101  // 57601
-#define EVIO_FADC_3_BANK	0xE103  // 57603
-#define EVIO_FADC_7_BANK	0xE102  // 57602
-#define EVIO_TI_BANK	  	0xE10A  // 57610
-#define EVIO_SSP_BANK			0xE10C  // 57612
-#define EVIO_CFG_BANK		  0xE10E  // 57514
+#define EVIO_EVENT_HEADER  0xC000  // 49152
+#define EVIO_EVENT_TRIGGER 0x002e  //    46
+#define EVIO_FADC_1_BANK	 0xE101  // 57601
+#define EVIO_FADC_3_BANK	 0xE103  // 57603
+#define EVIO_FADC_7_BANK	 0xE102  // 57602
+#define EVIO_TI_BANK	  	 0xE10A  // 57610
+#define EVIO_SSP_BANK			 0xE10C  // 57612
+#define EVIO_CFG_BANK		   0xE10E  // 57514
 
 // HPS TEST RUN
-#define EVIO_ECAL_FADC_CRATE_1     1   // ECAL Crate 1
-#define EVIO_ECAL_FADC_CRATE_2     2   // ECAL Crate 2
-#define EVIO_SVT_CRATE             3   // SVT Crate
+#define EVIO_ECAL_FADC_CRATE_1     37//1   // ECAL Crate 1
+#define EVIO_ECAL_FADC_CRATE_2     39// 2   // ECAL Crate 2
+#define EVIO_SVT_CRATE_MIN         51   // SVT Crate
+#define EVIO_SVT_CRATE_MAX         66   // SVT Crate
 
 #define EVIO_PRESTART 17
 #define EVIO_GO       18
@@ -60,7 +62,7 @@ static const int ECAL_FADC_GTP2=40;
 // HPS TEST RUN SVT Definitions
 
 #define MAX_NUM_FADC   25        // Depending on the implementation detail, this may be a "reserve" and not a "max".
-#define MAX_NUM_SVT_FPGA 7
+#define MAX_NUM_SVT_FPGA 12
 #define MAX_NUM_SVT_SAMPLES 6
 #define MAX_SVT_DATA 1024
 #define NUM_FPGA_TEMPS 7
@@ -92,22 +94,23 @@ struct FADC_data_f15_t {
   vector<FADC_chan_f15_t> data;
 };
 
-struct SVT_chan_t{
-  int fpga;
-  int chan;
-  int apv;
-  int hybrid;
-  int samples[MAX_NUM_SVT_SAMPLES];
-  //  vector<int> samples;
+// For an explanation on bit packing with CLANG or G++: http://jkz.wtf/bit-field-packing-in-gcc-and-clang
+// Key issue - spanning a 32-bit long data field, the upper bit fields need to have type unsigned int.
+// Note that the bools are OK.
+struct SVT_header_t {
+  unsigned char XXX1    :8;   // bit 0-7   UNKNOWN
+  unsigned char feb_id  :8;   //  bit  8-15   = FEB ID
+  unsigned int  chan    :7;   //   bit  16-22 = Channel ID
+  unsigned int  apv     :3;   //   bit  23-25 = APV number
+  unsigned int  hyb_id  :3;    //   bit  26-28 = Hybrid ID
+  bool          isTail  :1;   //    bit  29  = Is a Tail (seem to never be the case?)
+  bool          isHeader:1;  //   bit  30   = Is a Header (these are useless?)
+  bool          XXX2    :1;    //    bit  31  =  UNKNOWN
 };
 
-struct SVT_FPGA_t{
-  int fpga;
-  int trigger;
-  //  vector<int> temps;
-  unsigned int temps[NUM_FPGA_TEMPS];
-  //  vector<SVT_chan_t> data;
-  //  SVT_chan_t data[MAX_SVT_DATA];
+struct SVT_chan_t{
+  unsigned short samples[MAX_NUM_SVT_SAMPLES];
+  SVT_header_t head;
 };
 
 struct EVIO_Event_t{
@@ -133,7 +136,6 @@ struct EVIO_Event_t{
   
   vector<FADC_data_f13_t> FADC_13;  // Mode 13 - Nsamples.
   vector<FADC_data_f15_t> FADC_15;  // Mode 15 - Integrated.
-  SVT_FPGA_t SVT[MAX_NUM_SVT_FPGA];           // SVT Crate data
   vector<SVT_chan_t> SVT_data;
 
 };
@@ -146,7 +148,6 @@ template class std::vector<FADC_chan_f15_t>;
 template class std::vector<FADC_data_f13_t>;
 template class std::vector<FADC_data_f15_t>;
 template class std::vector<SVT_chan_t>;
-template class std::vector<SVT_FPGA_t>;
 #endif
 
 void EvioEventClear(EVIO_Event_t *evt);
