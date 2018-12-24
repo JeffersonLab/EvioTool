@@ -49,10 +49,6 @@ using namespace std;
 class EvioTool
 {
 public:
-  int fDebug;
-  int MaxBuff;    // Size of the evioFileChannel buffer. Must contain entire event.
-  
-public:
   EvioTool(const char *filename=nullptr, const char *dict_filename=nullptr);
   ~EvioTool();
   void init(void);
@@ -70,8 +66,15 @@ public:
   void parseDictionary(const char *dictf);
   void printDictionary(void);
   bool read();
+  void Print();
+  
+  inline int getDebug(void){ return(fDebug);}
+  inline void setDebug(int x){fDebug=x;}
   
 public:
+  int fDebug;     // Debug Flag. 
+  int fMaxBuff;    // Size of the evioFileChannel buffer. Must contain entire event.
+
   int run_number;
   int start_time;
   int file_number;

@@ -22,8 +22,12 @@ struct Arguments_t {
   string et_host_name;
   int    et_port;
   int    debug;
+  int    quiet;
   bool   use_et;
   bool   et_block;
+  bool   show_head;
+  bool   show_svt;
+  bool   show_ecal;
   
 };
 
@@ -62,7 +66,8 @@ int main(int argc, const char * argv[])
     etool= new EvioTool(args.filename.c_str());
   }
   etool->fDebug = args.debug;
-
+  etool->Print();
+  
 #if defined __APPLE__
   gettimeofday(&t1, NULL);
   time1 = 1000L*t1.tv_sec + t1.tv_usec/1000L; /* milliseconds */
@@ -79,8 +84,10 @@ int main(int argc, const char * argv[])
     if(args.debug) cout<<"EVIO Event " << evt_count << endl;
     etool->parse(evt);
     evt_count++;
-    
-    if(evt_count%10000 ==0 ){
+    if(args.show_head) EvioEventPrint(evt,0);
+    if(args.show_svt) EvioEventPrintSVT(evt,1);
+    if(args.show_ecal) EvioEventPrintECAL(evt,1);
+    if(!args.quiet && evt_count%10000 ==0 ){
       /* statistics */
 #if defined __APPLE__
       gettimeofday(&t2, NULL);
@@ -127,19 +134,29 @@ void Parse_Args(int *argc,const char **argv, Arguments_t *p_arg){
   int  i,j;
   
   p_arg->debug=0;
+  p_arg->quiet=0;
   p_arg->use_et=0;
   p_arg->filename="";
   p_arg->et_name="";
   p_arg->et_host_name="";
   p_arg->et_port=0;
   p_arg->et_block=false;
+  p_arg->show_head=false;
+  p_arg->show_svt=false;
+  p_arg->show_ecal=false;
   
   for(i=1;i<(*argc);i++){
     if(argv[i][0]=='-'){
       if(strcmp(argv[i],"-quiet")==0 || strcmp(argv[i],"-q")==0){
-        p_arg->debug=0;
+        p_arg->quiet=1;
       }else if(strcmp(argv[i],"-debug")==0 || strcmp(argv[i],"-d")==0){
         p_arg->debug++;
+      }else if(strcmp(argv[i],"-SVT")==0 || strcmp(argv[i],"-S")==0){
+        p_arg->show_svt=true;
+      }else if(strcmp(argv[i],"-ECAL")==0 || strcmp(argv[i],"-E")==0){
+        p_arg->show_ecal=true;
+      }else if(strcmp(argv[i],"-cont")==0 || strcmp(argv[i],"-c")==0){
+        p_arg->show_head=true;
       }else if(strcmp(argv[i],"-block")==0 || strcmp(argv[i],"-b")==0){
         p_arg->et_block=true;
       }else if(strcmp(argv[i],"-et")==0 || strcmp(argv[i],"-etring")==0){
@@ -207,8 +224,11 @@ void Print_Usage(const char *name){
   cout << "  -d  -debug         Debug \n";
   cout << "  -et                Use ET ring \n";
   cout << "  -f  -et_name name  Attach ET to process with file <name>\n";
-  cout << "  -h  -host    host  Attach ET to host\n";
+  cout << "  -H  -host    host  Attach ET to host\n";
   cout << "  -p  -et_port port  Attach ET to port \n";
+  cout << "  -c  -cont          Show content of header and bank counts.\n";
+  cout << "  -S  -SVT           Show content of SVT banks\n";
+  cout << "  -E  -ECAL          Show contents of ECAL banks\n";
 }
 
 

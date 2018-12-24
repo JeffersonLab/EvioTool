@@ -60,15 +60,15 @@ static const int ECAL_FADC_GTP2=40;
 #define EVIO_ROC_HPS12		58
 
 // HPS TEST RUN SVT Definitions
-
-#define MAX_NUM_FADC   25        // Depending on the implementation detail, this may be a "reserve" and not a "max".
+#define MAX_NUM_FADC     25
+#define MAX_FADC_DATA    50
 #define MAX_NUM_SVT_FPGA 12
 #define MAX_NUM_SVT_SAMPLES 6
-#define MAX_SVT_DATA 1024
-#define NUM_FPGA_TEMPS 7
+#define MAX_SVT_DATA   1024
+//#define NUM_FPGA_TEMPS 7
 
 struct FADC_chan_f13_t{
-  int chan;
+  unsigned char chan;
   vector<unsigned short> samples;
 };
 
@@ -79,10 +79,10 @@ struct FADC_chan_f15_t{
 };
 
 struct FADC_data_f13_t {
-  int  crate;
-  int  slot;
-  int  trig;
-  int  time;
+  unsigned char crate;
+  unsigned char  slot;
+  unsigned int  trig;
+  unsigned long long time;       /* 64 bit unsinged int */
   vector<FADC_chan_f13_t> data;
 };
 
@@ -90,13 +90,16 @@ struct FADC_data_f15_t {
   int  crate;
   int  slot;
   int  trig;
-  int  time;
+  unsigned int  time;
   vector<FADC_chan_f15_t> data;
 };
 
 // For an explanation on bit packing with CLANG or G++: http://jkz.wtf/bit-field-packing-in-gcc-and-clang
 // Key issue - spanning a 32-bit long data field, the upper bit fields need to have type unsigned int.
 // Note that the bools are OK.
+// The *memory shape* of this structure or class MUST correspond perfectly to the memory layout of the EVIO data.
+// That way we can use the much faster memory overlay rather than data copy.
+//
 struct SVT_header_t {
   unsigned char XXX1    :8;   // bit 0-7   UNKNOWN
   unsigned char feb_id  :8;   //  bit  8-15   = FEB ID
@@ -153,6 +156,8 @@ template class std::vector<SVT_chan_t>;
 void EvioEventClear(EVIO_Event_t *evt);
 void EvioEventInit(EVIO_Event_t *evt);
 void EvioEventPrint(EVIO_Event_t *evt, int level=0);
+void EvioEventPrintSVT(EVIO_Event_t *evt, int level=0);
+void EvioEventPrintECAL(EVIO_Event_t *evt, int level=0);
 
 #pragma GCC visibility pop
 #endif /* defined(__EvioTool__EvioEvent__) */

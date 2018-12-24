@@ -49,8 +49,14 @@
 //
 //  ENGINEERING RUN 2015 DATA, RUN 5772:
 //
-//  Not parsing SVT or ECAL: 39.7781 kHz 25.1394 micro seconds
-//  With parsing:            22.4607 kHz 44.5221 micro seconds
+//  This version is NOT parsing trigger bank.
+//
+//  Not parsing SVT or ECAL: 39.8 kHz 25.0 micro seconds
+//  Parsing SVT only       : 37.2 kHz 26.9 micro seconds
+//  Parsing ECAL only      : 23.6 kHz 42.3 micro seconds
+//  Parsing SVT and ECAL   : 22.5 kHz 44.5 micro seconds
+//
+//  Pre-reserving the ECAL data structure: 16 channels, 50 samples:   28.8 kHz  34.7 micro seconds.
 //
 #include "EvioTool.h"
 
@@ -70,7 +76,7 @@ EvioTool::~EvioTool(){
 }
 void EvioTool::init(void){
   // Initialize the class
-  MaxBuff = 1000000;
+  fMaxBuff = 10*1024*1024;
   EvioChan = nullptr;
   Dictionary= nullptr;
   fDebug=0;
@@ -138,7 +144,7 @@ void EvioTool::open(const char *filename,const char *dictf){
     parseDictionary(dictf);
   }
   try {
-    EvioChan = new evioFileChannel(filename,Dictionary, "r", MaxBuff);
+    EvioChan = new evioFileChannel(filename,Dictionary, "r", fMaxBuff);
     EvioChan->open();
     get_events_from_et=false;
   } catch (evioException e) {
@@ -172,7 +178,7 @@ int EvioTool::openEt(const char *name,int port,int prescale){
   et_open_config_destroy(openconfig);
   get_events_from_et = true;
   
-  if(fDebug>1){
+  if(getDebug()>1){
     et_system_setdebug(et_id, ET_DEBUG_INFO);
   }
 
@@ -321,7 +327,7 @@ bool EvioTool::read(){
     if(swap){
       cout << "EvioTool::read() -- It appears as if this data needs swapping.\n";
     }
-    if(fDebug>1){
+    if(getDebug()>1){
       printf("ET data: pointer %10lx  length= %3zu \n",(unsigned long)et_data,et_data_len);
     }
     et_events_remaining--;
@@ -344,7 +350,8 @@ bool EvioTool::read(){
 int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
 // If buff=Null, parse the contends of the internal evio buffer (from "read()")
 // If buff is a buffer, parse that buffer.
-
+#ifdef DEBUG
+#endif
   try{
     if( buff == nullptr){
       if(get_events_from_et){
@@ -383,11 +390,11 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
       evt->start_time = start_time = (*cc)[0];
       evt->run_number = run_number  = (*cc)[1];
       evt->file_number= file_number= (*cc)[2];
-      if(fDebug>1){
+      if(getDebug()>1){
         cout << "Prestart: start_time = " << start_time << "  run_number = " << run_number << "  file number = " << file_number << endl;
       }
     }else if(topnode->tag == EVIO_GO){ /////////////////////   Go Event ////////////////////
-      if(fDebug>1){
+      if(getDebug()>1){
         cout << "Go Event. " << file_number << endl;
       }
     }
@@ -395,19 +402,18 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
   
   if(topnode->isContainer()){   ///////////////////////// Data Events ////////////////////
 #ifdef DEBUG
-    if(fDebug>6) cout << "Container event. Tag = " << topnode->tag << endl;
+    if(getDebug()>6) cout << "Container event. Tag = " << topnode->tag << endl;
 #endif
     for(iter=c->begin(); iter!=c->end(); iter++) {
       
 #ifdef DEBUG
-      if(fDebug>6) cout << "Tag = " << (*iter)->tag << endl;
+      if(getDebug()>6) cout << "Tag = " << (*iter)->tag << endl;
 #endif
 
       if((*iter)->tag == EVIO_EVENT_HEADER){  ////////////////// Event Header ////////////////////
         vector<unsigned int> *cc = (*iter)->getVector<unsigned int>();
-#ifdef DEBUG
-        if(fDebug>1) cout << "Event " << (*cc)[0] << endl;
-        if(fDebug>3){
+        if(getDebug()>1) cout << "Event " << (*cc)[0] << endl;
+        if(getDebug()>3){
           cout << "      size=" << cc->size() << "[";
           for(unsigned int i=0;i<cc->size();i++){
             cout << (int) (*cc)[i];
@@ -415,7 +421,6 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
           }
           cout << "]\n";
         }
-#endif
         evt->event_number = (*cc)[0];
         evt->event_type   = (*cc)[1];
         evt->file_number  = (*cc)[2];
@@ -424,14 +429,14 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
     // --------- DECODING HELPERS ----------------
     // These help walk through a complicated EVIO buffer, for which the EVIO decoding is not setup.
     
-#define GET_CHAR(b,i) b[i]; i+=1;
+#define GET_CHAR(b,i)   b[i]; i+=1;
 #define GET_SHORT(b,i) ((short *)(&b[i]))[0];i+=2;
 #define GET_INT(b,i)  ((int *)(&b[i]))[0];i+=4;
 #define GET_L64(b,i) ((unsigned long long *)(&b[i]))[0];i+=8;
 
       else if((*iter)->tag == EVIO_EVENT_TRIGGER ){          ///////////////////////   TRIGGER INFORMATION BANK   /////////////////////////////
 #ifdef DEBUG
-        if(fDebug){cout << "Trigger bank (46) not parsed!!\n";}
+        if(getDebug()){cout << "Trigger bank (46) not parsed!!\n";}
 #endif
       }
       else if( (*iter)->tag == EVIO_ECAL_FADC_CRATE_1 || (*iter)->tag == EVIO_ECAL_FADC_CRATE_2){ ///////////////// ECAL DATA BANKS ////////////////
@@ -441,13 +446,13 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
           
           for(leaf=container->childList.begin(); leaf!=container->childList.end(); leaf++){
 #ifdef DEBUG
-            if(fDebug>4)cout << "     Crate:" <<(*iter)->tag <<" tag=" << (*leaf)->tag << "  num=" << (int)(*leaf)->num << "  type="
+            if(getDebug()>4)cout << "     Crate:" <<(*iter)->tag <<" tag=" << (*leaf)->tag << "  num=" << (int)(*leaf)->num << "  type="
               << (*leaf)->getContentType() << "  size: " << (*leaf)->getSize()
               << endl;
 #endif
             if((*leaf)->tag == 57610){
 #ifdef DEBUG
-              if(fDebug>10) cout << "  ECAL Header banks 57610 not parsed \n";
+              if(getDebug()>10) cout << "  ECAL Header banks 57610 not parsed \n";
 #endif
             }else if((*leaf)->tag == 57603 || (*leaf)->tag == 57601){  // Normal Integral mode (57603) or RAW (57601) mode ECAL data
               evioCompositeDOMLeafNode *ecal=(evioCompositeDOMLeafNode *)(*leaf);
@@ -458,24 +463,21 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
               
               while(indx < buflen){
                 // Format = c,i,l,N(c,N(s,i))   slot,trig,time,N *(chan, N*( samples))
-
-                char slot = GET_CHAR(buf,indx);
-                unsigned int  trig = GET_INT(buf,indx);
-                unsigned long long time = GET_L64(buf,indx);
-                int nchan = GET_INT(buf,indx);
               
                 if(ecal->formatTag == 13){
-                  
+
                   FADC_data_f13_t e13_data;
                   e13_data.crate = (*iter)->tag;
-                  e13_data.slot  = slot;
-                  e13_data.trig  = trig;
-                  e13_data.time  = time;
+                  e13_data.slot  = buf[indx];indx+=1;    // GET_CHAR(buf,indx);
+                  e13_data.trig  = GET_INT(buf,indx);
+                  e13_data.time  = GET_L64(buf,indx);
+                  int nchan      = GET_INT(buf,indx);
+                  e13_data.data.reserve(16);
                   for(int jj=0; jj<nchan; jj++){
                     FADC_chan_f13_t ch;
                     ch.chan = GET_CHAR(buf,indx);
                     int nsample = GET_INT(buf,indx);
-                  
+                    ch.samples.reserve(50);
                     for(int kk=0; kk<nsample; kk++){
                       short sample = GET_SHORT(buf,indx);
                       ch.samples.push_back(sample);
@@ -485,7 +487,12 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
                   evt->FADC_13.push_back(e13_data);
                   
                 }else if(ecal->formatTag == 17){
-                  
+
+                  unsigned char slot = GET_CHAR(buf,indx);
+                  unsigned int  trig = GET_INT(buf,indx);
+                  unsigned long long time = GET_L64(buf,indx);
+                  int nchan = GET_INT(buf,indx);
+
                   FADC_data_f15_t e15_data;
                   e15_data.crate = (*iter)->tag;
                   e15_data.slot  = slot;
@@ -521,7 +528,7 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
               
               vector<unsigned int> *trig_data = (*leaf)->getVector<unsigned int>();
 #ifdef DEBUG
-              if(fDebug>2){
+              if(getDebug()>2){
                 cout << "Trig data len =" << (*trig_data).size() << "  [";
                 for(unsigned int i=0;i<(*trig_data).size();i++){
                   printf("0x%04x,",(*trig_data)[i]);
@@ -556,14 +563,12 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
       else if( (*iter)->tag >= EVIO_SVT_CRATE_MIN && (*iter)->tag <= EVIO_SVT_CRATE_MAX )
       {                             /////////////////////  SVT Data  ///////////////////////////
 
-        int n_sfpga=0;
-        
         if((*iter)->isContainer()){
           const evioDOMContainerNode *container = static_cast<const evioDOMContainerNode*>(*iter);
           evioDOMNodeList::const_iterator s;
           for(s=container->childList.begin(); s!=container->childList.end(); s++){
 #ifdef DEBUG
-            if(fDebug>4)cout << "     SVT: tag=" << (*s)->tag << "  num=" << (int)(*s)->num << "  type="
+            if(getDebug()>4)cout << "     SVT: tag=" << (*s)->tag << "  num=" << (int)(*s)->num << "  type="
                               << (*s)->getContentType() << "  size: " << (*s)->getSize()
                               << endl;
 #endif
@@ -580,31 +585,18 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
 //
               vector<unsigned int> *svt_data = (*s)->getVector<unsigned int>();
 #ifdef DEBUG
-              if(fDebug>4)cout << "SVT["<< n_sfpga <<"] data len =" << (*svt_data).size()<< endl;
+              if(getDebug()>4)cout << "SVT data len =" << (*svt_data).size()<< endl;
 #endif
-              
-//              /////////////// Store Temperatures /////////////////////
-//              //SVT_FPGA_t sfpga;
-//              evt->SVT[n_sfpga].fpga = (*s)->tag;
-//              //sfpga.fpga = (*s)->tag;
-//
-//              //sfpga.trigger = (*svt_data)[0];
-//              evt->SVT[n_sfpga].trigger = (*svt_data)[0];
-//              for(int i=1;i<NUM_FPGA_TEMPS;i++){
-//                //int temp=(*svt_data)[i];
-//                //sfpga.temps.push_back(temp);
-//                evt->SVT[n_sfpga].temps[i] =(*svt_data)[i];
-//              }
               
               /////////////// Data ///////////////////////////////////
               
-              evt->SVT_data.reserve(MAX_SVT_DATA);
+//              evt->SVT_data.reserve(MAX_SVT_DATA);
               int data_end = (*svt_data).size()-1;
               
               // int header = (*svt_data)[0];          // HEADER for block.
               // int tail   = (*svt_data)[data_end];   // TAIL for the block.
               for(unsigned int i=1;i< data_end ; i+=4){
-                SVT_chan_t *cn = (SVT_chan_t *)&(*svt_data)[i];
+                SVT_chan_t *cn = (SVT_chan_t *)&(*svt_data)[i]; // Direct data overlay, so there is no copy here. MUCH faster.
                 if( !cn->head.isHeader && !cn->head.isTail){
                   evt->SVT_data.push_back( *cn);               // The push_back copies the data onto SVT_data;
                 }
@@ -613,7 +605,7 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
             }
 #ifdef DEBUG
             else{
-              cout << " SVT Bank with unknown container tag = " << (*s)->tag << endl;
+              if(fDebug) cout << " SVT Bank with unknown container tag = " << (*s)->tag << endl;
             }
 #endif
           }
@@ -626,11 +618,32 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
       }
 #ifdef DEBUG
       else{
-        cout << "\n\n Unexpected primary container (crate): " << (*iter)->tag << endl;
+        if(fDebug)cout << "\n\n Unexpected primary container (crate): " << (*iter)->tag << endl;
       }
 #endif
     }
   }
   delete ETree;
   return 1;
+}
+
+void EvioTool::Print(void){
+  cout << "EvioTool::Print() ";
+#ifdef DEBUG
+  cout << " -- Additional DEBUG turned on.\n";
+#else
+  cout << " -- No DEBUG \n";
+#endif
+  cout << "--------------------------------------------------------\n";
+  cout << "Debug level: " << getDebug() << endl;
+  cout << "MaxBuff    : " << fMaxBuff << endl;
+  if(get_events_from_et){
+    cout << "Reading from ET: et_file_name = " << et_file_name << endl;
+    cout << "                 et_host_name = " << et_host_name << " port = " << et_port << " mode = " << et_mode << endl;
+    cout << "                 et_buffers(R)= " << et_receive_buffer_size << " send: " << et_send_buffer_size << endl;
+  }else{
+    cout << "Reading from File: " << EvioChan->getFileName() << endl;
+    cout << "             mode: " << EvioChan->getMode()     << endl;
+    cout << "      buffer size: " << EvioChan->getBufSize() << endl;
+  }
 }
