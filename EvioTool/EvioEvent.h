@@ -70,6 +70,7 @@ static const int ECAL_FADC_GTP2=40;
 struct FADC_chan_f13_t{
   unsigned char chan;
   vector<unsigned short> samples;
+//  unsigned short samples[50];
 };
 
 struct FADC_chan_f15_t{

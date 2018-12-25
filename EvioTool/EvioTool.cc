@@ -49,7 +49,9 @@
 //
 //  ENGINEERING RUN 2015 DATA, RUN 5772:
 //
-//  This version is NOT parsing trigger bank.
+//  This data is much longer so takes longer to read.
+//
+//  Timing with version is NOT parsing trigger bank.
 //
 //  Not parsing SVT or ECAL: 39.8 kHz 25.0 micro seconds
 //  Parsing SVT only       : 37.2 kHz 26.9 micro seconds
@@ -57,6 +59,7 @@
 //  Parsing SVT and ECAL   : 22.5 kHz 44.5 micro seconds
 //
 //  Pre-reserving the ECAL data structure: 16 channels, 50 samples:   28.8 kHz  34.7 micro seconds.
+//                     Use "assign" instead of push_back          :   31.1 kHz  32.1 micro seconds.
 //
 #include "EvioTool.h"
 
@@ -473,16 +476,21 @@ int EvioTool::parse(EVIO_Event_t *evt, const unsigned int *buff){
                   e13_data.time  = GET_L64(buf,indx);
                   int nchan      = GET_INT(buf,indx);
                   e13_data.data.reserve(16);
-                  for(int jj=0; jj<nchan; jj++){
+                  for(int jj=0; jj<nchan; ++jj){
                     FADC_chan_f13_t ch;
                     ch.chan = GET_CHAR(buf,indx);
                     int nsample = GET_INT(buf,indx);
                     ch.samples.reserve(50);
-                    for(int kk=0; kk<nsample; kk++){
-                      short sample = GET_SHORT(buf,indx);
-                      ch.samples.push_back(sample);
-                    }
-                     e13_data.data.push_back(ch);
+                    unsigned short *samples=(unsigned short *)&buf[indx];
+                    ch.samples.assign(samples,samples+nsample);                           // Takes 3.3 micro seconds/event
+                    indx+=nsample*2;
+//                    std::copy(samples,samples+nsample,std::back_inserter(ch.samples));  // Slightly slower than "assign"?
+//                    for(int kk=0; kk<nsample; ++kk){                                     //  Takes 5.8 micro seconds/event
+//                      short sample = GET_SHORT(buf,indx);
+//                      ch.samples.push_back(sample);
+//                    }
+
+                    e13_data.data.push_back(ch);
                   }
                   evt->FADC_13.push_back(e13_data);
                   

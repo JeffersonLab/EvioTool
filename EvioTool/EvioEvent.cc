@@ -98,9 +98,9 @@ void EvioEventPrintECAL(EVIO_Event_t *evt, int level){
     for(int i=0;i<ecal.data.size();++i){
       printf("[%2d,%2d,%14llu,",ecal.crate,ecal.slot,ecal.time);
       printf("%3d,",ecal.data[i].chan);
-      for(int k=0;k<ecal.data[i].samples.size();++k){
+      for(int k=0;k<  ecal.data[i].samples.size();++k){
         printf("%4d",ecal.data[i].samples[k]);
-        if(k==(ecal.data[i].samples.size()-1))printf("]\n");
+        if(k==( ecal.data[i].samples.size()-1))printf("]\n");
         else                         printf(",");
       }
     }
