@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  EvioTool_Test
+//  HPSEvioReader_Test
 //
 //  Created by Maurik Holtrop on 5/7/14.
 //  Copyright (c) 2014 UNH. All rights reserved.
@@ -13,8 +13,8 @@
 #include <string>
 using namespace std;
 
-#include "EvioEvent.h"
-#include "EvioTool.h"
+#include "HPSEvent.h"
+#include "HPSEvioReader.h"
 
 struct Arguments_t {
   string filename;
@@ -51,9 +51,9 @@ int main(int argc, const char * argv[])
   evt = new EVIO_Event_t;
   EvioEventInit(evt);
   
-  EvioTool *etool;
+  HPSEvioReader *etool;
   if(args.use_et){
-    etool= new EvioTool();
+    etool= new HPSEvioReader();
     if(args.et_name.length()) etool->et_file_name=args.et_name;
     if(args.et_port) etool->et_port = args.et_port;
     if(args.et_host_name.length()) etool->et_host_name =args.et_host_name;
@@ -63,7 +63,7 @@ int main(int argc, const char * argv[])
       exit(1);
     }
   }else{
-    etool= new EvioTool(args.filename.c_str());
+    etool= new HPSEvioReader(args.filename.c_str());
   }
   etool->fDebug = args.debug;
   etool->Print();

@@ -70,7 +70,7 @@ public:
   
   bool fFullErase; // Useful with fAutoAdd=true and no dictionary, erase fully at new event, so bank structure is gone completely. Otherwise the bank structure is kept.
 
-private:
+// private:
   int evio_handle;
 
   const unsigned int *evio_buf; // Buf ptr to read event into.
@@ -80,6 +80,7 @@ public:
   EvioParser();
   int  Open(const char *filename,const char *dictf=NULL);
   void parseDictionary(const char *dictf);
+  int NextNoParse(void);
   int Next(void);
   int ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node);
   int LeafNodeHandler(const unsigned int *buf,int len, int padding, int contentType, int tag, int num,Bank *node);

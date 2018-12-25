@@ -7,7 +7,7 @@
 //
 #include "../master.xcconfig"
 
-PRODUCT_NAME = EvioTool   // ${TARGET_NAME}
+PRODUCT_NAME = ${TARGET_NAME}
 EXECUTABLE_PREFIX=lib
 EXECUTABLE_EXTENSION=dylib
 
@@ -29,7 +29,3 @@ CODA_ET=${PROJECT_DIR}/et-14.0
 OTHER_LDFLAGS= $(inherited) -lexpat -lz
 HEADER_SEARCH_PATHS= $(inherited) $EVIO/src/libsrc $EVIO/src/libsrc++ ${CODA_ET}/common/include
 //
-//For Dictionary generation. This is clumsy to pass info to dict generation step
-ROOT_DICT_NAME_BASE=EvioTool
-ROOT_DICT_HDRS_DIR=${LOCROOT}/EvioTool
-ROOT_DICT_HDRS= Leaf.h  EvioParser.h EvioTool.h EvioEvent.h Bank.h

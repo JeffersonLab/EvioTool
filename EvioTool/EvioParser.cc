@@ -54,6 +54,19 @@ void EvioParser::parseDictionary(const char *dictf){
     //  Dictionary = new evioDictionary(f);
 }
 
+int EvioParser::NextNoParse(){
+  // Read an event from the EVIO file and parse it.
+  
+  int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
+  if(stat==EOF) return(0);
+  if(stat!=S_SUCCESS){
+    cerr << "EvioParser::Next() -- ERROR -- problem reading file. \n";
+    return(-1);
+  }
+  
+  return 1;
+}
+
 int EvioParser::Next(){
     // Read an event from the EVIO file and parse it.
     
@@ -261,7 +274,7 @@ int EvioParser::LeafNodeHandler(const unsigned int *buf, int len, int padding, i
             stat = AddOrFillLeaf_int((int *)buf, len, tag, num, node);
             break;
         case 0xf:   // FADC compound type
-            cerr << "EvioParser::LeafNodeHandler -- Please add FADC compound type \n";
+ //           cerr << "EvioParser::LeafNodeHandler -- Please add FADC compound type \n";
             break;
             
             //        newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],length-dataOffset,&buf[dataOffset],userArg);
