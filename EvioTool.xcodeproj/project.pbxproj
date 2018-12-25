@@ -55,6 +55,8 @@
 		40E74638191DA8F0008E4235 /* et_evio_test_consumer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */; };
 		40E7463A191DA8F0008E4235 /* et_evio_test_consumer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */; };
 		40E746761923E2EE008E4235 /* HPSEvioReader_Test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74625191B0BFC008E4235 /* HPSEvioReader_Test.cc */; };
+		40EBBBF521D2A46F0013747B /* HPSEvioReader_Linkdef.h in Headers */ = {isa = PBXBuildFile; fileRef = 40EBBBEA21D2A46F0013747B /* HPSEvioReader_Linkdef.h */; };
+		40EBBBF621D2A48F0013747B /* HPSEvioReader.h in Sources */ = {isa = PBXBuildFile; fileRef = 40A1037321D29AF00022AD2E /* HPSEvioReader.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -282,6 +284,7 @@
 		40E74635191DA8F0008E4235 /* et_evio_test_consumer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = et_evio_test_consumer; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_test_consumer.cc; sourceTree = "<group>"; };
 		40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = et_evio_test_consumer.1; sourceTree = "<group>"; };
+		40EBBBEA21D2A46F0013747B /* HPSEvioReader_Linkdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPSEvioReader_Linkdef.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -344,6 +347,7 @@
 		40A1036921D29A9B0022AD2E /* HPSEvioReader */ = {
 			isa = PBXGroup;
 			children = (
+				40EBBBEA21D2A46F0013747B /* HPSEvioReader_Linkdef.h */,
 				40A1037721D29AF00022AD2E /* HPSEvent_Linkdef.h */,
 				40A1037421D29AF00022AD2E /* HPSEvent.cc */,
 				40A1037621D29AF00022AD2E /* HPSEvent.h */,
@@ -464,6 +468,7 @@
 			files = (
 				40A1037C21D29AF00022AD2E /* HPSEvent_Linkdef.h in Headers */,
 				40A1037821D29AF00022AD2E /* HPSEvioReader.h in Headers */,
+				40EBBBF521D2A46F0013747B /* HPSEvioReader_Linkdef.h in Headers */,
 				40A1037B21D29AF00022AD2E /* HPSEvent.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -795,6 +800,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40EBBBF621D2A48F0013747B /* HPSEvioReader.h in Sources */,
 				40A1037D21D29B040022AD2E /* HPSEvent.h in Sources */,
 				40A1037921D29AF00022AD2E /* HPSEvent.cc in Sources */,
 				40A1037A21D29AF00022AD2E /* HPSEvioReader.cc in Sources */,
