@@ -17,7 +17,7 @@ using namespace std;
 #include "TObject.h"
 #include "TNamed.h"
 
-enum LeafDataTypes_t { Leaf_None, Leaf_Bank, Leaf_Int, Leaf_Uint32, Leaf_Float, Leaf_Double, Leaf_String , Leaf_END};
+enum LeafDataTypes_t { Leaf_None, Leaf_Bank, Leaf_Int, Leaf_Uint32, Leaf_Float, Leaf_Double, Leaf_String ,Leaf_FADC, Leaf_END};
 
 class Leaf_base: public TNamed {
   //// This is a base class for the templated leaf class. This makes it a lot easier
@@ -25,12 +25,12 @@ class Leaf_base: public TNamed {
 public:
   int tag;
   int num;
-
+  
 public:
   Leaf_base(): tag(0),num(0){;};
   Leaf_base(int itag, int inum): tag(itag),num(inum){;};
   virtual void Clear(Option_t *){;};
-  virtual int Get_size(void){return(0);};
+  virtual size_t Get_size(void){return(0);};
   virtual void Print(Option_t *op) const {;};
   ClassDef(Leaf_base,1);
 };
@@ -53,6 +53,7 @@ public:
     // Clear out the contents of the leaf, but do not delete the leaf.
     data.clear();
   }
+  
   void Push_data_vector(vector<T> &vec){
     // Put the data from vector at the end of the leaf.
     data.insert(data.end(),vec.begin(),vec.end());
@@ -79,7 +80,7 @@ public:
     // Get the data at indx. Throws exception if out of range.
     return(data.at(indx));
   }
-  int Get_size(void){
+  size_t Get_size(void){
     // Get the size in the data vector.
     return(data.size());
   }
@@ -96,16 +97,20 @@ public:
     string s;
     int level;
     int n;
-    sscanf(op,"N%dL%d",&n,&level);
-    for(int i=0;i<level;i++) s.append("    ");
-    cout << s << ClassName() << ":\t" << GetName() << "\t tag = " << tag << " num = " << num << endl;
-    for(int i=0;i<n && i< (int)data.size();i++){
-      cout << s << "    " << data[i] << endl;
+    if(strlen(op)>4){
+      sscanf(op,"N%dL%d",&n,&level);
+      for(int i=0;i<level;i++) s.append("    ");
+      cout << s << ClassName() << ":\t" << GetName() << "\t tag = " << tag << " num = " << num << endl;
+      cout << s << "Data: ";
+      for(int i=0;i<n && i< (int)data.size();i++){
+        cout << " " << data[i];
+      }
+    }else{
+      cout << "  -?- " << ClassName() << ":\t" << GetName() << "\t tag = " << tag << " num = " << num << endl;
     }
   };
   
   ClassDef(Leaf,1);
 };
-
 
 #endif /* defined(__AprimeAna__Leaf__) */

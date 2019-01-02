@@ -13,12 +13,14 @@
 			buildPhases = (
 			);
 			dependencies = (
+				40EBBBF821D468B20013747B /* PBXTargetDependency */,
 				40D968AD21C92C9F0075DF34 /* PBXTargetDependency */,
 				40D968AB21C92C940075DF34 /* PBXTargetDependency */,
 				40C13D3219704840008307A1 /* PBXTargetDependency */,
 				40C13D3419704840008307A1 /* PBXTargetDependency */,
 				40C13D3619704840008307A1 /* PBXTargetDependency */,
 				40C13D3819704840008307A1 /* PBXTargetDependency */,
+				4011BB2321D7D6FF00256470 /* PBXTargetDependency */,
 			);
 			name = AllEvioTool;
 			productName = AllEvioTool;
@@ -26,6 +28,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4011BB0C21D6D21900256470 /* FADCdata.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4011BB0B21D6D21900256470 /* FADCdata.cc */; };
+		4011BB1E21D7C45300256470 /* EvioTool_Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4011BB1D21D7C45300256470 /* EvioTool_Test.cpp */; };
+		4011BB2421D7D70E00256470 /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
+		402C391521D9778900352855 /* FADCdata.h in Sources */ = {isa = PBXBuildFile; fileRef = 40EBBBF921D6C3000013747B /* FADCdata.h */; };
 		40800C5221CC05D100C2D6BC /* Leaf.h in Sources */ = {isa = PBXBuildFile; fileRef = 40C7638A1ABCED7100410152 /* Leaf.h */; };
 		40A1036321D29A590022AD2E /* EvioParser.h in Sources */ = {isa = PBXBuildFile; fileRef = 40C763841ABCECA400410152 /* EvioParser.h */; };
 		40A1037821D29AF00022AD2E /* HPSEvioReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 40A1037321D29AF00022AD2E /* HPSEvioReader.h */; };
@@ -87,6 +93,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		4011BB2221D7D6FF00256470 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4011BB1A21D7C45300256470;
+			remoteInfo = EvioTool_Test;
+		};
 		40C13D3119704840008307A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
@@ -220,9 +233,25 @@
 			remoteGlobalIDString = 40E49CFD19034D3E00390847;
 			remoteInfo = EvioTool;
 		};
+		40EBBBF721D468B20013747B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40A1036721D29A9A0022AD2E;
+			remoteInfo = HPSEvioReader;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4011BB1921D7C45300256470 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		40E6BFE81917E1F400BF03CA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +285,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4011BB0B21D6D21900256470 /* FADCdata.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FADCdata.cc; sourceTree = "<group>"; };
+		4011BB1B21D7C45300256470 /* EvioTool_Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = EvioTool_Test; sourceTree = BUILT_PRODUCTS_DIR; };
+		4011BB1D21D7C45300256470 /* EvioTool_Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EvioTool_Test.cpp; sourceTree = "<group>"; };
+		402C390A21D9774200352855 /* FADCdata_LinkDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FADCdata_LinkDef.h; sourceTree = "<group>"; };
 		402FB1BF21CAC06200E80AE2 /* Leaf_LinkDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Leaf_LinkDef.h; sourceTree = "<group>"; };
 		40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libHPSEvioReader.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A1037321D29AF00022AD2E /* HPSEvioReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPSEvioReader.h; sourceTree = "<group>"; };
@@ -285,9 +318,18 @@
 		40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_test_consumer.cc; sourceTree = "<group>"; };
 		40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = et_evio_test_consumer.1; sourceTree = "<group>"; };
 		40EBBBEA21D2A46F0013747B /* HPSEvioReader_Linkdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPSEvioReader_Linkdef.h; sourceTree = "<group>"; };
+		40EBBBF921D6C3000013747B /* FADCdata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FADCdata.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4011BB1821D7C45300256470 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4011BB2421D7D70E00256470 /* libEvioTool.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40A1036621D29A9A0022AD2E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,6 +377,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4011BB1C21D7C45300256470 /* EvioTool_Test */ = {
+			isa = PBXGroup;
+			children = (
+				4011BB1D21D7C45300256470 /* EvioTool_Test.cpp */,
+			);
+			path = EvioTool_Test;
+			sourceTree = "<group>";
+		};
 		409A4A1B19086D81001AF63B /* Config */ = {
 			isa = PBXGroup;
 			children = (
@@ -396,6 +446,7 @@
 				40D9686F21C857400075DF34 /* et-14.0.xcodeproj */,
 				409A4A1B19086D81001AF63B /* Config */,
 				40E49D0019034D3E00390847 /* EvioTool */,
+				4011BB1C21D7C45300256470 /* EvioTool_Test */,
 				40A1036921D29A9B0022AD2E /* HPSEvioReader */,
 				40E6BFEB1917E1F400BF03CA /* et_evio_blaster */,
 				40E74624191B0BFC008E4235 /* HPSEvioReader_Test */,
@@ -413,6 +464,7 @@
 				40E74623191B0BFC008E4235 /* HPSEvioReader_Test */,
 				40E74635191DA8F0008E4235 /* et_evio_test_consumer */,
 				40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */,
+				4011BB1B21D7C45300256470 /* EvioTool_Test */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -422,9 +474,12 @@
 			children = (
 				40C7638F1ABCED8600410152 /* Bank.cc */,
 				40C763901ABCED8600410152 /* Bank.h */,
+				40E49D1119044F4B00390847 /* EvioParser_LinkDef.h */,
 				40C763831ABCECA400410152 /* EvioParser.cc */,
 				40C763841ABCECA400410152 /* EvioParser.h */,
-				40E49D1119044F4B00390847 /* EvioParser_LinkDef.h */,
+				402C390A21D9774200352855 /* FADCdata_LinkDef.h */,
+				4011BB0B21D6D21900256470 /* FADCdata.cc */,
+				40EBBBF921D6C3000013747B /* FADCdata.h */,
 				402FB1BF21CAC06200E80AE2 /* Leaf_LinkDef.h */,
 				40C763891ABCED7100410152 /* Leaf.cc */,
 				40C7638A1ABCED7100410152 /* Leaf.h */,
@@ -486,6 +541,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		4011BB1A21D7C45300256470 /* EvioTool_Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4011BB1F21D7C45300256470 /* Build configuration list for PBXNativeTarget "EvioTool_Test" */;
+			buildPhases = (
+				4011BB1721D7C45300256470 /* Sources */,
+				4011BB1821D7C45300256470 /* Frameworks */,
+				4011BB1921D7C45300256470 /* CopyFiles */,
+				4011BB2521D7D72B00256470 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EvioTool_Test;
+			productName = EvioTool_Test;
+			productReference = 4011BB1B21D7C45300256470 /* EvioTool_Test */;
+			productType = "com.apple.product-type.tool";
+		};
 		40A1036721D29A9A0022AD2E /* HPSEvioReader */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40A1037021D29A9B0022AD2E /* Build configuration list for PBXNativeTarget "HPSEvioReader" */;
@@ -589,6 +662,10 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = UNH;
 				TargetAttributes = {
+					4011BB1A21D7C45300256470 = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+					};
 					40A1036721D29A9A0022AD2E = {
 						CreatedOnToolsVersion = 10.1;
 						ProvisioningStyle = Automatic;
@@ -622,6 +699,7 @@
 				40E74622191B0BFC008E4235 /* HPSEvioReader_Test */,
 				40E6BFE91917E1F400BF03CA /* et_evio_blaster */,
 				40E74634191DA8F0008E4235 /* et_evio_test_consumer */,
+				4011BB1A21D7C45300256470 /* EvioTool_Test */,
 				40C13D2D19704834008307A1 /* AllEvioTool */,
 			);
 		};
@@ -708,6 +786,24 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4011BB2521D7D72B00256470 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
 		40A1038121D2A0830022AD2E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -774,6 +870,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
 		};
 		40D968A921C892190075DF34 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -796,6 +893,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4011BB1721D7C45300256470 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4011BB1E21D7C45300256470 /* EvioTool_Test.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40A1036521D29A9A0022AD2E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -811,11 +916,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				402C391521D9778900352855 /* FADCdata.h in Sources */,
 				40A1036321D29A590022AD2E /* EvioParser.h in Sources */,
 				40800C5221CC05D100C2D6BC /* Leaf.h in Sources */,
 				40C763861ABCECA400410152 /* EvioParser.cc in Sources */,
 				40C7638C1ABCED7100410152 /* Leaf.cc in Sources */,
 				40C763921ABCED8600410152 /* Bank.cc in Sources */,
+				4011BB0C21D6D21900256470 /* FADCdata.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -846,6 +953,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4011BB2321D7D6FF00256470 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4011BB1A21D7C45300256470 /* EvioTool_Test */;
+			targetProxy = 4011BB2221D7D6FF00256470 /* PBXContainerItemProxy */;
+		};
 		40C13D3219704840008307A1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 40E49CFD19034D3E00390847 /* EvioTool */;
@@ -886,9 +998,131 @@
 			target = 40E49CFD19034D3E00390847 /* EvioTool */;
 			targetProxy = 40E7462F191BD2EC008E4235 /* PBXContainerItemProxy */;
 		};
+		40EBBBF821D468B20013747B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40A1036721D29A9A0022AD2E /* HPSEvioReader */;
+			targetProxy = 40EBBBF721D468B20013747B /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4011BB2021D7C45300256470 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E74618191826EB008E4235 /* programs.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4011BB2121D7C45300256470 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E74618191826EB008E4235 /* programs.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		40A1037121D29A9B0022AD2E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1118,6 +1352,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4011BB1F21D7C45300256470 /* Build configuration list for PBXNativeTarget "EvioTool_Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4011BB2021D7C45300256470 /* Debug */,
+				4011BB2121D7C45300256470 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		40A1037021D29A9B0022AD2E /* Build configuration list for PBXNativeTarget "HPSEvioReader" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

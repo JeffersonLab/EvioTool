@@ -11,7 +11,7 @@
 #pragma link off all functions;
 #pragma link off all typedef;
 
-
+#pragma link C++ class EvioParser+;
 #pragma link C++ class Bank+;
 #pragma link C++ class vector<Bank>;
 #pragma link C++ function Bank::Add_Leaf<int>;
@@ -38,6 +38,5 @@
 #pragma link C++ function Bank::Get_data_vector<float>;
 #pragma link C++ function Bank::Get_data_vector<double>;
 #pragma link C++ function Bank::Get_data_vector<string>;
-#pragma link C++ class EvioParser+;
 //
 #endif

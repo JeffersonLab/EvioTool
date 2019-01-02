@@ -45,9 +45,10 @@ using namespace std;
 #include "TNamed.h"
 
 #include "Leaf.h"
+#include "FADCdata.h"
 #include "Bank.h"
 
-#define BANKNUM 0x0e
+#define TOP_BANK_TYPE 0x10   // Standard container type.
 
 enum DebugType_t {
   Debug_Info  = 0x01,
@@ -70,7 +71,7 @@ public:
   
   bool fFullErase; // Useful with fAutoAdd=true and no dictionary, erase fully at new event, so bank structure is gone completely. Otherwise the bank structure is kept.
 
-// private:
+  // private:
   int evio_handle;
 
   const unsigned int *evio_buf; // Buf ptr to read event into.
@@ -82,14 +83,36 @@ public:
   void parseDictionary(const char *dictf);
   int NextNoParse(void);
   int Next(void);
-  int ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node);
-  int LeafNodeHandler(const unsigned int *buf,int len, int padding, int contentType, int tag, int num,Bank *node);
-  Bank *ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType, int tag, int num, Bank *node, int depth);
-  int AddOrFillLeaf_int(const int *buf,int len,int tag,int num,Bank *node);
-  int AddOrFillLeaf_uint32(const uint32_t *buf,int len,int tag,int num,Bank *node);
-  int AddOrFillLeaf_float(const float *buf,int len,int tag,int num,Bank *node);
-  int AddOrFillLeaf_double(const double *buf,int len,int tag,int num,Bank *node);
-  int AddOrFillLeaf_string(const char *buf,int len,int tag,int num,Bank *node);
+  int ParseEvioBuff(const unsigned int *buf);                                  // Top level buffer parser.
+  int ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node); // Recursive buffer parser.
+  int LeafNodeHandler(const unsigned int *buf,int len, int padding, int contentType,unsigned short tag,unsigned char num,Bank *node);
+  Bank *ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag, unsigned char num, Bank *node, int depth);
+  
+  template<typename T> int AddOrFillLeaf(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
+    // Add or Fill an int leaf in the bank node.
+    // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
+    // If fAutoAdd is true, if not found, a new leaf is added and filled.
+    int loc = node->Find(tag,num);
+    if( loc == -1){
+      if(fAutoAdd){
+        char str[100];
+        sprintf(str,"Int-%ud-%ud",tag,num);
+        if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
+        node->Add_Leaf<T>(str,tag,num,"Auto added int leaf");
+        loc= node->leafs->GetEntriesFast()-1;
+      }else{
+        return 0;
+      }
+    }
+    
+    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " generic for <" << ((Leaf<T> *)node->leafs->At(loc))->Get_type() << "> \n";
+    node->Push_data_array(loc, (T *)buf, len);
+    
+    return 1;
+  };
+  
+
+  
   
   void SetDebug(int bits=0x0F){ fDebug = bits; }
 //  int AddBank(Bank &b);

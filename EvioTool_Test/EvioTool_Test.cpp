@@ -1,9 +1,10 @@
 //
 //  main.cpp
-//  HPSEvioReader_Test
+//  EvioTool_Test
 //
-//  Created by Maurik Holtrop on 5/7/14.
-//  Copyright (c) 2014 UNH. All rights reserved.
+//  Created by Maurik Holtrop on 12/29/18.
+//  Copyright © 2018 UNH. All rights reserved.
+//
 //
 #include <ratio>
 #include <chrono>
@@ -14,8 +15,7 @@
 #include <string>
 using namespace std;
 
-#include "HPSEvent.h"
-#include "HPSEvioReader.h"
+#include "EvioParser.h"
 
 struct Arguments_t {
   string filename;
@@ -29,7 +29,8 @@ struct Arguments_t {
   bool   show_head;
   bool   show_svt;
   bool   show_ecal;
-  
+  bool   auto_add;
+  bool   print_evt;
 };
 
 void Print_Usage(const char *name);
@@ -38,44 +39,58 @@ void Parse_Args(int *argc, const char **argv, Arguments_t *p_arg);
 int main(int argc, const char * argv[])
 {
   Arguments_t args;
-  EVIO_Event_t *evt;
-
   Parse_Args(&argc,argv,&args);
   
+  EvioParser *etool;
   
-  evt = new EVIO_Event_t;
-  EvioEventInit(evt);
-  
-  HPSEvioReader *etool;
   if(args.use_et){
-    etool= new HPSEvioReader();
-    if(args.et_name.length()) etool->et_file_name=args.et_name;
-    if(args.et_port) etool->et_port = args.et_port;
-    if(args.et_host_name.length()) etool->et_host_name =args.et_host_name;
-    
-    if(etool->openEt()){
-      cout << "Error opeing the ET system. Exit. \n";
-      exit(1);
-    }
+    cout << "Error ET system not yet implemented. Exit. \n";
+    exit(1);
   }else{
-    etool= new HPSEvioReader(args.filename.c_str());
+    etool= new EvioParser();
+    etool->Open(args.filename.c_str());
   }
-  etool->fDebug = args.debug;
-  etool->Print();
+  if(args.debug==0){
+    etool->fDebug = 0b000000;
+  }else if(args.debug==1){
+    etool->fDebug = 0b000001;
+  }else if(args.debug==2){
+    etool->fDebug = 0b000011;
+  } else if(args.debug == 3){
+    etool->fDebug = 0b000111;
+  } else{
+    etool->fDebug = 0xFF;
+  }
+
+  // Setup the Event structure"
+  etool->fAutoAdd=false;
+  etool->fChop_level=1;
+  etool->tags={136,132,130,129};  // Parse HPS physics events only.
+  Leaf<unsigned int> *Header = etool->Add_Leaf<unsigned int>("Header",49152,0,"Header bank");
+  Bank *ECAL = etool->Add_Bank("Ecal1",{37,39},0,"Ecal bank 1");
+  Leaf<FADCdata> *FADC = ECAL->Add_Leaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
+
+  etool->fAutoAdd = args.auto_add;
   
+  cout << "Debug set to " << etool->fDebug << " Auto add = " << etool->fAutoAdd << endl;
+  
+  etool->PrintBank(5);
+
   auto start = std::chrono::system_clock::now();
   auto time1 = start;
   long evt_count=0;
   long totalCount=0;
   std::chrono::microseconds totalTime(0);
-
-  while(etool->read()){
+  
+  while(etool->Next() == S_SUCCESS){
     if(args.debug) cout<<"EVIO Event " << evt_count << endl;
-    etool->parse(evt);
     evt_count++;
-    if(args.show_head) EvioEventPrint(evt,0);
-    if(args.show_svt) EvioEventPrintSVT(evt,1);
-    if(args.show_ecal) EvioEventPrintECAL(evt,1);
+    if(args.print_evt) {
+      etool->PrintBank(10);
+    }
+    if(args.show_head) {};
+    if(args.show_svt)  {};
+    if(args.show_ecal) {};
     if(!args.quiet && evt_count%100000 ==0 ){
       /* statistics */
       auto time2 = std::chrono::system_clock::now();
@@ -85,7 +100,7 @@ int main(int argc, const char * argv[])
         double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
         totalCount += evt_count;
         double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-        printf("%s: %3.4g kHz,  %3.4g kHz Avg. Event: %6d\n", argv[0], rate/1000., avgRate/1000.,evt->event_number);
+        printf("%s: %3.4g kHz,  %3.4g kHz Avg. Event: %6d\n", argv[0], rate/1000., avgRate/1000.,Header->data[0]);
         evt_count = 0;
         time1 = std::chrono::system_clock::now();
       }
@@ -96,7 +111,7 @@ int main(int argc, const char * argv[])
   totalTime += delta_t;
   totalCount += evt_count;
   double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-  printf("Last event: %6d\n",evt->event_number);
+  printf("Last event: %6d\n",Header->data[0]);
   printf("Final: %3.4g kHz \n", avgRate/1000.);
   return 0;
 }
@@ -111,6 +126,8 @@ void Parse_Args(int *argc,const char **argv, Arguments_t *p_arg){
   
   p_arg->debug=0;
   p_arg->quiet=0;
+  p_arg->auto_add=false;
+  p_arg->print_evt=false;
   p_arg->use_et=0;
   p_arg->filename="";
   p_arg->et_name="";
@@ -127,6 +144,10 @@ void Parse_Args(int *argc,const char **argv, Arguments_t *p_arg){
         p_arg->quiet=1;
       }else if(strcmp(argv[i],"-debug")==0 || strcmp(argv[i],"-d")==0){
         p_arg->debug++;
+      }else if(strcmp(argv[i],"-auto")==0 || strcmp(argv[i],"-a")==0){
+        p_arg->auto_add=true;
+      }else if(strcmp(argv[i],"-print")==0 || strcmp(argv[i],"-P")==0){
+        p_arg->print_evt=true;
       }else if(strcmp(argv[i],"-SVT")==0 || strcmp(argv[i],"-S")==0){
         p_arg->show_svt=true;
       }else if(strcmp(argv[i],"-ECAL")==0 || strcmp(argv[i],"-E")==0){
@@ -141,7 +162,7 @@ void Parse_Args(int *argc,const char **argv, Arguments_t *p_arg){
         I_PLUS_PLUS;
         long int ii;
         sscanf(argv[i],"%ld",&ii);
-//        G_N_Events = ii;
+        //        G_N_Events = ii;
         REMOVE_ONE;
       }else if(strcmp(argv[i],"-f")==0 || strcmp(argv[i],"-et_name")==0){
         I_PLUS_PLUS;
@@ -153,7 +174,7 @@ void Parse_Args(int *argc,const char **argv, Arguments_t *p_arg){
         p_arg->et_host_name =argv[i];
         //        G_N_Events = ii;
         REMOVE_ONE;
-
+        
       }else if(strcmp(argv[i],"-p")==0 || strcmp(argv[i],"-et_port")==0){
         I_PLUS_PLUS;
         sscanf(argv[i],"%d",&p_arg->et_port);
@@ -205,7 +226,8 @@ void Print_Usage(const char *name){
   cout << "  -c  -cont          Show content of header and bank counts.\n";
   cout << "  -S  -SVT           Show content of SVT banks\n";
   cout << "  -E  -ECAL          Show contents of ECAL banks\n";
+  cout << "  -a  -auto          Auto add all encountered banks.\n";
+  cout << "  -P  -print         Print entire event. \n";
 }
-
 
 

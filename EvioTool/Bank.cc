@@ -10,7 +10,7 @@
 
 ClassImp(Bank);
 
-int  Bank::Add_Leaf(string name,int itag,int inum,string desc,int type){
+int  Bank::Add_Leaf(string name,unsigned short itag,unsigned char inum,string desc,int type){
   // Add a leaf to the Bank with definitions given in the parameters.
   int location= leafs->GetEntriesFast();
   name=StoreLocation(name,location);
@@ -42,24 +42,47 @@ int  Bank::Add_Leaf(string name,int itag,int inum,string desc,int type){
 }
 
 // Specialized version for an array of character strings.
-void Bank::Push_data_array(int index, const char *dat, int len){
+template<> void Bank::Push_data_array<const char>(int index, const char *dat, int len){
   // Add the vector to the leaf at index.
   // Put a buffer of char into the string if Leaftype is string
   const char *start = dat;
   char *c = (char *)start;
   string s;
   while((c[0]!=0x4)&&((c-start)< len)) {
-    s=string(c);
-    ((Leaf<string> *)leafs->At(index))->Push_back(s);
-    c+=s.size()+1;
+    char *n=c;
+    while( std::isprint(*n++)){};
+    if( (n-c-1)>0){
+      s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
+      ((Leaf<string> *)leafs->At(index))->Push_back(s);
+    }
+    c=n;
   }
 }
+
+// Specialized version for an array of character strings.
+template<> void Bank::Push_data_array<string>(int index, const string *dat, int len){
+  // Add the vector to the leaf at index.
+  // Put a buffer of char into the string if Leaftype is string
+  const char *start =(const char *) dat;
+  char *c = (char *)start;
+  string s;
+  while((c[0]!=0x4)&&((c-start)< len)) {
+    char *n=c;
+    while( std::isprint(*n++)){};
+    if( (n-c-1)>0){
+      s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
+      ((Leaf<string> *)leafs->At(index))->Push_back(s);
+    }
+    c=n;
+  }
+}
+
 
 vector<string> Bank::Get_names(){
   // Get all the names stored in the bank for type.
   vector<string> out;
-  map<string,int>::iterator it;
-  for(it = name_index.begin(); it != name_index.end(); ++it){
+  // map<string,unsigned short>::iterator it;
+  for(auto it = name_index.begin(); it != name_index.end(); ++it){
     out.push_back(it->first);
   }
   return( out );
@@ -123,12 +146,17 @@ void Bank::PrintBank(int print_leaves, int depth, int level){
   level++;
   char opts[48];
   sprintf(opts,"N%03dL%03d",print_leaves,level);
-  cout << s << "Bank: " << GetName() << "\t tag= " << tag << " num = " << num << endl;
+  cout << s << "Bank: " << GetName() << "\t tags= [";
+  for(unsigned short t: tags){
+    cout<<t << ",";
+  }
+  cout << "] num = " << (int)num << endl;
   if(print_leaves && leafs->GetEntriesFast() ){
     cout << s << "-----------------------------------------------------------------------\n";
     for(int i=0; i< leafs->GetEntriesFast() && i<print_leaves; ++i){
       leafs->At(i)->Print(opts);
     }
+    cout << endl;
   }
   if(level<=depth){
     for(int j=0;j< banks->GetEntriesFast(); ++j){

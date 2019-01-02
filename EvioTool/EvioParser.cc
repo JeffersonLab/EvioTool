@@ -17,17 +17,19 @@
 // EvioParser
 //----------------------------------------------------------------------------------
 
-EvioParser::EvioParser(): Bank("EvioParser",0,0,"The top node of the EVIO tree"){
-    // Initialization....
-    fDebug=0;
-    fAutoAdd=true; // Automatically add banks, even if not in dictionary.
-    fFullErase=false; // Do not erase the bank structure on a new event.
-    fChop_level=1;       // Chop, or collapse, the top N bank levels.
-    fMax_level=1000000;  // Prune, or collapse, the bottom (deepest) N bank levels.
-    // Setting fChop_level = 1 will mean the top most bank, usually a container bank tag=1 num=0,
-    // is not copied but instead treated as if it wasn't there.
-    // Setting fMax_level = fChop_level+1 means you get only one deep banks.
-    
+EvioParser::EvioParser(): Bank("EvioParser",{},0,"The top node of the EVIO tree"){
+  // Initialization....
+  fDebug=0;
+  fAutoAdd=true;           // Automatically add banks, even if not in dictionary.
+  fFullErase=false;        // Do not erase the bank structure on a new event.
+  fChop_level=1;           // Chop, or collapse, the top N bank levels.
+  fMax_level=1000000;      // Prune, or collapse, the bottom (deepest) N bank levels.
+  
+  // Setting fChop_level = 1 will mean the top most bank, the "event" bank
+  // is not copied but instead treated as if it wasn't there.
+  // Setting fMax_level = fChop_level+1 means you get only one deep banks.
+  // With fChop_level=0, fMax_level at 2 and fAutoAdd=true, you can explore the top level banks
+  // of an EVIO file.
 }
 
 int EvioParser::Open(const char *filename,const char *dictf){
@@ -69,19 +71,20 @@ int EvioParser::NextNoParse(){
 
 int EvioParser::Next(){
     // Read an event from the EVIO file and parse it.
+    // Returns 0 on success, or an error code if not.
     
     int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
-    if(stat==EOF) return(0);
+    if(stat==EOF) return(-1);
     if(stat!=S_SUCCESS){
         cerr << "EvioParser::Next() -- ERROR -- problem reading file. \n";
-        return(-1);
+        return(-2);
     }
     if(fFullErase) Clear("Full"); // Clear out old data.
     else Clear();
     
-    ParseBank(evio_buf,BANKNUM,0,this);
+    stat=ParseEvioBuff(evio_buf);  // Recursively parse the banks in the buffer.
     
-    return 1;
+    return stat;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,6 +95,35 @@ int EvioParser::Next(){
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+int EvioParser::ParseEvioBuff(const unsigned int *buf){
+  
+// Assumes data type 0x10 for the top EVIO bank.
+  this_tag    = buf[1]>>16;
+  this_num    = buf[1]&0xff;
+
+  unsigned short contentType = (buf[1]>>8)&0x3f;
+  
+  if( fChop_level>0){ // This means the EvioParser is the top level. Check if OK.
+    if(contentType != 0x10 && contentType != 0x0e){ // So the events better be of Container type and not Leaf type.
+      printf("ERROR Parsing EVIO file. Top level is not 0x10 or 0x0e container type but: 0x%02x \n",contentType);
+      printf("Aborting event \n");
+      return(-3);
+    }
+    // Check if the event has the desired tag number. Skip if not.
+    if(tags.size() && std::find(tags.begin(),tags.end(),this_tag) == tags.end()){ // Event tag not found in tags list, so skip it.
+      if(fDebug&Debug_Info2) cout << "Event of tag = " << this_tag << " skipped \n";
+      return(S_SUCCESS);
+    }
+    
+//    int length      = buf[0]+1;
+//    int padding     = (buf[1]>>14)&0x3;
+//    int dataOffset  = 2;
+  }
+
+  ParseBank(buf, 0x10,0,this);
+  
+  return(S_SUCCESS);
+}
 
 int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node){
     
@@ -138,7 +170,7 @@ int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank
             
         default:
             cerr << "EvioParser::ParseBank -- ERROR -- illegal bank type: " << bankType << endl;
-            return 0;
+            return(-4);
     }
     
     
@@ -150,63 +182,83 @@ int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank
     // more containers.
     //
     
-    int stat=0;
+    int stat=S_SUCCESS;
     int i;
     Bank *new_node;
-    
+  
+    buf += dataOffset;
+    int len = length-dataOffset;
+  
+    if( (fDebug & Debug_Info2) && contentType < 0x10){
+      for(i=0;i<depth;i++) cout << "    ";
+      cout<< "L["<<depth<<"] parent= "<<node->GetName() <<" type = "<< contentType << " tag= " << tag << " num= " << (int)num<< endl;
+    }
+
     switch (contentType) {
-            
-        case 0x0:  // four-byte types
-        case 0x1:
-        case 0x2:
-        case 0xb:
-        case 0xf:
-            
-            //        newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],length-dataOffset,&buf[dataOffset],userArg);
-            
-        case 0x3: // one-byte types
-        case 0x6:
-        case 0x7:
-            
-            //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],(length-dataOffset)*4-padding,
-            //                              (int8_t*)(&buf[dataOffset]),userArg);
-            
-        case 0x4: // two-byte types
-        case 0x5:
-            
-            //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,
-            //                              &buf[0],(length-dataOffset)*2-padding/2,(int16_t*)(&buf[dataOffset]),userArg);
-            
-        case 0x8: // eight-byte types
-        case 0x9:
-        case 0xa:
-            
+      case 0x0:   // uint32_t
+      case 0x1:   // uint32_t
+        stat = AddOrFillLeaf<unsigned int>(buf,len,tag, num, node);
+        break;
+      case 0x2:   // float
+        stat = AddOrFillLeaf<float>(buf, len, tag, num, node);
+        break;
+      case 0x3:    // char's
+        stat = AddOrFillLeaf<string>(buf,len*4-padding,tag, num, node);
+        //        stat = AddOrFillLeaf_string((const char *)buf,len*4-padding,tag, num, node);
+        break;
+        
+      case 0x8: // double
+        stat = AddOrFillLeaf<double>(buf, len*2-padding/2, tag, num, node);
+        break;
+        
+      case 0xb:   // int32_t = int
+        stat = AddOrFillLeaf<int>(buf, len, tag, num, node);
+        break;
+      case 0xf:   // FADC compound type
+        stat = AddOrFillLeaf<FADCdata>(buf, len, tag, num, node);
+        break;
+        // --------------------- one-byte types
+      case 0x4:   // int16_t = short
+        stat = AddOrFillLeaf<short>(buf,len,tag, num, node);
+        break;
+      case 0x5:   // uint16_t = unsigned short
+        stat = AddOrFillLeaf<unsigned short>(buf,len,tag, num, node);
+        break;
+      case 0x6:  // int8_t = char
+        stat = AddOrFillLeaf<char>(buf,len,tag, num, node);
+        break;
+      case 0x7:  // uint8_t = unsigned char
+        stat = AddOrFillLeaf<unsigned char>(buf,len,tag, num, node);
+        break;
+      case 0x9: // int64_t
+        stat = AddOrFillLeaf<long long>(buf,len,tag, num, node);
+        break;
+      case 0xa: // uint64_t
+        stat = AddOrFillLeaf<unsigned long long>(buf,len,tag, num, node);
+        break;
+
+        
             //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,
             //                              &buf[0],(length-dataOffset)/2,(int64_t*)(&buf[dataOffset]),userArg);
-            if(fDebug & Debug_Info2){
-                for(i=0;i<depth;i++) cout << "    ";
-                cout<< "L["<<depth<<"] parent= "<<node->GetName() <<" type = "<< contentType << " tag= " << tag << " num= " << (int)num<< endl;
-                
-            }
-            stat = LeafNodeHandler(&buf[dataOffset],(length-dataOffset),padding,contentType,tag,(int)num,node);
-            
-            break;
-            
+//            stat = LeafNodeHandler(&buf[dataOffset],(length-dataOffset),padding,contentType,tag,(int)num,node);
+//
+//            break;
+        
+        case 0xc:
+        case 0xd:
         case 0xe:
         case 0x10:
-        case 0xd:
         case 0x20:
-        case 0xc:
         case 0x40:
             // container types
             //newUserArg=handler.containerNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],length-dataOffset,&buf[dataOffset],userArg);
             
-            new_node = ContainerNodeHandler(&buf[dataOffset],(length-dataOffset),padding,contentType,tag,(int)num,node,depth);
-            
+  //          new_node = ContainerNodeHandler(&buf[dataOffset],(length-dataOffset),padding,contentType,tag,(int)num,node,depth);
+            new_node = ContainerNodeHandler(buf,len,padding,contentType,tag,(int)num,node,depth);
             // parse contained banks
             p       = 0;
-            bankLen = length-dataOffset;
-            data    = &buf[dataOffset];
+            bankLen = len;
+            data    = buf;
             mask    = ((contentType==0xe)||(contentType==0x10))?0xffffffff:0xffff;
             
             if(fDebug & Debug_Info2){
@@ -216,7 +268,7 @@ int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank
             }
             depth++;
             while(p<bankLen) {
-                if(new_node) ParseBank(&data[p],contentType,depth,new_node);
+                if(new_node) ParseBank(&data[p],contentType,depth,new_node);  // Recurse to read one level deeper.
                 p+=(data[p]&mask)+1;
             }
             depth--;
@@ -229,202 +281,95 @@ int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank
             
         default:
             cerr << "EvioParser::ParseBank -- ERROR -- illegal bank contents. \n";
-            return 0;
+            return(-5);
     }
     return(stat);
 };
 
-Bank *EvioParser::ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType, int tag, int num, Bank *node,int depth){
-    
-    if(depth<fChop_level || depth > fMax_level){  // We are pruning the tree.
-        if(fDebug & Debug_L2) cout << "EvioParser::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
-        return node;
+Bank *EvioParser::ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType, unsigned short tag,unsigned char num, Bank *node,int depth){
+  
+  if(depth<fChop_level || depth > fMax_level){  // We are pruning the tree.
+    if(fDebug & Debug_L2) cout << "EvioParser::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
+    node->this_tag = tag; // TODO: VERIFY that this is correct and needed here.
+    node->this_num = num;
+    return node;
+  }
+  
+  int loc = node->Find_bank(tag,num);
+  if( loc == -1){
+    if(fAutoAdd){
+      char str[100];
+      sprintf(str,"Bank-%d-%d",tag,num);
+      if(fDebug&Debug_L2) cout << "Adding a new Bank to " << node->GetName() << " with name: " << str << endl;
+      loc=node->banks->GetEntriesFast();
+      node->Add_Bank(str,tag,num,"Auto added Bank");
+    }else{
+      if(fDebug&Debug_L2) cout << "Not adding a new bank for tag= " << tag<< " num= " << num << endl;
+      return NULL;
     }
-    
-    int loc = node->Find_bank(tag,num);
-    if( loc == -1){
-        if(fAutoAdd){
-            char str[100];
-            sprintf(str,"Bank-%d-%d",tag,num);
-            if(fDebug&Debug_L2) cout << "Adding a new Bank to " << node->GetName() << " with name: " << str << endl;
-            loc = node->Add_Bank(str,tag,num,"Auto added Bank");
-        }else{
-            if(fDebug&Debug_L2) cout << "Not adding a new bank for tag= " << tag<< " num= " << num << endl;
-            return NULL;
-        }
-    }
-    
-    return (Bank *)node->banks->At(loc);
+  }
+  Bank *new_node = (Bank *)node->banks->At(loc);
+  new_node->this_tag=tag;
+  new_node->this_num=num;
+  return(new_node);
 };
 
 
-int EvioParser::LeafNodeHandler(const unsigned int *buf, int len, int padding, int contentType, int tag, int num, Bank *node){
+int EvioParser::LeafNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag,unsigned char num, Bank *node){
     
     int stat;
     switch(contentType){
-            // ----------------------- four-byte types
-        case 0x0:   // uint32_t
-        case 0x1:   // uint32_t
-            stat = AddOrFillLeaf_uint32((uint32_t *)buf,len,tag, num, node);
-            break;
-        case 0x2:   // float
-            stat = AddOrFillLeaf_float((float *)buf, len, tag, num, node);
-            break;
-        case 0xb:   // int32_t = int
-            stat = AddOrFillLeaf_int((int *)buf, len, tag, num, node);
-            break;
-        case 0xf:   // FADC compound type
- //           cerr << "EvioParser::LeafNodeHandler -- Please add FADC compound type \n";
-            break;
-            
-            //        newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],length-dataOffset,&buf[dataOffset],userArg);
-            // --------------------- one-byte types
-        case 0x3:    // char's
-            stat = AddOrFillLeaf_string((char *)buf,len*4-padding,tag, num, node);
-            break;
-        case 0x6:  // int8_t = char
-            break;
-        case 0x7:  // uint8_t = unsigned char
-            break;
-            //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],(length-dataOffset)*4-padding,
-            //                              (int8_t*)(&buf[dataOffset]),userArg);
-            
-            // -------------------------- two-byte types
-        case 0x4:   // int16_t = short
-            break;
-        case 0x5:   // uint16_t = unsigned short
-            break;
-            
-            //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,
-            //                              &buf[0],(length-dataOffset)*2-padding/2,(int16_t*)(&buf[dataOffset]),userArg);
-            // ---------------------------- eight-byte types
-        case 0x8: // double
-            stat = AddOrFillLeaf_double((double *)buf, len*2-padding/2, tag, num, node);
-            break;
-        case 0x9: // int64_t
-            break;
-        case 0xa: // uint64_t
-            break;
+        // ----------------------- four-byte types
+      case 0x0:   // uint32_t
+      case 0x1:   // uint32_t
+        stat = AddOrFillLeaf<uint32_t>(buf,len,tag, num, node);
+        break;
+      case 0x2:   // float
+        stat = AddOrFillLeaf<float>(buf, len, tag, num, node);
+        break;
+      case 0x3:    // char's
+        stat = AddOrFillLeaf<string>(buf,len*4-padding,tag, num, node);
+//        stat = AddOrFillLeaf_string((const char *)buf,len*4-padding,tag, num, node);
+        break;
+
+      case 0x8: // double
+        stat = AddOrFillLeaf<double>(buf, len*2-padding/2, tag, num, node);
+        break;
+
+      case 0xb:   // int32_t = int
+        stat = AddOrFillLeaf<int>(buf, len, tag, num, node);
+        break;
+      case 0xf:   // FADC compound type
+        stat = AddOrFillLeaf<FADCdata>(buf, len, tag, num, node);
+        break;
+                  // --------------------- one-byte types
+      case 0x4:   // int16_t = short
+//        break;
+      case 0x5:   // uint16_t = unsigned short
+//        break;
+      case 0x6:  // int8_t = char
+//        break;
+      case 0x7:  // uint8_t = unsigned char
+//        break;
+        //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],(length-dataOffset)*4-padding,
+        //                              (int8_t*)(&buf[dataOffset]),userArg);
+        // -------------------------- two-byte types
+        //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,
+        //                              &buf[0],(length-dataOffset)*2-padding/2,(int16_t*)(&buf[dataOffset]),userArg);
+        // ---------------------------- eight-byte types
+      case 0x9: // int64_t
+//        break;
+      case 0xa: // uint64_t
+//        break;
+      default:
+        std::cout << "Unhandled Leaf node type: " << contentType << std::endl;
     }
     
     return 1;
 }
 
-int EvioParser::AddOrFillLeaf_int(const int *buf,int len,int tag,int num,Bank *node){
-    // Add or Fill an int leaf in the bank node.
-    // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
-    // If fAutoAdd is true, if not found, a new leaf is added and filled.
-    int loc = node->Find(tag,num);
-    if( loc == -1){
-        if(fAutoAdd){
-            char str[100];
-            sprintf(str,"Int-%d-%d",tag,num);
-            if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->num << " with name: " << str << endl;
-            loc = node->Add_Leaf<int>(str,tag,num,"Auto added int leaf");
-        }else{
-            return 1;
-        }
-    }
-    
-    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << endl;
-    node->Push_data_array(loc, buf, len);
-    
-    return 1;
-};
-
-int EvioParser::AddOrFillLeaf_uint32(const uint32_t *buf,int len,int tag,int num,Bank *node){
-  // Add or Fill an int leaf in the bank node.
-  // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
-  // If fAutoAdd is true, if not found, a new leaf is added and filled.
-  int loc = node->Find(tag,num);
-  if( loc == -1){
-    if(fAutoAdd){
-      char str[100];
-      sprintf(str,"Uint32-%d-%d",tag,num);
-      if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->num << " with name: " << str << endl;
-      loc = node->Add_Leaf<uint32_t>(str,tag,num,"Auto added int leaf");
-    }else{
-      return 1;
-    }
-  }
-  
-  if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << endl;
-  node->Push_data_array(loc, buf, len);
-  
-  return 1;
-};
-
-
-
-int EvioParser::AddOrFillLeaf_float(const float *buf,int len,int tag,int num,Bank *node){
-    // Add or Fill a float leaf in the bank node.
-    // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
-    // If fAutoAdd is true, if not found, a new leaf is added and filled.
-    int loc = node->Find(tag,num);
-    if( loc == -1){
-        if(fAutoAdd){
-            char str[100];
-            sprintf(str,"Float-%d-%d",tag,num);
-            if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->num << " with name: " << str << endl;
-            loc = node->Add_Leaf<float>(str,tag,num,"Auto added float leaf");
-        }else{
-            return 1;
-        }
-    }
-    
-    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << endl;
-    node->Push_data_array(loc, buf, len);
-    
-    return 1;
-};
-
-int EvioParser::AddOrFillLeaf_double(const double *buf,int len,int tag,int num,Bank *node){
-    // Add or Fill a float leaf in the bank node.
-    // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
-    // If fAutoAdd is true, if not found, a new leaf is added and filled.
-    int loc = node->Find(tag,num);
-    if( loc == -1){
-        if(fAutoAdd){
-            char str[100];
-            sprintf(str,"Double-%d-%d",tag,num);
-            if(fDebug&Debug_L1) cout << "Adding a new Leaf node to node: " << node->num << " with name: " << str << endl;
-            loc = node->Add_Leaf<double>(str,tag,num,"Auto added double leaf");
-        }else{
-            return 1;
-        }
-    }
-    
-    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << endl;
-    node->Push_data_array(loc, buf, len);
-    
-    return 1;
-};
-
-int EvioParser::AddOrFillLeaf_string(const char *buf,int len,int tag,int num,Bank *node){
-    // Add or Fill a float leaf in the bank node.
-    // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
-    // If fAutoAdd is true, if not found, a new leaf is added and filled.
-    int loc = node->Find(tag,num);
-    if( loc == -1){
-        if(fAutoAdd){
-            char str[100];
-            sprintf(str,"String-%d-%d",tag,num);
-            if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->num << " with name: " << str << endl;
-            loc = node->Add_Leaf<string>(str,tag,num,"Auto added string leaf");
-        }else{
-            return 1;
-        }
-    }
-    
-    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << endl;
-    node->Push_data_array(loc, buf, len);
-    
-    return 1;
-};
-
 void EvioParser::Test(void){
-    int bl=Add_Bank("test_bank",10,10,"A test bank");
-    Bank *test_bank = Get_bank_ptr(bl);
+    Bank *test_bank = Add_Bank("test_bank",10,10,"A test bank");
     test_bank->Add_Leaf<int>("First",1,1,"The first leaf");
     test_bank->Add_Leaf("Second",1,2,"The second leaf",Leaf_Int);
     Leaf<int> new_leaf("New",1,3,"A new leaf");

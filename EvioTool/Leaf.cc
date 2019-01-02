@@ -7,6 +7,7 @@
 //
 
 #include "Leaf.h"
+#include "EvioParser.h"
 
 // Template Specifications.
 template<> int Leaf<int>::Get_type(void){ return(Leaf_Int); };
@@ -14,6 +15,61 @@ template<> int Leaf<uint32_t>::Get_type(void){ return(Leaf_Uint32); };
 template<> int Leaf<float>::Get_type(void){ return(Leaf_Float); };
 template<> int Leaf<double>::Get_type(void){ return(Leaf_Double); };
 template<> int Leaf<string>::Get_type(void){ return(Leaf_String); };
+template<> int Leaf<FADCdata>::Get_type(void){ return(Leaf_FADC); };
+
+// Push the array if T is "string".
+// This needs specification, because strings are not a simple type.
+//template<> void Leaf<string>::Push_data_array(const string* dat, const int len){
+  // Put the data from vector at the end of the leaf.
+//  const char *ch = (const char *)dat;
+//  data.insert(data.end(),ch,ch+len);
+//}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// Template Specification on how to fill leafs of specific not simple types.
+//
+// These are specification for: template<typename T> int AddOrFillLeaf(const unsigned int *buf,int len,int tag,int num,Bank *node)
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+
+template <> int EvioParser::AddOrFillLeaf<string>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
+  // Add or Fill a float leaf in the bank node.
+  // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
+  // If fAutoAdd is true, if not found, a new leaf is added and filled.
+  int loc = node->Find(tag,num);
+  if( loc == -1){
+    if(fAutoAdd){
+      char str[100];
+      sprintf(str,"String-%u-%u",tag,num);
+      if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
+      node->Add_Leaf<string>(str,tag,num,"Auto added string leaf");
+      loc= node->leafs->GetEntriesFast()-1;
+    }else{
+      return 0;
+    }
+  }
+  
+  if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " template specification version for <string> " << endl;
+
+  // Specialized version for an array of character strings.
+  // Add the vector to the leaf at index.
+  // Put a buffer of char into the string if Leaftype is string
+    const char *start =(const char *) buf;
+    char *c = (char *)start;
+    string s;
+    while((c[0]!=0x4)&&((c-start)< len)) {
+      char *n=c;
+      while( std::isprint(*n++)){};
+      if( (n-c-1)>0){
+        s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
+        ((Leaf<string> *)node->leafs->At(loc))->Push_back(s);
+      }
+      c=n;
+    }
+  return 1;
+};
+
 
 ClassImp(Leaf_base);
 ClassImp(Leaf<int>);

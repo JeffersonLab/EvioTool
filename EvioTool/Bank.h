@@ -42,10 +42,13 @@ using namespace std;
 class Bank : public TNamed {
   // Mimicks a container bank in EVIO, with extra's.
 public:
-  int    tag;
-  int    num;
-
-  map<string,int>   name_index;         // Maps name to index.
+  vector< unsigned short>tags;  // Tags to select bank with.
+  unsigned char  num;           // num to select bank with. If set to 0, ignore.
+  
+  unsigned short this_tag;      // The actual tag of the parsed bank.
+  unsigned char  this_num;      // The actual num of the parsed bank.
+  
+  map<string,unsigned short> name_index;    // Maps names to index.
   TObjArray  *leafs;             // Stores the leafs.
   TObjArray  *banks;             // Stores other banks. In separate array, since separte content.
   
@@ -57,18 +60,30 @@ public:
     delete leafs;
     delete banks;
   }
-  Bank(string n,int ta,int nu,string desc): tag(ta),num(nu){
+  Bank(string n,std::initializer_list<unsigned short> tags,unsigned char num,string desc):tags(tags),num(num){
     SetName(n.c_str());
     SetTitle(desc.c_str());
     Init();
   }
-  Bank(Bank const &cp): tag(cp.tag),num(cp.num){
+  
+  Bank(string n,unsigned short tag,unsigned char num,string desc):num(num){
+    tags.push_back(tag);
+    SetName(n.c_str());
+    SetTitle(desc.c_str());
+    Init();
+  }
+  
+  Bank(Bank const &cp) {
+    tags = cp.tags;
+    num = cp.num;
     SetName(cp.GetName());
     SetTitle(cp.GetTitle());
     leafs = (TObjArray *)cp.leafs->Clone();
     banks = (TObjArray *)cp.banks->Clone();
   }
-  Bank(Bank *cp): tag(cp->tag),num(cp->num){
+  Bank(Bank *cp){
+    tags = cp->tags;
+    num  = cp->num;
     SetName(cp->GetName());
     SetTitle(cp->GetTitle());
     leafs = (TObjArray *)cp->leafs->Clone();
@@ -83,34 +98,52 @@ public:
     banks->SetOwner(kTRUE);
   }
   
-  int Add_Leaf(string name,int itag, int inum,string desc,int type);
-  template<typename T> int   Add_Leaf(Leaf<T> &leaf){
+  unsigned char GetNum(void){ return(this_num);};
+  unsigned short GetTag(void){ return(this_tag);};
+  vector<unsigned short> &GetTags(void){return(tags);}
+  
+  int Add_Leaf(string name,unsigned short itag, unsigned char inum,string desc,int type);
+  template<typename T> Leaf<T> * Add_Leaf(Leaf<T> &leaf){
     int location= leafs->GetEntriesFast();
     string name=StoreLocation(leaf.GetName(),location);
-    leafs->Add( new Leaf<T>(leaf));  // COPY the leaf, don't store a pointer!!!
-    return(location);
+    Leaf<T> *new_leaf = new Leaf<T>(leaf); //// COPY the leaf, don't ref to original.
+    leafs->Add(new_leaf);
+    return(new_leaf);
   }
   
-  template<typename T> int Add_Leaf(string name,int itag, int inum, string desc){
+  template<typename T> Leaf<T> *Add_Leaf(string name,unsigned short itag,unsigned char inum, string desc){
     int location= leafs->GetEntriesFast();
     name=StoreLocation(name,location);
-    leafs->Add( new Leaf<T>(name,itag,inum,desc));
-    return(location);
+    Leaf<T> *new_leaf =new Leaf<T>(name,itag,inum,desc);
+    leafs->Add(new_leaf);
+    return(new_leaf);
   }
   
-  int Add_Bank(string name,int itag, int inum, string desc){
-    // Add a Bank.
-    int location = banks->GetEntriesFast();
-//    name=StoreLocation(name,location);
-    banks->Add( new Bank(name,itag,inum,desc));
-    return(location);
+  Bank *Add_Bank(string name,unsigned short itags,unsigned char inum, string desc){
+    // Add a Bank witn name,tag,num,description.
+    // Returns a pointer to the new bank.
+    // int location = banks->GetEntriesFast();
+    // name=StoreLocation(name,location);
+    Bank *newbank = new Bank(name,itags,inum,desc);
+    banks->Add(newbank);
+    return(newbank);
+  }
+
+  Bank *Add_Bank(string name,std::initializer_list<unsigned short> itags, unsigned char inum, string desc){
+    // Add a Bank witn name,tag,num,description.
+    // Returns a pointer to the new bank.
+    // int location = banks->GetEntriesFast();
+    // name=StoreLocation(name,location);
+    Bank *newbank = new Bank(name,itags,inum,desc);
+    banks->Add(newbank);
+    return(newbank);
   }
   
   void  Clear(Option_t* = "");
   
-  string StoreLocation(string name,int location){
+  string StoreLocation(string name,unsigned short location){
     // Store the location under name, make sure name is unique!
-    map<string,int>::iterator loc=name_index.find(name);
+    map<string,unsigned short>::iterator loc=name_index.find(name);
     if(loc == name_index.end()){
       name_index[name]=location;
     }else{
@@ -122,19 +155,22 @@ public:
   }
   
   int Find(string name){
-    // Find the item with name, return location.
+    // Find the leaf item with name, return location.
     // If not found, return -1.
-    map<string,int>::iterator loc=name_index.find(name);
+    map<string,unsigned short>::iterator loc=name_index.find(name);
     if(loc != name_index.end()){
       return loc->second;
     }else return( -1);
   }
   
-  int Find(int itag,int inum){
+  int Find(unsigned short itag,unsigned char inum){
     // Find the location of the leaf with num, tag.
+    // Returns the location, or -1 if not found.
+    // If a leaf has num=0, or inum = 0 then inum is ignored.
+    //
     for(int i=0;i<leafs->GetEntriesFast();++i){
       if( ((Leaf_base *)leafs->At(i))->tag == itag &&
-          ((Leaf_base *)leafs->At(i))->num == inum){
+          ( ((Leaf_base *)leafs->At(i))->num==0 || inum==0 || ((Leaf_base *)leafs->At(i))->num == inum ) ){
         return(i);
       }
     }
@@ -148,13 +184,15 @@ public:
     return(idx);
   }
   
-  int Find_bank(int itag,int inum){
-    // Find the location of the leaf or bank with num, tag.
-    // Unfortunately, we need to search each of the vectors.
+  int Find_bank(unsigned short itag,unsigned char inum){
+    // Find the location of the leaf or bank with tag, num.
+    // Since "num" is not always used to identify a specific bank,
+    // bank->num=0 or inum=0 is treated as "don't care".
     // returns -1 if not found.
+    // TODO: STL Fast Search
     for(int i=0;i<banks->GetEntriesFast();++i){
-      if( ((Bank *)banks->At(i))->tag == itag &&
-          ((Bank *)banks->At(i))->num == inum){
+      if( std::find( ((Bank *)banks->At(i))->tags.begin(),((Bank *)banks->At(i))->tags.end(),itag) != ((Bank *)banks->At(i))->tags.end() &&
+         ( inum==0 || ((Bank *)banks->At(i))->num==0 || ((Bank *)banks->At(i))->num == inum)) {
         return(i);
       }
     }
@@ -284,7 +322,7 @@ public:
   }
   
   
-  template<typename T> void      Push_data_vector(string leaf_name, vector<T> &dat){
+  template<typename T> void  Push_data_vector(string leaf_name, vector<T> &dat){
     // Add the vector to the back of the data of leaf with name leaf_name
     int index = Get_index_from_name(leaf_name);
     if(index<0){
@@ -307,18 +345,16 @@ public:
     Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
     ll->Push_data_array(dat,len);
   }
-  
-  void Push_data_array(int index, const char *dat, int len);
- 
+   
   vector<string>  Get_names();
 
-  int Get_Leaf_size(int loc){
+  size_t Get_Leaf_size(int loc){
     // Return the size of the leaf at index loc
     return ((Leaf_base *)leafs->At(loc))->Get_size();
   }
 
   
-  int Get_Leaf_size(string leaf_name){
+  size_t Get_Leaf_size(string leaf_name){
     // Return the size of the leaf with name leaf_name
     int loc=Get_index_from_name(leaf_name);
     if(loc<0){
@@ -380,8 +416,8 @@ public:
 
   inline int Get_index_from_name(string leaf_name){
     // Gets the *location*, i.e type*MAX_DATA + index
-    map<string,int>::iterator found;
-    found = name_index.find(leaf_name);
+    // map<string,unsigned short>::iterator found;
+    auto found = name_index.find(leaf_name);
     if( found == name_index.end()){
       cerr << "Bank:: Get_location_from_name -- ERROR - Leaf with name " << leaf_name << " not found. \n";
       return(-1);
