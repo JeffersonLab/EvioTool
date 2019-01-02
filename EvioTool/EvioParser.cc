@@ -215,7 +215,7 @@ int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank
         stat = AddOrFillLeaf<int>(buf, len, tag, num, node);
         break;
       case 0xf:   // FADC compound type
-        stat = AddOrFillLeaf<FADCdata_raw>(buf, len, tag, num, node);
+        stat = AddOrFillLeaf<FADCdata>(buf, len, tag, num, node);
         break;
         // --------------------- one-byte types
       case 0x4:   // int16_t = short

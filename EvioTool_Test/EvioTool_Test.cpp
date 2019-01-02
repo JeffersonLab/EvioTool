@@ -68,7 +68,7 @@ int main(int argc, const char * argv[])
   etool->tags={136,132,130,129};  // Parse HPS physics events only.
   Leaf<unsigned int> *Header = etool->Add_Leaf<unsigned int>("Header",49152,0,"Header bank");
   Bank *ECAL = etool->Add_Bank("Ecal1",{37,39},0,"Ecal banks");
-  Leaf<FADCdata_raw> *FADC = ECAL->Add_Leaf<FADCdata_raw>("FADC",57601,0,"FADC mode 1 data");
+  Leaf<FADCdata> *FADC = ECAL->Add_Leaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
 
   etool->fAutoAdd = args.auto_add;
   

@@ -35,7 +35,6 @@
 #pragma link C++ class Leaf<float>+;
 #pragma link C++ class Leaf<double>+;
 #pragma link C++ class Leaf<string>+;
-#pragma link C++ class Leaf<FADCdata>+;
 #pragma link C++ class Leaf<long long>+;
 #pragma link C++ class Leaf<unsigned long long>+;
 
@@ -50,6 +49,7 @@
 #pragma link C++ class vector<Leaf<float> >;
 #pragma link C++ class vector<Leaf<double> >;
 #pragma link C++ class vector<Leaf<string> >;
-#pragma link C++ class vector<Leaf<FADCdata> >;
+// #pragma link C++ class vector<Leaf<FADCdata> >;
+// #pragma link C++ class Leaf<FADCdata>+;
 
 #endif 

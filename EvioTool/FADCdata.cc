@@ -16,7 +16,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-template <> int EvioParser::AddOrFillLeaf<FADCdata_raw>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
+template <> int EvioParser::AddOrFillLeaf<FADCdata>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
   // Add or Fill a float leaf in the bank node.
   // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
   // If fAutoAdd is true, if not found, a new leaf is added and filled.
@@ -52,11 +52,11 @@ template <> int EvioParser::AddOrFillLeaf<FADCdata_raw>(const unsigned int *buf,
   int indx=0;
   
 // We use emplace_back instead of creating the class and then push_back. This should save at least one copying step of the data
-// thus speeding up the code. Turns out that this code is 3x faster than the commented code at end of file.
+// thus speeding up the code. Turns out that this code is 4 to 5x faster than the commented code at end of file.
 // The constructor for FADCdata is created to do the work of re-interpreting the buffer.
 // See: Effective Modern C++, item 42.
 
-  Leaf<FADCdata_raw> *ll =(Leaf<FADCdata_raw> *)node->leafs->At(loc);
+  Leaf<FADCdata> *ll =(Leaf<FADCdata> *)node->leafs->At(loc);
   ll->data.reserve(16);
   unsigned char crate = node->this_tag;
   while( indx < buflen){
@@ -76,25 +76,7 @@ template <> int EvioParser::AddOrFillLeaf<FADCdata_raw>(const unsigned int *buf,
 //
 // Custom streamers so std::cout << MyFADC << std::endl; works.
 //
-std::ostream &operator<<(std::ostream &os, FADCchan_raw const &m) {
-  os << "(" << (int)m.chan << ") [";
-  for(int i=0;i<m.samples.size();++i){
-    os << (int)m.samples[i];
-    if(i<(m.samples.size()-1)) os << ",";
-  }
-  os << "]";
-  return(os);
-}
-
 std::ostream &operator<<(std::ostream &os, FADCdata const &m) {
-  os << m.Class_Name() << "(" << (int)m.crate << "," << (int)m.slot << ")\n";
-  for(int i=0; i< m.raw_data.size(); ++i){
-    os<< m.raw_data[i] << std::endl;
-  }
-  return(os);
-}
-
-std::ostream &operator<<(std::ostream &os, FADCdata_raw const &m) {
   os << m.Class_Name() << "(" << (int)m.crate << "," << (int)m.slot << "," << (int)m.chan << ") [";
   for(int i=0; i< m.samples.size(); ++i){
     os << (int)m.samples[i];
@@ -106,60 +88,7 @@ std::ostream &operator<<(std::ostream &os, FADCdata_raw const &m) {
 
 
 ClassImp(FADCdata);
-ClassImp(FADCdata_raw);
-ClassImp(FADCchan);
-ClassImp(FADCchan_raw);
 ClassImp(Leaf<FADCdata>);
-ClassImp(Leaf<FADCdata_raw>);
-
-template <> int EvioParser::AddOrFillLeaf<FADCdata>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
-  // Add or Fill a float leaf in the bank node.
-  // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
-  // If fAutoAdd is true, if not found, a new leaf is added and filled.
-  int loc = node->Find(tag,num);
-  if( loc == -1){
-    if(fAutoAdd){
-      char str[100];
-      sprintf(str,"FADC-%u-%u",tag,num);
-      if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
-      node->Add_Leaf<FADCdata>(str,tag,num,"Auto added string leaf");
-      loc= node->leafs->GetEntriesFast()-1;
-    }else{
-      return 0;
-    }
-  }
-  
-  if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " with specified AddOrFillLeaf<FADCdata> \n";
-  
-  unsigned short formatTag  = (buf[0]>>20)&0xfff;
-  unsigned short formatLen  = buf[0]&0xffff;
-#ifdef DEBUG
-  string formatString       = string((const char *) &(((uint32_t*)buf)[1]));
-#endif
-  int dataLen               = buf[1+formatLen]-1;
-#ifdef DEBUG
-  int dataTag         = (buf[1+formatLen+1]>>16)&0xffff;
-  int dataNum         = buf[1+formatLen+1]&0xff;
-#endif
-  
-  unsigned char *cbuf = (unsigned char *) &buf[3+formatLen];
-  
-  int buflen = dataLen*4 - 4;
-  int indx=0;
-  
-  // We use emplace_back instead of creating the class and then push_back. This should save at least one copying step of the data
-  // thus speeding up the code. Turns out that this code is 3x faster than the commented code at end of file.
-  // The constructor for FADCdata is created to do the work of re-interpreting the buffer.
-  // See: Effective Modern C++, item 42.
-  
-  Leaf<FADCdata> *ll =(Leaf<FADCdata> *)node->leafs->At(loc);
-  while( indx < buflen) ll->data.emplace_back(node->this_tag,formatTag, indx, cbuf);
-  
-  return 1;
-};
-
-
-
 
 
 //template <> int EvioParser::AddOrFillLeaf<FADCdata>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
