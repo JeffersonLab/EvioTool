@@ -77,12 +77,17 @@ public:
 class FADCdata_raw{
 public:
   FADCdata_raw(){};
-  FADCdata_raw(unsigned char cr,unsigned char sl,unsigned int tr,unsigned long long ti, int &indx, unsigned char *cbuf) /* :
-  crate(cr),slot(sl),trig(tr),time(ti) */{
-    crate=cr;
-    slot=sl;
-    trig=tr;
-    time=ti;
+  FADCdata_raw(int &indx, unsigned char *cbuf){
+    chan = GET_CHAR(cbuf,indx);
+    int nsamples = GET_INT(cbuf,indx);
+    samples.reserve(nsamples);
+    unsigned short *sdata = (unsigned short *)&cbuf[indx];
+    samples.assign(sdata,sdata+nsamples);  // Fast(ish) copy of sample data. ~ 11ns for 50 samples, ~14ns for 100 samples.
+    indx+=nsamples*2;
+  };
+
+  FADCdata_raw(unsigned char cr,unsigned char sl,unsigned int tr,unsigned long long ti, int &indx, unsigned char *cbuf):
+  crate(cr),slot(sl),trig(tr),time(ti){
     chan = GET_CHAR(cbuf,indx);
     int nsamples = GET_INT(cbuf,indx);
     samples.reserve(nsamples);

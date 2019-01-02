@@ -67,7 +67,7 @@ int main(int argc, const char * argv[])
   etool->fChop_level=1;
   etool->tags={136,132,130,129};  // Parse HPS physics events only.
   Leaf<unsigned int> *Header = etool->Add_Leaf<unsigned int>("Header",49152,0,"Header bank");
-  Bank *ECAL = etool->Add_Bank("Ecal1",{37,39},0,"Ecal bank 1");
+  Bank *ECAL = etool->Add_Bank("Ecal1",{37,39},0,"Ecal banks");
   Leaf<FADCdata_raw> *FADC = ECAL->Add_Leaf<FADCdata_raw>("FADC",57601,0,"FADC mode 1 data");
 
   etool->fAutoAdd = args.auto_add;
@@ -76,34 +76,33 @@ int main(int argc, const char * argv[])
   
   etool->PrintBank(5);
 
-  auto start = std::chrono::system_clock::now();
-  auto time1 = start;
   long evt_count=0;
   long totalCount=0;
   std::chrono::microseconds totalTime(0);
+
+  auto start = std::chrono::system_clock::now();
+  auto time1 = start;
   
   while(etool->Next() == S_SUCCESS){
     if(args.debug) cout<<"EVIO Event " << evt_count << endl;
     evt_count++;
     if(args.print_evt) {
       etool->PrintBank(10);
+//      if(args.show_head) {};
+//      if(args.show_svt)  {};
+//      if(args.show_ecal) {};
     }
-    if(args.show_head) {};
-    if(args.show_svt)  {};
-    if(args.show_ecal) {};
     if(!args.quiet && evt_count%100000 ==0 ){
-      /* statistics */
-      auto time2 = std::chrono::system_clock::now();
-      std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
-      totalTime += delta_t;
-      if (delta_t.count() > 1000000) {
+//      /* statistics */
+        auto time2 = std::chrono::system_clock::now();
+        std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
+        totalTime += delta_t;
         double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
         totalCount += evt_count;
         double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
         printf("%s: %3.4g kHz,  %3.4g kHz Avg. Event: %6d\n", argv[0], rate/1000., avgRate/1000.,Header->data[0]);
         evt_count = 0;
         time1 = std::chrono::system_clock::now();
-      }
     }
   }
   auto time2 = std::chrono::system_clock::now();

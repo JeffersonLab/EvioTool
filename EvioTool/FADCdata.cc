@@ -65,7 +65,8 @@ template <> int EvioParser::AddOrFillLeaf<FADCdata_raw>(const unsigned int *buf,
     unsigned long long time  = GET_L64(cbuf,indx);
     int nchan  = GET_INT(cbuf,indx);
     for(int jj=0; jj<nchan; ++jj){
-      ll->data.emplace_back(crate,slot,trig,time, indx, cbuf);
+        ll->data.emplace_back(crate,slot,trig,time, indx, cbuf);
+//      ll->data.emplace_back(indx, cbuf);
     }
 }
   
