@@ -74,5 +74,35 @@ public:
   ClassDef(FADCdata,1);
 };
 
+class FADCdata_raw{
+public:
+  FADCdata_raw(){};
+  FADCdata_raw(unsigned char cr,unsigned char sl,unsigned int tr,unsigned long long ti, int &indx, unsigned char *cbuf) /* :
+  crate(cr),slot(sl),trig(tr),time(ti) */{
+    crate=cr;
+    slot=sl;
+    trig=tr;
+    time=ti;
+    chan = GET_CHAR(cbuf,indx);
+    int nsamples = GET_INT(cbuf,indx);
+    samples.reserve(nsamples);
+    unsigned short *sdata = (unsigned short *)&cbuf[indx];
+    samples.assign(sdata,sdata+nsamples);  // Fast(ish) copy of sample data. ~ 11ns for 50 samples, ~14ns for 100 samples.
+    indx+=nsamples*2;
+  };
+  
+  public:
+  unsigned char crate;
+  unsigned char  slot;
+  unsigned char  chan;
+  unsigned int  trig;
+  unsigned long long time;       /* 64 bit unsinged int */
+  std::vector<unsigned short> samples;
+  ClassDef(FADCdata_raw,1);
+};
+
 std::ostream &operator<<(std::ostream &os, FADCdata const &m);
+std::ostream &operator<<(std::ostream &os, FADCdata_raw const &m);
+
+
 #endif /* FADCdata_h */
