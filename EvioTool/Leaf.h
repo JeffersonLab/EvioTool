@@ -110,7 +110,11 @@ public:
     }
   };
   
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(Leaf,1);
+#pragma clang diagnostic pop
+
 };
 
 #endif /* defined(__AprimeAna__Leaf__) */

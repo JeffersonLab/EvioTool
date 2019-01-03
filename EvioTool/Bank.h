@@ -429,7 +429,10 @@ public:
   
   virtual void PrintBank(int print_leaves=0,int depth=10,int level=0);
   
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(Bank,1);
+#pragma clang diagnostic pop
 };
 
 

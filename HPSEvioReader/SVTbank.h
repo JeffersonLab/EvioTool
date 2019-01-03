@@ -56,8 +56,8 @@ struct SVT_chan_t{
 class SVTbank: public Bank {
 
 public:
-  Leaf<unsigned int>    *SVTleaf;  // Handy pointer to the Leaf with the data.
   vector<SVT_chan_t>    svt_data;  // Pointers to decoded data.
+  Leaf<unsigned int>    *SVTleaf;         //! Handy pointer to the Leaf with the data -> (Leaf<unsigned int> *)leafs->At(0)
   bool                  fStoreRaw{false}; //! Determines whether the unparsed ints are stored or not.
   
 public:
@@ -96,20 +96,24 @@ public:
     for(unsigned int i=1;i< len-1 ; i+=4){
       SVT_chan_t *cn = (SVT_chan_t *)&dat[i]; // Direct data overlay, so there is no copy here. MUCH faster.
       if( !cn->head.isHeader && !cn->head.isTail){
-        svt_data.emplace_back(*cn);               // The push_back copies the data onto SVT_data;
+        svt_data.emplace_back(*cn);               // The push_back copies the data onto SVT_data. This makes a copy.
         
       }
     }
     if( fStoreRaw){
-      SVTleaf->Push_data_array(dat,len);
+      SVTleaf->Push_data_array(dat,len);         // This will call the Leaf to store the raw data as well.
     }
     // Fill the svt_data vector with the data in the SVTleaf.
-    
-
   }
   
+  size_t size(int type=0) override{
+    return(svt_data.size());
+  }
   
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(SVTbank,1);
+  #pragma clang diagnostic pop
 };
 
 #endif /* __SVTbank__ */

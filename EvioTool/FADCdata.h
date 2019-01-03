@@ -45,7 +45,12 @@ public:
   unsigned short time;
   unsigned short adc;
   std::vector<unsigned short> samples;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(FADCdata,1);
+#pragma clang diagnostic pop
+
 };
 
 std::ostream &operator<<(std::ostream &os, FADCdata const &m);

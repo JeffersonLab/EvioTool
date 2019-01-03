@@ -17,9 +17,6 @@
 #ifndef __EvioParser__
 #define __EvioParser__
 
-/* The classes below are exported */
-#pragma GCC visibility push(default)
-
 #include <cstdio>
 #include <iostream>
 #include <fstream>
@@ -119,8 +116,11 @@ public:
   
   void Test(void);
   
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(EvioParser,1);
+#pragma clang diagnostic pop
+
 };
 
-#pragma GCC visibility pop
 #endif /* defined(__AprimeAna__EvioParser__) */
