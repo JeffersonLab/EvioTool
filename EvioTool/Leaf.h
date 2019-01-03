@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 University of New Hampshire. All rights reserved.
 //
 
-#ifndef __AprimeAna__Leaf__
-#define __AprimeAna__Leaf__
+#ifndef __Leaf__
+#define __Leaf__
 
 #include <iostream>
 #include <vector>
@@ -80,11 +80,11 @@ public:
     // Get the data at indx. Throws exception if out of range.
     return(data.at(indx));
   }
-  size_t Get_size(void){
+  size_t size(void){
     // Get the size in the data vector.
     return(data.size());
   }
-  static int Get_type(void){
+  static int type(void){
     // Return the type stored in this leaf. Static so can be used as
     // Leaf<int>::Get_type() etc.
     return(Leaf_None);

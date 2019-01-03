@@ -315,58 +315,58 @@ Bank *EvioParser::ContainerNodeHandler(const unsigned int *buf, int len, int pad
 };
 
 
-int EvioParser::LeafNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag,unsigned char num, Bank *node){
-    
-    int stat;
-    switch(contentType){
-        // ----------------------- four-byte types
-      case 0x0:   // uint32_t
-      case 0x1:   // uint32_t
-        stat = AddOrFillLeaf<uint32_t>(buf,len,tag, num, node);
-        break;
-      case 0x2:   // float
-        stat = AddOrFillLeaf<float>(buf, len, tag, num, node);
-        break;
-      case 0x3:    // char's
-        stat = AddOrFillLeaf<string>(buf,len*4-padding,tag, num, node);
-//        stat = AddOrFillLeaf_string((const char *)buf,len*4-padding,tag, num, node);
-        break;
-
-      case 0x8: // double
-        stat = AddOrFillLeaf<double>(buf, len*2-padding/2, tag, num, node);
-        break;
-
-      case 0xb:   // int32_t = int
-        stat = AddOrFillLeaf<int>(buf, len, tag, num, node);
-        break;
-      case 0xf:   // FADC compound type
-        stat = AddOrFillLeaf<FADCdata>(buf, len, tag, num, node);
-        break;
-                  // --------------------- one-byte types
-      case 0x4:   // int16_t = short
+//int EvioParser::LeafNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag,unsigned char num, Bank *node){
+//    
+//    int stat;
+//    switch(contentType){
+//        // ----------------------- four-byte types
+//      case 0x0:   // uint32_t
+//      case 0x1:   // uint32_t
+//        stat = AddOrFillLeaf<uint32_t>(buf,len,tag, num, node);
 //        break;
-      case 0x5:   // uint16_t = unsigned short
+//      case 0x2:   // float
+//        stat = AddOrFillLeaf<float>(buf, len, tag, num, node);
 //        break;
-      case 0x6:  // int8_t = char
+//      case 0x3:    // char's
+//        stat = AddOrFillLeaf<string>(buf,len*4-padding,tag, num, node);
+////        stat = AddOrFillLeaf_string((const char *)buf,len*4-padding,tag, num, node);
 //        break;
-      case 0x7:  // uint8_t = unsigned char
+//
+//      case 0x8: // double
+//        stat = AddOrFillLeaf<double>(buf, len*2-padding/2, tag, num, node);
 //        break;
-        //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],(length-dataOffset)*4-padding,
-        //                              (int8_t*)(&buf[dataOffset]),userArg);
-        // -------------------------- two-byte types
-        //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,
-        //                              &buf[0],(length-dataOffset)*2-padding/2,(int16_t*)(&buf[dataOffset]),userArg);
-        // ---------------------------- eight-byte types
-      case 0x9: // int64_t
+//
+//      case 0xb:   // int32_t = int
+//        stat = AddOrFillLeaf<int>(buf, len, tag, num, node);
 //        break;
-      case 0xa: // uint64_t
+//      case 0xf:   // FADC compound type
+//        stat = AddOrFillLeaf<FADCdata>(buf, len, tag, num, node);
 //        break;
-      default:
-        std::cout << "Unhandled Leaf node type: " << contentType << std::endl;
-    }
-    
-    return 1;
-}
+//                  // --------------------- one-byte types
+//      case 0x4:   // int16_t = short
+////        break;
+//      case 0x5:   // uint16_t = unsigned short
+////        break;
+//      case 0x6:  // int8_t = char
+////        break;
+//      case 0x7:  // uint8_t = unsigned char
+////        break;
+//        //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],(length-dataOffset)*4-padding,
+//        //                              (int8_t*)(&buf[dataOffset]),userArg);
+//        // -------------------------- two-byte types
+//        //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,
+//        //                              &buf[0],(length-dataOffset)*2-padding/2,(int16_t*)(&buf[dataOffset]),userArg);
+//        // ---------------------------- eight-byte types
+//      case 0x9: // int64_t
+////        break;
+//      case 0xa: // uint64_t
+////        break;
+//      default:
+//        std::cout << "Unhandled Leaf node type: " << contentType << std::endl;
+//    }
+//    
+//    return 1;
+//}
 
 void EvioParser::Test(void){
     Bank *test_bank = Add_Bank("test_bank",10,10,"A test bank");
@@ -381,29 +381,29 @@ void EvioParser::Test(void){
     vector<int> test_int;
     string name="First";
     for(int i=10;i<13;i++) test_int.push_back(i);
-    test_bank->Push_data_vector<int>(name,test_int);
-    //
-    for(int i=25;i<30;i++) test_bank->Push_data<int>("First",i );
-    double f;
-    for(int i=25;i<30;i++) {
-        f=(double)i/7.;
-        Push_data("D1", f);
-    }
-    Push_data<double>("D1", 1.23456678);
-    
-    Push_data("D1",1.23456009);
-    Push_data("D1",123);
-    Push_data("New",1234);
-    Push_data("New",(int)123.4);
-    unsigned int ui=12345;
-    Push_data<int>("New",ui);
-    short si=321;
-    Push_data<int>("New",si);
-    
-    Push_data("S1","This is OK");
-    string text2="It does work, indeed";
-    Push_data("S1",text2);
-    PrintBank(20,10,0);
+//    test_bank->Push_data_vector<int>(name,test_int);
+//    //
+//    for(int i=25;i<30;i++) test_bank->Push_data<int>("First",i );
+//    double f;
+//    for(int i=25;i<30;i++) {
+//        f=(double)i/7.;
+//        Push_data("D1", f);
+//    }
+//    Push_data<double>("D1", 1.23456678);
+//    
+//    Push_data("D1",1.23456009);
+//    Push_data("D1",123);
+//    Push_data("New",1234);
+//    Push_data("New",(int)123.4);
+//    unsigned int ui=12345;
+//    Push_data<int>("New",ui);
+//    short si=321;
+//    Push_data<int>("New",si);
+//    
+//    Push_data("S1","This is OK");
+//    string text2="It does work, indeed";
+//    Push_data("S1",text2);
+//    PrintBank(20,10,0);
 }
 
 ClassImp(EvioParser);

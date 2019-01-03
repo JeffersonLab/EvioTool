@@ -10,12 +10,12 @@
 #include "EvioParser.h"
 
 // Template Specifications.
-template<> int Leaf<int>::Get_type(void){ return(Leaf_Int); };
-template<> int Leaf<uint32_t>::Get_type(void){ return(Leaf_Uint32); };
-template<> int Leaf<float>::Get_type(void){ return(Leaf_Float); };
-template<> int Leaf<double>::Get_type(void){ return(Leaf_Double); };
-template<> int Leaf<string>::Get_type(void){ return(Leaf_String); };
-template<> int Leaf<FADCdata>::Get_type(void){ return(Leaf_FADC); };
+template<> int Leaf<int>::type(void){ return(Leaf_Int); };
+template<> int Leaf<uint32_t>::type(void){ return(Leaf_Uint32); };
+template<> int Leaf<float>::type(void){ return(Leaf_Float); };
+template<> int Leaf<double>::type(void){ return(Leaf_Double); };
+template<> int Leaf<string>::type(void){ return(Leaf_String); };
+template<> int Leaf<FADCdata>::type(void){ return(Leaf_FADC); };
 
 // Push the array if T is "string".
 // This needs specification, because strings are not a simple type.

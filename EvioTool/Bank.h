@@ -17,8 +17,8 @@
 // other useful functionality. I hesitantly will do this the ROOT way. I have an inherent bias towards STL.
 
 
-#ifndef __AprimeAna__Bank__
-#define __AprimeAna__Bank__
+#ifndef __Bank__
+#define __Bank__
 
 #include <cstdio>
 #include <stdlib.h>
@@ -34,6 +34,7 @@ using namespace std;
 #include "TNamed.h"
 
 #include "Leaf.h"
+#include "FADCdata.h"
 
 #define MAX_DATA 1000
 // TODO:
@@ -90,7 +91,7 @@ public:
     banks = (TObjArray *)cp->banks->Clone();
   }
   
-  void Init(void){
+  virtual void Init(void){
     // Initialize the Bank class.
     leafs = new TObjArray();
     leafs->SetOwner(kTRUE);
@@ -98,11 +99,11 @@ public:
     banks->SetOwner(kTRUE);
   }
   
-  unsigned char GetNum(void){ return(this_num);};
-  unsigned short GetTag(void){ return(this_tag);};
+  virtual unsigned char GetNum(void){ return(this_num);};
+  virtual unsigned short GetTag(void){ return(this_tag);};
   vector<unsigned short> &GetTags(void){return(tags);}
   
-  int Add_Leaf(string name,unsigned short itag, unsigned char inum,string desc,int type);
+  virtual int Add_Leaf(string name,unsigned short itag, unsigned char inum,string desc,int type);
   template<typename T> Leaf<T> * Add_Leaf(Leaf<T> &leaf){
     int location= leafs->GetEntriesFast();
     string name=StoreLocation(leaf.GetName(),location);
@@ -119,7 +120,7 @@ public:
     return(new_leaf);
   }
   
-  Bank *Add_Bank(string name,unsigned short itags,unsigned char inum, string desc){
+  virtual Bank *Add_Bank(string name,unsigned short itags,unsigned char inum, string desc){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
@@ -129,7 +130,7 @@ public:
     return(newbank);
   }
 
-  Bank *Add_Bank(string name,std::initializer_list<unsigned short> itags, unsigned char inum, string desc){
+  virtual Bank *Add_Bank(string name,std::initializer_list<unsigned short> itags, unsigned char inum, string desc){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
@@ -139,7 +140,7 @@ public:
     return(newbank);
   }
   
-  void  Clear(Option_t* = "");
+  virtual void  Clear(Option_t* = "");
   
   string StoreLocation(string name,unsigned short location){
     // Store the location under name, make sure name is unique!
@@ -154,7 +155,7 @@ public:
     return(name);
   }
   
-  int Find(string name){
+  virtual int Find(string name){
     // Find the leaf item with name, return location.
     // If not found, return -1.
     map<string,unsigned short>::iterator loc=name_index.find(name);
@@ -163,11 +164,11 @@ public:
     }else return( -1);
   }
   
-  int Find(unsigned short itag,unsigned char inum){
+  virtual int Find(unsigned short itag,unsigned char inum){
     // Find the location of the leaf with num, tag.
     // Returns the location, or -1 if not found.
     // If a leaf has num=0, or inum = 0 then inum is ignored.
-    //
+    // TODO: Make this an efficient search.
     for(int i=0;i<leafs->GetEntriesFast();++i){
       if( ((Leaf_base *)leafs->At(i))->tag == itag &&
           ( ((Leaf_base *)leafs->At(i))->num==0 || inum==0 || ((Leaf_base *)leafs->At(i))->num == inum ) ){
@@ -177,15 +178,15 @@ public:
     return(-1);
   }
 
-  int Find_bank(string name){
+  virtual int Find_bank(string name){
     // Find a bank by name.
     TObject *o = banks->FindObject(name.c_str());
     int idx=banks->IndexOf(o);
     return(idx);
   }
   
-  int Find_bank(unsigned short itag,unsigned char inum){
-    // Find the location of the leaf or bank with tag, num.
+  virtual int Find_bank(unsigned short itag,unsigned char inum){
+    // Find the location of the bank with tag, num.
     // Since "num" is not always used to identify a specific bank,
     // bank->num=0 or inum=0 is treated as "don't care".
     // returns -1 if not found.
@@ -199,17 +200,17 @@ public:
     return(-1);
   }
 
-  template<typename T> void  Push_data(string leaf_name, T dat){
-    // Push an individual data element to the end of the leaf with leaf_name
-    int index = Get_index_from_name(leaf_name);
-    if(index<0){
-      cout << "Bank::Push_data - ERROR - We do not know about the Leaf called " << leaf_name << endl;
-      return;
-    }
-    Push_data(index,dat);
-    return;
-  }
-  
+//  template<typename T> void  Push_data(string leaf_name, T dat){
+//    // Push an individual data element to the end of the leaf with leaf_name
+//    int index = Get_index_from_name(leaf_name);
+//    if(index<0){
+//      cout << "Bank::Push_data - ERROR - We do not know about the Leaf called " << leaf_name << endl;
+//      return;
+//    }
+//    Push_data(index,dat);
+//    return;
+//  }
+//
 //  template<typename T> void Push_data(int leaf_index,T dat){
 //    // Add data to the end of leaf at leaf_index.
 //    if( leafs->At(leaf_index)->IsA() == Leaf<T>::Class() ){
@@ -219,140 +220,137 @@ public:
 //      cerr << "Leaf::Push_data("<<leaf_index<<","<< dat << ") -- Trying to add incorrect data type to leaf\n";
 //    }
 //  }
-
-// The commented out template method above works, except when you try to put 123 in a Leaf<double>
-// or other constructs that you would expect to work with automatic casting.
-// For the purpose of usability (and ROOT macro sloppiness) we specialize the methods:
-  void      Push_data(int leaf_index,int dat){
-// Put an int on the leaf at leaf_index. The leaf can be an int, float, double or string.
-    if( leafs->At(leaf_index)->IsA() == Leaf<int>::Class() ){
-      Leaf<int> *l=(Leaf<int> *)leafs->At(leaf_index);
-      l->Push_back(dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
-      Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
-      l->Push_back(dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<float>::Class() ){
-      Leaf<float> *l=(Leaf<float> *)leafs->At(leaf_index);
-      l->Push_back((float)dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<double>::Class() ){
-      Leaf<double> *l=(Leaf<double> *)leafs->At(leaf_index);
-      l->Push_back((double)dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<string>::Class() ){
-      Leaf<string> *l=(Leaf<string> *)leafs->At(leaf_index);
-      char buf[30];
-      sprintf(buf,"%d",dat);
-      l->Push_back(buf);
-    }
-  }
-
-  void      Push_data(int leaf_index,float dat){
-// Put a float on the leaf at leaf_index.
-    if( leafs->At(leaf_index)->IsA() == Leaf<float>::Class() ){
-      Leaf<float> *l=(Leaf<float> *)leafs->At(leaf_index);
-      l->Push_back(dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<int>::Class() ){
-      Leaf<int> *l=(Leaf<int> *)leafs->At(leaf_index);
-      l->Push_back((int)dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
-      Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
-      l->Push_back(dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
-      Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
-      l->Push_back(dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<double>::Class() ){
-      Leaf<double> *l=(Leaf<double> *)leafs->At(leaf_index);
-      l->Push_back((double)dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<string>::Class() ){
-      Leaf<string> *l=(Leaf<string> *)leafs->At(leaf_index);
-      char buf[30];
-      sprintf(buf,"%f",dat);
-      l->Push_back(buf);
-    }
-  }
-
-  void      Push_data(int leaf_index,double dat){
-      // Put a float on the leaf at leaf_index.
-      if( leafs->At(leaf_index)->IsA() == Leaf<double>::Class() ){
-        Leaf<double> *l=(Leaf<double> *)leafs->At(leaf_index);
-        l->Push_back(dat);
-      }else if( leafs->At(leaf_index)->IsA() == Leaf<int>::Class() ){
-        Leaf<int> *l=(Leaf<int> *)leafs->At(leaf_index);
-        l->Push_back((int)dat);
-      }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
-        Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
-        l->Push_back(dat);
-      }else if( leafs->At(leaf_index)->IsA() == Leaf<float>::Class() ){
-        Leaf<float> *l=(Leaf<float> *)leafs->At(leaf_index);
-        l->Push_back((float)dat);
-      }else if( leafs->At(leaf_index)->IsA() == Leaf<string>::Class() ){
-        Leaf<string> *l=(Leaf<string> *)leafs->At(leaf_index);
-        char buf[30];
-        sprintf(buf,"%f",dat);
-        l->Push_back(buf);
-      }
-    }
-
+//  
+//
+//  Here there is tension between "Generic Programming" i.e. using STL, and "Object Oriented Programming" (OOP).
+//  See an explanation at: https://www.artima.com/cppsource/type_erasure.html
+//
+//  The templates work just fine, most of the time, but they do not allow you to write a super class which overrides these function.
+//  That would be OK, if we used STL everywhere, however the ROOT model is OOP, with TObject as the base class, and we run into problems there.
+//  We also run into problems for those situations where we want make a special version of the Bank class that understands the contents of the leafs.
+//  In those cases, C++ would not know to call the super class when filling. 
+//
+//  template<typename T> void  Push_data_vector(string leaf_name, vector<T> &dat){
+//    // Add the vector to the back of the data of leaf with name leaf_name
+//    int index = Get_index_from_name(leaf_name);
+//    if(index<0){
+//      cout << "Bank::Push_data_vector - ERROR - We do not know about the Leaf called " << leaf_name << endl;
+//      return;
+//    }
+//
+//    Push_data_vector(index,dat);
+//    return;
+//  }
+//
+//  template<typename T> void  Push_data_vector(const int idx, vector<T> &dat){
+//    // Add the vector to the back of the data of the leaf at index idx
+//    Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
+//    ll->Push_data_vector(dat);
+//  }
+//
+//  template<typename T> void  Push_data_array(const int idx, const T *dat,const int len){
+//    // Add the vector to the back of the data of the leaf at index idx
+//    Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
+//    ll->Push_data_array(dat,len);
+//  }
+//
   
-  void      Push_data(int leaf_index,string dat){
-    // Put a float on the leaf at leaf_index.
-    if( leafs->At(leaf_index)->IsA() == Leaf<string>::Class() ){
-      Leaf<string> *l=(Leaf<string> *)leafs->At(leaf_index);
-      l->Push_back(dat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<int>::Class() ){
-      Leaf<int> *l=(Leaf<int> *)leafs->At(leaf_index);
-      int idat;
-      sscanf(dat.c_str(),"%d",&idat);
-      l->Push_back(idat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
-      Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
-      uint32_t idat;
-      sscanf(dat.c_str(),"%ud",&idat);
-      l->Push_back(idat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<float>::Class() ){
-      Leaf<float> *l=(Leaf<float> *)leafs->At(leaf_index);
-      float fdat;
-      sscanf(dat.c_str(),"%f",&fdat);
-      l->Push_back(fdat);
-    }else if( leafs->At(leaf_index)->IsA() == Leaf<double>::Class() ){
-      Leaf<double> *l=(Leaf<double> *)leafs->At(leaf_index);
-      double fdat;
-      sscanf(dat.c_str(),"%lf",&fdat);
-      l->Push_back(fdat);
-    }
-  }
+//
+  // Unfortunately, OOP design requires one Push_data_array for every possible type that we support.
+//
   
-  
-  template<typename T> void  Push_data_vector(string leaf_name, vector<T> &dat){
-    // Add the vector to the back of the data of leaf with name leaf_name
-    int index = Get_index_from_name(leaf_name);
-    if(index<0){
-      cout << "Bank::Push_data_vector - ERROR - We do not know about the Leaf called " << leaf_name << endl;
-      return;
-    }
-    
-    Push_data_vector(index,dat);
-    return;
-  }
-
-  template<typename T> void  Push_data_vector(const int idx, vector<T> &dat){
-    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
-    ll->Push_data_vector(dat);
-  }
-
-  template<typename T> void  Push_data_array(const int idx, const T *dat,const int len){
-    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
+  virtual void  Push_data_array(const int idx, const unsigned long long *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<unsigned long long> *ll=(Leaf<unsigned long long> *)leafs->At(idx);
     ll->Push_data_array(dat,len);
   }
-   
+
+  virtual void  Push_data_array(const int idx, const long long *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<long long> *ll=(Leaf<long long> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+
+  virtual void  Push_data_array(const int idx, const unsigned int *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<unsigned int> *ll=(Leaf<unsigned int> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+  
+  virtual void  Push_data_array(const int idx, const int *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<int> *ll=(Leaf<int> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+
+  virtual void  Push_data_array(const int idx, const unsigned short *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<unsigned short> *ll=(Leaf<unsigned short> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+  
+  virtual void  Push_data_array(const int idx, const short *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<short> *ll=(Leaf<short> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+
+  
+  virtual void  Push_data_array(const int idx, const unsigned char *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<unsigned char> *ll=(Leaf<unsigned char> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+
+  virtual void Push_data_array(const int idx, const char *dat,const int len){
+    // Add the vector to the leaf at index.
+    // Put a buffer of char into the string if Leaftype is string
+    Leaf<char> *ll=(Leaf<char> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+  
+  virtual void  Push_data_array(const int idx, const double *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<double> *ll=(Leaf<double> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+  
+  virtual void  Push_data_array(const int idx, const float *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<float> *ll=(Leaf<float> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+  
+  virtual void  Push_data_array(const int idx, const FADCdata *dat,const int len){
+    //    // Add the vector to the back of the data of the leaf at index idx
+    Leaf<FADCdata> *ll=(Leaf<FADCdata> *)leafs->At(idx);
+    ll->Push_data_array(dat,len);
+  }
+
+  // Specialized version for an array of character strings.
+ virtual void Push_data_array(int index, const string *dat, int len){
+    // Add the vector to the leaf at index.
+    // Put a buffer of char into the string if Leaftype is string
+    const char *start =(const char *) dat;
+    char *c = (char *)start;
+    string s;
+    while((c[0]!=0x4)&&((c-start)< len)) {
+      char *n=c;
+      while( std::isprint(*n++)){};
+      if( (n-c-1)>0){
+        s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
+        ((Leaf<string> *)leafs->At(index))->Push_back(s);
+      }
+      c=n;
+    }
+  }
+  
   vector<string>  Get_names();
 
   size_t Get_Leaf_size(int loc){
     // Return the size of the leaf at index loc
     return ((Leaf_base *)leafs->At(loc))->Get_size();
   }
-
   
   size_t Get_Leaf_size(string leaf_name){
     // Return the size of the leaf with name leaf_name
@@ -394,27 +392,27 @@ public:
   }
   
   
-  Bank  *Get_bank_ptr(string name){
+  virtual Bank  *Get_bank_ptr(string name){
     // Return pointer to bank with name.
     return ((Bank *)banks->FindObject(name.c_str()));
   }
 
-  Bank  *Get_bank_ptr(int idx){
+  virtual Bank  *Get_bank_ptr(int idx){
     // Return pointer to bank at idx.
     return (Bank *)banks->At(idx);
   }
 
   
-  int    Get_data_int(string name,int idx);
-  float  Get_data_float(string name,int idx);
-  double Get_data_double(string name,int idx);
-  string Get_data_string(string name,int idx);
-  int    Get_data_int(int ind,int idx);
-  float  Get_data_float(int ind,int idx);
-  double Get_data_double(int ind,int idx);
-  string Get_data_string(int ind,int idx);
+  virtual int    Get_data_int(string name,int idx);
+  virtual float  Get_data_float(string name,int idx);
+  virtual double Get_data_double(string name,int idx);
+  virtual string Get_data_string(string name,int idx);
+  virtual int    Get_data_int(int ind,int idx);
+  virtual float  Get_data_float(int ind,int idx);
+  virtual double Get_data_double(int ind,int idx);
+  virtual string Get_data_string(int ind,int idx);
 
-  inline int Get_index_from_name(string leaf_name){
+  virtual inline int Get_index_from_name(string leaf_name){
     // Gets the *location*, i.e type*MAX_DATA + index
     // map<string,unsigned short>::iterator found;
     auto found = name_index.find(leaf_name);
@@ -425,15 +423,120 @@ public:
     return(found->second);
   }
   
-  int Get_size(int type=0){
+  virtual size_t size(int type=0){
     return( leafs->GetEntriesFast());
   }
   
-  void PrintBank(int print_leaves=0,int depth=10,int level=0);
+  virtual void PrintBank(int print_leaves=0,int depth=10,int level=0);
   
   ClassDef(Bank,1);
 };
 
 
 
-#endif /* defined(__AprimeAna__Bank__) */
+#endif /* defined(__Bank__) */
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//           SCRAP HEAP OF DISCARDED IDEAS
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// The commented out template method above works, except when you try to put 123 in a Leaf<double>
+// or other constructs that you would expect to work with automatic casting.
+// For the purpose of usability (and ROOT macro sloppiness) we specialize the methods:
+//void  Push_data(int leaf_index,int dat){
+//  // Put an int on the leaf at leaf_index. The leaf can be an int, float, double or string.
+//  if( leafs->At(leaf_index)->IsA() == Leaf<int>::Class() ){
+//    Leaf<int> *l=(Leaf<int> *)leafs->At(leaf_index);
+//    l->Push_back(dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
+//    Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
+//    l->Push_back(dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<float>::Class() ){
+//    Leaf<float> *l=(Leaf<float> *)leafs->At(leaf_index);
+//    l->Push_back((float)dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<double>::Class() ){
+//    Leaf<double> *l=(Leaf<double> *)leafs->At(leaf_index);
+//    l->Push_back((double)dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<string>::Class() ){
+//    Leaf<string> *l=(Leaf<string> *)leafs->At(leaf_index);
+//    char buf[30];
+//    sprintf(buf,"%d",dat);
+//    l->Push_back(buf);
+//  }
+//}
+//
+//void Push_data(int leaf_index,float dat){
+//  // Put a float on the leaf at leaf_index.
+//  if( leafs->At(leaf_index)->IsA() == Leaf<float>::Class() ){
+//    Leaf<float> *l=(Leaf<float> *)leafs->At(leaf_index);
+//    l->Push_back(dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<int>::Class() ){
+//    Leaf<int> *l=(Leaf<int> *)leafs->At(leaf_index);
+//    l->Push_back((int)dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
+//    Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
+//    l->Push_back(dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
+//    Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
+//    l->Push_back(dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<double>::Class() ){
+//    Leaf<double> *l=(Leaf<double> *)leafs->At(leaf_index);
+//    l->Push_back((double)dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<string>::Class() ){
+//    Leaf<string> *l=(Leaf<string> *)leafs->At(leaf_index);
+//    char buf[30];
+//    sprintf(buf,"%f",dat);
+//    l->Push_back(buf);
+//  }
+//}
+//
+//void      Push_data(int leaf_index,double dat){
+//  // Put a float on the leaf at leaf_index.
+//  if( leafs->At(leaf_index)->IsA() == Leaf<double>::Class() ){
+//    Leaf<double> *l=(Leaf<double> *)leafs->At(leaf_index);
+//    l->Push_back(dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<int>::Class() ){
+//    Leaf<int> *l=(Leaf<int> *)leafs->At(leaf_index);
+//    l->Push_back((int)dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
+//    Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
+//    l->Push_back(dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<float>::Class() ){
+//    Leaf<float> *l=(Leaf<float> *)leafs->At(leaf_index);
+//    l->Push_back((float)dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<string>::Class() ){
+//    Leaf<string> *l=(Leaf<string> *)leafs->At(leaf_index);
+//    char buf[30];
+//    sprintf(buf,"%f",dat);
+//    l->Push_back(buf);
+//  }
+//}
+//
+//
+//void      Push_data(int leaf_index,string dat){
+//  // Put a float on the leaf at leaf_index.
+//  if( leafs->At(leaf_index)->IsA() == Leaf<string>::Class() ){
+//    Leaf<string> *l=(Leaf<string> *)leafs->At(leaf_index);
+//    l->Push_back(dat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<int>::Class() ){
+//    Leaf<int> *l=(Leaf<int> *)leafs->At(leaf_index);
+//    int idat;
+//    sscanf(dat.c_str(),"%d",&idat);
+//    l->Push_back(idat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<uint32_t>::Class() ){
+//    Leaf<uint32_t> *l=(Leaf<uint32_t> *)leafs->At(leaf_index);
+//    uint32_t idat;
+//    sscanf(dat.c_str(),"%ud",&idat);
+//    l->Push_back(idat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<float>::Class() ){
+//    Leaf<float> *l=(Leaf<float> *)leafs->At(leaf_index);
+//    float fdat;
+//    sscanf(dat.c_str(),"%f",&fdat);
+//    l->Push_back(fdat);
+//  }else if( leafs->At(leaf_index)->IsA() == Leaf<double>::Class() ){
+//    Leaf<double> *l=(Leaf<double> *)leafs->At(leaf_index);
+//    double fdat;
+//    sscanf(dat.c_str(),"%lf",&fdat);
+//    l->Push_back(fdat);
+//  }
+//}

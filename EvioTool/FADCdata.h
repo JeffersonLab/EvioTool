@@ -8,8 +8,8 @@
 //
 //  These are specialized data types to store FADC data.
 //
-#ifndef FADCdata_h
-#define FADCdata_h
+#ifndef __FADCdata__
+#define __FADCdata__
 
 #include "TROOT.h"
 #include "TObject.h"

@@ -16,6 +16,7 @@
 using namespace std;
 
 #include "EvioParser.h"
+#include "SVTbank.h"
 
 struct Arguments_t {
   string filename;
@@ -67,8 +68,12 @@ int main(int argc, const char * argv[])
   etool->fChop_level=1;
   etool->tags={136,132,130,129};  // Parse HPS physics events only.
   Leaf<unsigned int> *Header = etool->Add_Leaf<unsigned int>("Header",49152,0,"Header bank");
-  Bank *ECAL = etool->Add_Bank("Ecal1",{37,39},0,"Ecal banks");
+  Bank *ECAL = etool->Add_Bank("Ecal",{37,39},0,"Ecal banks");
   Leaf<FADCdata> *FADC = ECAL->Add_Leaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
+//  SVTbank *SVT  = (SVTbank *)etool->Add_Bank("SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
+  SVTbank *SVT  = new SVTbank(etool,"SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
+// Bank *SVTraw = etool->Add_Bank("SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
+// Leaf<unsigned int> *SVTint = SVTraw->Add_Leaf<unsigned int>("SVTint",3,0,"SVT unparsed");
 
   etool->fAutoAdd = args.auto_add;
   

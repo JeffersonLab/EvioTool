@@ -14,8 +14,8 @@
 // Of course, the cost is a litte overhead, but frankly, that is not much to worry
 // about here.
 
-#ifndef __AprimeAna__EvioParser__
-#define __AprimeAna__EvioParser__
+#ifndef __EvioParser__
+#define __EvioParser__
 
 /* The classes below are exported */
 #pragma GCC visibility push(default)
@@ -105,7 +105,7 @@ public:
       }
     }
     
-    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " generic for <" << ((Leaf<T> *)node->leafs->At(loc))->Get_type() << "> \n";
+    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " generic for <" << ((Leaf<T> *)node->leafs->At(loc))->type() << "> \n";
     node->Push_data_array(loc, (T *)buf, len);
     
     return 1;

@@ -41,43 +41,6 @@ int  Bank::Add_Leaf(string name,unsigned short itag,unsigned char inum,string de
   return(location);
 }
 
-// Specialized version for an array of character strings.
-template<> void Bank::Push_data_array<const char>(int index, const char *dat, int len){
-  // Add the vector to the leaf at index.
-  // Put a buffer of char into the string if Leaftype is string
-  const char *start = dat;
-  char *c = (char *)start;
-  string s;
-  while((c[0]!=0x4)&&((c-start)< len)) {
-    char *n=c;
-    while( std::isprint(*n++)){};
-    if( (n-c-1)>0){
-      s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
-      ((Leaf<string> *)leafs->At(index))->Push_back(s);
-    }
-    c=n;
-  }
-}
-
-// Specialized version for an array of character strings.
-template<> void Bank::Push_data_array<string>(int index, const string *dat, int len){
-  // Add the vector to the leaf at index.
-  // Put a buffer of char into the string if Leaftype is string
-  const char *start =(const char *) dat;
-  char *c = (char *)start;
-  string s;
-  while((c[0]!=0x4)&&((c-start)< len)) {
-    char *n=c;
-    while( std::isprint(*n++)){};
-    if( (n-c-1)>0){
-      s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
-      ((Leaf<string> *)leafs->At(index))->Push_back(s);
-    }
-    c=n;
-  }
-}
-
-
 vector<string> Bank::Get_names(){
   // Get all the names stored in the bank for type.
   vector<string> out;
