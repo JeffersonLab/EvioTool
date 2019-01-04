@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="jevio" default="compile" basedir=".">
+
+    <!-- environmental variables -->
+    <property environment="env"/>
+    
+    <!-- Version -->
+    <property name="evio.version" value="4.4.6" />
+    
+    <!-- Debug -->
+    <property name="javac.debug" value="on" />
+    
+    <!-- Directories/Files -->
+    <property name="src.dir"       value="java" />
+    <property name="build.dir"     value="build" />
+    <property name="build.classes" value="${build.dir}/classes" />
+    <property name="build.lib"     value="${build.dir}/lib" />
+    <property name="doc.dir"       value="doc/javadoc" />
+    <property name="jarName"       value="jevio-${evio.version}.jar" />
+    <property name="allJarNames"   value="jevio-*.jar" />
+    <property name="jarPath"       value="${build.lib}/${jarName}" />
+
+
+    <!-- Set Classpath, ignore caller's classpath -->
+    <property name="build.sysclasspath" value="ignore" />
+    <path id="classpath" />
+
+    
+    <!-- Targets -->
+    
+    <!-- Help -->
+    <target name="help">
+        <echo message="Usage: ant [ant options] &lt;target1&gt; [target2 | target3 | ...]" />
+        <echo message="" />
+        <echo message="       targets:" />
+        <echo message="       help       - print out usage" />
+        <echo message="       env        - print out build file variables' values" />
+        <echo message="       compile    - compile java files" />
+        <echo message="       clean      - remove class files" />
+        <echo message="       cleanall   - remove all generated files" />
+        <echo message="       jar        - compile and create jar file" />
+        <echo message="       install    - create jar file and install into 'prefix'" />
+        <echo message="                    if given on command line by -Dprefix=dir'," />
+        <echo message="                    else install into CODA if defined" />
+        <echo message="       uninstall  - remove jar file previously installed into 'prefix'" />
+        <echo message="                    if given on command line by -Dprefix=dir'," />
+        <echo message="                    else installed into CODA if defined" />
+        <echo message="       all        - clean, compile and create jar file" />
+        <echo message="       javadoc    - create javadoc documentation" />
+        <echo message="       developdoc - create javadoc documentation for developer" />
+        <echo message="       undoc      - remove all javadoc documentation" />
+        <echo message="       prepare    - create necessary directories" />
+    </target>
+
+    <!-- Environment -->
+    <target name="env">
+        <echo message="Ant environment:" />
+        <echo message="" />
+        <echo message="    src.dir       = ${src.dir}" />
+        <echo message="    build.dir     = ${build.dir}" />
+        <echo message="    build.lib     = ${build.lib}" />
+        <echo message="    build.classes = ${build.classes}" />
+        <echo message="    doc.dir       = ${doc.dir}" />
+        <echo message="    javac.debug   = ${javac.debug}" />
+        <echo message="    classpath     = ${env.CLASSPATH}" />
+    </target>
+
+
+    <!-- ************************************************************* -->
+    <target name="installCheck"  >
+
+        <!-- Test to see if -Dprefix=<dir> used on command line -->
+        <condition property="prefixDefined">
+            <isset property="prefix"/>
+        </condition>
+
+        <!-- Test to see if CODA environmental variable defined -->
+        <condition property="codaDefined">
+            <isset property="env.CODA"/>
+        </condition>
+
+        <!-- Test to see if no installation directory defined   -->
+        <condition property="noInstallDir">
+            <and>
+                <not>
+                    <isset property="prefix"/>
+                </not>
+                <not>
+                    <isset property="env.CODA"/>
+                </not>
+            </and>
+        </condition>
+
+    </target>
+    <!-- ************************************************************* -->
+
+
+    <!-- Prepare things by creating directories -->
+    <target name="prepare" depends="installCheck" >
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${build.classes}" />
+        <mkdir dir="${build.lib}" />
+        <antcall target="preparePrefixDir"/>
+        <antcall target="prepareCodaDir"/>
+    </target>
+
+    <target name="preparePrefixDir" if="prefixDefined">
+        <mkdir dir="${prefix}/jar" />
+    </target>
+
+    <target name="prepareCodaDir" if="codaDefined">
+        <mkdir dir="${env.CODA}/common/jar" />
+    </target>
+
+
+
+    <!-- Clean by removing class files -->
+    <target name="clean" description="Remove all class files">
+        <delete failonerror="no" >
+            <fileset dir="${build.classes}" includes="**/*.class" />
+        </delete>
+    </target>
+    
+    <!-- Clean by removing build & doc directories -->
+    <target name="cleanall" depends="clean" description="Remove all generated files.">
+        <delete dir="${build.dir}" failonerror="no" />
+        <delete dir="${doc.dir}"   failonerror="no" />
+    </target>
+    
+    <!-- Compile all source -->
+    <target name="compile" depends="prepare" description="Compiles all source code.">
+        <javac destdir="${build.classes}" debug="${javac.debug}" optimize="yes" >
+            <src path="${src.dir}" />
+            <classpath refid="classpath" />
+        </javac>
+    </target>
+    
+
+
+    <!-- Javadoc -->
+    <target name="javadoc" description="Create javadoc.">
+        <mkdir dir="${doc.dir}" />
+        <javadoc packagenames="org.jlab.coda.jevio"
+                 sourcepath="java"
+                 access="public"
+                 destdir="${doc.dir}"
+                 use="true" >
+            <classpath refid="classpath" />
+        </javadoc>
+    </target>
+    
+    <!-- Javadoc for developer -->
+    <target name="developdoc" description="Create javadoc for developer.">
+        <mkdir dir="${doc.dir}" />
+        <javadoc packagenames="org.jlab.coda.jevio"
+                 sourcepath="java"
+                 access="package"
+                 destdir="${doc.dir}"
+                 use="true" >
+            <classpath refid="classpath" />
+        </javadoc>
+    </target>
+
+    <!-- Removing Javadoc -->
+    <target name="undoc" description="remove all javadoc.">
+        <delete dir="${doc.dir}" />
+    </target>
+
+
+
+    <!-- Create Jar file -->
+    <target name="jar" depends="compile" description="Generates jar file.">
+        <jar jarfile="${jarPath}" manifest="${src.dir}/org/jlab/coda/jevio/manifest.mf">
+            <fileset dir="${build.classes}" excludes="*.class" />
+        </jar>
+    </target>
+    
+    <!-- Clean, compile, and create jar -->
+    <target name="all" depends="clean,jar" description="Cleans, compile, then builds jar file." />
+
+
+
+    <!-- Install Jar file -->
+    <target name="install" depends="jar,installCheck" description="Installs jar file.">
+        <antcall target="error"/>
+        <antcall target="installInPrefix"/>
+        <antcall target="installInCODA"/>
+    </target>
+
+    <!-- Install in prefix -->
+    <target name="installInPrefix" if="prefixDefined">
+        <echo>Install ${jarName} into ${prefix}</echo>
+        <delete>
+            <fileset dir="${prefix}/jar" includes="${allJarNames}" />
+        </delete>
+        <copy file="${jarPath}" todir="${prefix}/jar"/>
+    </target>
+
+    <!-- Install in $CODA -->
+    <target name="installInCODA" unless="prefixDefined" if="codaDefined">
+        <echo>Install ${jarName} into ${env.CODA}/common/jar</echo>
+        <delete>
+            <fileset dir="${env.CODA}/common/jar" includes="${allJarNames}" />
+        </delete>
+        <copy file="${jarPath}" todir="${env.CODA}/common/jar"/>
+    </target>
+
+    <!-- No installation directory defined -->
+    <target name="error" if="noInstallDir">
+        <fail message="CODA env var not defined and -Dprefix not used, jar NOT installed" />
+    </target>
+
+
+
+    <!-- Uninstall Jar file -->
+    <target name="uninstall" depends="installCheck" description="Uninstalls jar file.">
+        <antcall target="error2"/>
+        <antcall target="uninstallFromPrefix"/>
+        <antcall target="uninstallFromCODA"/>
+    </target>
+
+    <!-- Uninstall from prefix -->
+    <target name="uninstallFromPrefix" if="prefixDefined">
+        <echo>Remove ${jarName} from ${prefix}</echo>
+        <delete file="${prefix}/jar/${jarName}"/>
+    </target>
+
+    <!-- Uninstall from $CODA -->
+    <target name="uninstallFromCODA" unless="prefixDefined" if="codaDefined">
+        <echo>Remove ${jarName} from ${env.CODA}/common/jar</echo>
+        <delete file="${env.CODA}/common/jar/${jarName}"/>
+    </target>
+
+    <!-- No installation directory defined to uninstall from -->
+    <target name="error2" if="noInstallDir">
+        <fail message="Installation directory not defined, jar NOT installed" />
+    </target>
+
+
+</project>

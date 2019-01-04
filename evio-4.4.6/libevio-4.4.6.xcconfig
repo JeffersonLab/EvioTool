@@ -1,0 +1,20 @@
+//
+//  libevio.xcconfig
+//  evio-4.3.1
+//
+//  Created by Maurik Holtrop on 4/20/14.
+//  Copyright (c) 2014 Jlab. All rights reserved.
+//
+#include "../../master.xcconfig"
+
+PRODUCT_NAME = ${TARGET_NAME}
+
+EXECUTABLE_PREFIX=lib
+EXECUTABLE_EXTENSION = dylib
+
+DYLIB_COMPATIBILITY_VERSION=0
+DYLIB_CURRENT_VERSION=0
+
+OTHER_LDFLAGS=
+//OTHER_LDFLAGS= $(inherited)  -lexpat -lz
+

@@ -1,0 +1,162 @@
+jevio-4.3.1.jar differences from previous jar :
+
+    -check lengths when parsing evio so bad values are caught if possible
+    -fix bug if trying to unpack strings from rawbytes with too few bytes
+    -fix bug which did not take padding into account when getting data buffer of EvioNode
+    -fix bug in which after adding a structure with EvioCompactStructureHandler,
+     the node list was not updated
+
+jevio-4.3.2.jar
+
+    -fix bug in which the displayed event # in graphical viewer did not correspond
+     to the actual event number (bug was in EvioReader)
+    -fix bug in which the "next" button in graphical viewer did silly things when
+     at max event number
+    -made members of EventTreeMenu protected instead of package or private
+     scope for subclassing purposes
+
+jevio-4.3.3.jar
+
+    -same as the previous jar
+
+jevio-4.3.4.jar
+
+    -fix bug EvioCompactReader in which parsing fails
+     when bank/seg/tagseg has last child with data len = 0
+     (back ported from 4.4.4)
+
+******** NEW VERSION MINOR VERSION *********
+
+jevio-4.4.jar
+
+    -improve performance including replacing LinkedLists with ArrayLists or arrays
+    -fix bug in Java CompactEventBuilder class that miswrites data into direct ByteBuffers (11/13/14)
+    -fix bug in Java CompactEventBuilder class that miswrites segment header (11/19/14)
+    -fix bug in EvioCompactStructureHandler.getNodes() throwing NullPointerException (12/8/14)
+    -add constructor to EvioCompactStructureHandler with EvioNode argument (12/8/14)
+    -in EvioReader, bomb proof against bad format files, fix bug in which last block's events
+     are not indexed, reduce initial memory usage (12/10/14)
+
+jevio-4.4.1.jar
+
+    -fix major bug in ByteDataTransformer.toByteArray(). If arg is a ByteBuffer obtained from
+     slice(), its backing array cannot be used to copy into byte array since it copies wrong
+     data! (1/8/2015)
+    -fix major bug in EvioCompactStructureHandler.getData() which did not account for padding
+     in byte and short data (1/8/2015)
+
+jevio-4.4.2.jar
+
+    -fix bug in EventParser & EvioEvent that add other evio structures when EvioReader.parseEvent()
+     or EventParser.parseEvent() are called more than once on an event.
+
+jevio-4.4.3.jar
+
+    -fix bug in parsing composite data in which N=0 acts as N=1.
+    -add EventWriter.writeEvent() method for EvioNode object
+
+jevio-4.4.4.jar
+
+    -fix bug EvioCompactReader in which parsing fails
+     when bank/seg/tagseg has last child with data len = 0
+
+jevio-4.4.5.jar
+    - same as previous
+    - implement sequential reading instead of ignoring the
+      flag in EvioReader constructor.
+    - cut way back on EvioNode default memory usage (6/17/2015)
+
+jevio-4.4.6.jar
+    - add getMap() method to iterate through EvioXMLDictionary contents.
+      Add EvioDictionaryEntry class to help accomplish that. (8/18/2015)
+    - fix bug which started block header number at 0 instead of 1 (9/3/2015)
+
+******** NEW VERSION MAJOR VERSION *********
+jevio-5.0.jar
+    - fix small bugs
+    - add capability to add 1 "first event" to beginning of each file including splits
+    - make switching buffers in EventWriter more efficient
+    - make EventWriter.setBuffer() more efficient
+    - fixed EventReader throwing exception when segment or tagsegment had data length of 0
+    - fix bug in which swapping UNKNOWN32 type data will not copy it
+    - fix bug which did not set the correct length in header if no data
+    - add Utilities class methods to convert EvioNode object to XML and to EvioEvent object
+    - make handling evio header words more efficient
+    - handle the CompositeData data type in CompactEventBuilder
+    - add sections on CompositeData to User's Guide
+
+    - fix bugs handling string data (certain non-printing ascii characters)
+    - improve xml representation of event - especially the composite data type
+    - add capability to parse xml representation of multiple events into list of EvioEvents,
+      including those with composite data
+    - add program (apps.Xml2evio) which converts a file of xml format evio data into an evio
+      binary format file. This is a replacement for xml2evio.c which did not handle composite data.
+    - fix a host of bugs in printing to and parsing from xml. Can now handle all unsigned
+      types properly as well as print in hex or decimal. New methods to handle choice of hex.
+      Handling of xml made consistent with C/C++ lib.
+
+    - remove the EvioCompactReader.setBuffer(ByteBuffer buf, boolean fast) method.
+      The fast = true setting created a null pointer exception in the addStructure
+      method. I don't think this was used by anyone anyway.
+
+jevio-5.1.jar
+    - fix bugs in EvioCompactReader in which:
+            1) addStructure() method did not update all EvioNode objects,
+               only those associated with events (top level banks)
+            2) validDataWords variable was not updated
+            3) if the event-being-added-to was scanned, the added structure was not
+               scanned and therefore no EvioNodes created and placed in child and
+               allNodes lists
+    - added removeEvent() and removeStructure() methods to EvioCompactReader
+    - added setBuffer() method to BufferNode
+    - added toString() to BlockNode
+    - added removeChild(), removeFromAllNodes(), addToAllNodes() methods to EvioNode
+    - added getBlockNode(), isObsolete() and setObsolete() methods to EvioNode
+
+
+
+*********************************************************************************
+C CODE
+
+evio-4.3.3
+
+    - fix flags for Mac OSX compilation (9/22/2014)
+
+evio-4.4
+
+    - fix performance problem writing files.
+      No longer force a written event to physical disk. (10/7/14)
+    - fix bug in C lib that miswrites 6th word of block header - event type (11/5/14)
+
+evio-4.4.4
+    - fix bug in C++ that does not set padding correctly
+    - fix lots of compiler warnings
+
+evio-4.4.5
+    - fix problems compiling on Mac
+
+******** NEW VERSION MAJOR VERSION *********
+evio-5.0
+    - fix small bugs
+    - allow smaller split files
+    - add capability to add 1 "first event" to beginning of each file including splits
+    - add a routine, evCreateFirstEventBlock(), to create an evio file format block
+      containing a first event. Added to facilitate an evio C lib user sending an ET
+      event or cMsg msg containing this block to the ER which would, in turn, properly
+      understand it to be a first event to be included in each split file.
+    - make more swapping routines & macros available
+    - better doxygen doc
+    - fix bug in which the version # was improperly set to 5 (set back to 4) since
+      that version number refers to the evio file format version and not the package
+      version
+
+    - improve xml representation of event - especially the composite data type
+    - fix a host of bugs in printing to xml. Can now handle all unsigned
+      types properly as well as print in hex or decimal. Made consistent with Java.
+      Now treats structure of CompositeData as an array!
+    - add a routine, evBufToStrings(), to enable users to unpack evio string data
+      into an array of strings
+    - add a routine, evStringsToBuf(), to enable users to take an array of strings
+      and write it into an evio format buffer
+    - got rid of vxworks and solaris dependencies
+    - fixed SConstruct python

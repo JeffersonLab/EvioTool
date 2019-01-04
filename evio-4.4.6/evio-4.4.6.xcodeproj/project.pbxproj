@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		407047D721DEE18C00053DEE /* eviofmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 407047D121DEE18C00053DEE /* eviofmt.c */; };
+		407047D821DEE18C00053DEE /* evioswap.c in Sources */ = {isa = PBXBuildFile; fileRef = 407047D221DEE18C00053DEE /* evioswap.c */; };
+		407047D921DEE18C00053DEE /* evio.h in Headers */ = {isa = PBXBuildFile; fileRef = 407047D321DEE18C00053DEE /* evio.h */; };
+		407047DA21DEE18C00053DEE /* eviofmtswap.c in Sources */ = {isa = PBXBuildFile; fileRef = 407047D421DEE18C00053DEE /* eviofmtswap.c */; };
+		407047DB21DEE18C00053DEE /* evio.c in Sources */ = {isa = PBXBuildFile; fileRef = 407047D521DEE18C00053DEE /* evio.c */; };
+		407047DC21DEE18C00053DEE /* msinttypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 407047D621DEE18C00053DEE /* msinttypes.h */; };
+		407047FF21DEE1B800053DEE /* evioBankIndex.cc in Sources */ = {isa = PBXBuildFile; fileRef = 407047E321DEE1AC00053DEE /* evioBankIndex.cc */; };
+		4070480021DEE1B800053DEE /* evioBankIndex.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047DE21DEE1AC00053DEE /* evioBankIndex.hxx */; };
+		4070480121DEE1B800053DEE /* evioBufferChannel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 407047E721DEE1AD00053DEE /* evioBufferChannel.cc */; };
+		4070480221DEE1B800053DEE /* evioBufferChannel.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047E421DEE1AC00053DEE /* evioBufferChannel.hxx */; };
+		4070480321DEE1B800053DEE /* evioChannel.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047E821DEE1AD00053DEE /* evioChannel.hxx */; };
+		4070480421DEE1B800053DEE /* evioDictionary.cc in Sources */ = {isa = PBXBuildFile; fileRef = 407047DF21DEE1AC00053DEE /* evioDictionary.cc */; };
+		4070480521DEE1B800053DEE /* evioDictionary.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047EA21DEE1AD00053DEE /* evioDictionary.hxx */; };
+		4070480621DEE1B800053DEE /* evioException.cc in Sources */ = {isa = PBXBuildFile; fileRef = 407047E921DEE1AD00053DEE /* evioException.cc */; };
+		4070480721DEE1B800053DEE /* evioException.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047E121DEE1AC00053DEE /* evioException.hxx */; };
+		4070480821DEE1B800053DEE /* evioFileChannel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 407047DD21DEE1AC00053DEE /* evioFileChannel.cc */; };
+		4070480921DEE1B800053DEE /* evioFileChannel.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047E221DEE1AC00053DEE /* evioFileChannel.hxx */; };
+		4070480A21DEE1B800053DEE /* evioSocketChannel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 407047EC21DEE1AD00053DEE /* evioSocketChannel.cc */; };
+		4070480B21DEE1B800053DEE /* evioSocketChannel.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047EB21DEE1AD00053DEE /* evioSocketChannel.hxx */; };
+		4070480C21DEE1B800053DEE /* evioTypedefs.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047E521DEE1AC00053DEE /* evioTypedefs.hxx */; };
+		4070480D21DEE1B800053DEE /* evioUtil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 407047E021DEE1AC00053DEE /* evioUtil.cc */; };
+		4070480E21DEE1B800053DEE /* evioUtil.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047ED21DEE1AD00053DEE /* evioUtil.hxx */; };
+		4070480F21DEE1B800053DEE /* evioUtilTemplates.hxx in Headers */ = {isa = PBXBuildFile; fileRef = 407047E621DEE1AD00053DEE /* evioUtilTemplates.hxx */; };
+		4070481521DEE29B00053DEE /* libevio-4.4.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070479921DEDFF000053DEE /* libevio-4.4.6.dylib */; };
+		4070481721DEE31B00053DEE /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070481621DEE31B00053DEE /* libexpat.tbd */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4070481221DEE29100053DEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4070479121DEDFF000053DEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4070479821DEDFF000053DEE;
+			remoteInfo = "evio-4.4.6";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4070479921DEDFF000053DEE /* libevio-4.4.6.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libevio-4.4.6.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		407047C121DEE0F400053DEE /* libevio-4.4.6.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "libevio-4.4.6.xcconfig"; sourceTree = "<group>"; };
+		407047C621DEE12900053DEE /* libeviocxx-4.4.6.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libeviocxx-4.4.6.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		407047D121DEE18C00053DEE /* eviofmt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = eviofmt.c; path = src/libsrc/eviofmt.c; sourceTree = "<group>"; };
+		407047D221DEE18C00053DEE /* evioswap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = evioswap.c; path = src/libsrc/evioswap.c; sourceTree = "<group>"; };
+		407047D321DEE18C00053DEE /* evio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = evio.h; path = src/libsrc/evio.h; sourceTree = "<group>"; };
+		407047D421DEE18C00053DEE /* eviofmtswap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = eviofmtswap.c; path = src/libsrc/eviofmtswap.c; sourceTree = "<group>"; };
+		407047D521DEE18C00053DEE /* evio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = evio.c; path = src/libsrc/evio.c; sourceTree = "<group>"; };
+		407047D621DEE18C00053DEE /* msinttypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = msinttypes.h; path = src/libsrc/msinttypes.h; sourceTree = "<group>"; };
+		407047DD21DEE1AC00053DEE /* evioFileChannel.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioFileChannel.cc; path = "src/libsrc++/evioFileChannel.cc"; sourceTree = "<group>"; };
+		407047DE21DEE1AC00053DEE /* evioBankIndex.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioBankIndex.hxx; path = "src/libsrc++/evioBankIndex.hxx"; sourceTree = "<group>"; };
+		407047DF21DEE1AC00053DEE /* evioDictionary.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioDictionary.cc; path = "src/libsrc++/evioDictionary.cc"; sourceTree = "<group>"; };
+		407047E021DEE1AC00053DEE /* evioUtil.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioUtil.cc; path = "src/libsrc++/evioUtil.cc"; sourceTree = "<group>"; };
+		407047E121DEE1AC00053DEE /* evioException.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioException.hxx; path = "src/libsrc++/evioException.hxx"; sourceTree = "<group>"; };
+		407047E221DEE1AC00053DEE /* evioFileChannel.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioFileChannel.hxx; path = "src/libsrc++/evioFileChannel.hxx"; sourceTree = "<group>"; };
+		407047E321DEE1AC00053DEE /* evioBankIndex.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioBankIndex.cc; path = "src/libsrc++/evioBankIndex.cc"; sourceTree = "<group>"; };
+		407047E421DEE1AC00053DEE /* evioBufferChannel.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioBufferChannel.hxx; path = "src/libsrc++/evioBufferChannel.hxx"; sourceTree = "<group>"; };
+		407047E521DEE1AC00053DEE /* evioTypedefs.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioTypedefs.hxx; path = "src/libsrc++/evioTypedefs.hxx"; sourceTree = "<group>"; };
+		407047E621DEE1AD00053DEE /* evioUtilTemplates.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioUtilTemplates.hxx; path = "src/libsrc++/evioUtilTemplates.hxx"; sourceTree = "<group>"; };
+		407047E721DEE1AD00053DEE /* evioBufferChannel.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioBufferChannel.cc; path = "src/libsrc++/evioBufferChannel.cc"; sourceTree = "<group>"; };
+		407047E821DEE1AD00053DEE /* evioChannel.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioChannel.hxx; path = "src/libsrc++/evioChannel.hxx"; sourceTree = "<group>"; };
+		407047E921DEE1AD00053DEE /* evioException.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioException.cc; path = "src/libsrc++/evioException.cc"; sourceTree = "<group>"; };
+		407047EA21DEE1AD00053DEE /* evioDictionary.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioDictionary.hxx; path = "src/libsrc++/evioDictionary.hxx"; sourceTree = "<group>"; };
+		407047EB21DEE1AD00053DEE /* evioSocketChannel.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioSocketChannel.hxx; path = "src/libsrc++/evioSocketChannel.hxx"; sourceTree = "<group>"; };
+		407047EC21DEE1AD00053DEE /* evioSocketChannel.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioSocketChannel.cc; path = "src/libsrc++/evioSocketChannel.cc"; sourceTree = "<group>"; };
+		407047ED21DEE1AD00053DEE /* evioUtil.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioUtil.hxx; path = "src/libsrc++/evioUtil.hxx"; sourceTree = "<group>"; };
+		4070481621DEE31B00053DEE /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4070479721DEDFF000053DEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		407047C421DEE12900053DEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4070481521DEE29B00053DEE /* libevio-4.4.6.dylib in Frameworks */,
+				4070481721DEE31B00053DEE /* libexpat.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4070479021DEDFF000053DEE = {
+			isa = PBXGroup;
+			children = (
+				407047C121DEE0F400053DEE /* libevio-4.4.6.xcconfig */,
+				407047C021DEE05600053DEE /* evio-4.4.6-libcxx */,
+				407047BF21DEE03B00053DEE /* evio-4.4.6-libc */,
+				4070479A21DEDFF000053DEE /* Products */,
+				4070481421DEE29B00053DEE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		4070479A21DEDFF000053DEE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4070479921DEDFF000053DEE /* libevio-4.4.6.dylib */,
+				407047C621DEE12900053DEE /* libeviocxx-4.4.6.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		407047BF21DEE03B00053DEE /* evio-4.4.6-libc */ = {
+			isa = PBXGroup;
+			children = (
+				407047D521DEE18C00053DEE /* evio.c */,
+				407047D321DEE18C00053DEE /* evio.h */,
+				407047D121DEE18C00053DEE /* eviofmt.c */,
+				407047D421DEE18C00053DEE /* eviofmtswap.c */,
+				407047D221DEE18C00053DEE /* evioswap.c */,
+				407047D621DEE18C00053DEE /* msinttypes.h */,
+			);
+			name = "evio-4.4.6-libc";
+			sourceTree = "<group>";
+		};
+		407047C021DEE05600053DEE /* evio-4.4.6-libcxx */ = {
+			isa = PBXGroup;
+			children = (
+				407047E321DEE1AC00053DEE /* evioBankIndex.cc */,
+				407047DE21DEE1AC00053DEE /* evioBankIndex.hxx */,
+				407047E721DEE1AD00053DEE /* evioBufferChannel.cc */,
+				407047E421DEE1AC00053DEE /* evioBufferChannel.hxx */,
+				407047E821DEE1AD00053DEE /* evioChannel.hxx */,
+				407047DF21DEE1AC00053DEE /* evioDictionary.cc */,
+				407047EA21DEE1AD00053DEE /* evioDictionary.hxx */,
+				407047E921DEE1AD00053DEE /* evioException.cc */,
+				407047E121DEE1AC00053DEE /* evioException.hxx */,
+				407047DD21DEE1AC00053DEE /* evioFileChannel.cc */,
+				407047E221DEE1AC00053DEE /* evioFileChannel.hxx */,
+				407047EC21DEE1AD00053DEE /* evioSocketChannel.cc */,
+				407047EB21DEE1AD00053DEE /* evioSocketChannel.hxx */,
+				407047E521DEE1AC00053DEE /* evioTypedefs.hxx */,
+				407047E021DEE1AC00053DEE /* evioUtil.cc */,
+				407047ED21DEE1AD00053DEE /* evioUtil.hxx */,
+				407047E621DEE1AD00053DEE /* evioUtilTemplates.hxx */,
+			);
+			name = "evio-4.4.6-libcxx";
+			sourceTree = "<group>";
+		};
+		4070481421DEE29B00053DEE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4070481621DEE31B00053DEE /* libexpat.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4070479521DEDFF000053DEE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				407047DC21DEE18C00053DEE /* msinttypes.h in Headers */,
+				407047D921DEE18C00053DEE /* evio.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		407047C221DEE12900053DEE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4070480B21DEE1B800053DEE /* evioSocketChannel.hxx in Headers */,
+				4070480021DEE1B800053DEE /* evioBankIndex.hxx in Headers */,
+				4070480521DEE1B800053DEE /* evioDictionary.hxx in Headers */,
+				4070480321DEE1B800053DEE /* evioChannel.hxx in Headers */,
+				4070480E21DEE1B800053DEE /* evioUtil.hxx in Headers */,
+				4070480F21DEE1B800053DEE /* evioUtilTemplates.hxx in Headers */,
+				4070480221DEE1B800053DEE /* evioBufferChannel.hxx in Headers */,
+				4070480C21DEE1B800053DEE /* evioTypedefs.hxx in Headers */,
+				4070480721DEE1B800053DEE /* evioException.hxx in Headers */,
+				4070480921DEE1B800053DEE /* evioFileChannel.hxx in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4070479821DEDFF000053DEE /* evio-4.4.6 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 407047A421DEDFF000053DEE /* Build configuration list for PBXNativeTarget "evio-4.4.6" */;
+			buildPhases = (
+				4070479521DEDFF000053DEE /* Headers */,
+				4070479621DEDFF000053DEE /* Sources */,
+				4070479721DEDFF000053DEE /* Frameworks */,
+				4070481021DEE1E700053DEE /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "evio-4.4.6";
+			productName = "evio-4.4.6";
+			productReference = 4070479921DEDFF000053DEE /* libevio-4.4.6.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		407047C521DEE12900053DEE /* eviocxx-4.4.6 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 407047CE21DEE12900053DEE /* Build configuration list for PBXNativeTarget "eviocxx-4.4.6" */;
+			buildPhases = (
+				407047C221DEE12900053DEE /* Headers */,
+				407047C321DEE12900053DEE /* Sources */,
+				407047C421DEE12900053DEE /* Frameworks */,
+				4070481121DEE1F300053DEE /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4070481321DEE29100053DEE /* PBXTargetDependency */,
+			);
+			name = "eviocxx-4.4.6";
+			productName = "eviocxx-4.4.6";
+			productReference = 407047C621DEE12900053DEE /* libeviocxx-4.4.6.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4070479121DEDFF000053DEE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = HPS;
+				TargetAttributes = {
+					4070479821DEDFF000053DEE = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					407047C521DEE12900053DEE = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = 4070479421DEDFF000053DEE /* Build configuration list for PBXProject "evio-4.4.6" */;
+			compatibilityVersion = "Xcode 10.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4070479021DEDFF000053DEE;
+			productRefGroup = 4070479A21DEDFF000053DEE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4070479821DEDFF000053DEE /* evio-4.4.6 */,
+				407047C521DEE12900053DEE /* eviocxx-4.4.6 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4070481021DEE1E700053DEE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+		4070481121DEE1F300053DEE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4070479621DEDFF000053DEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				407047D721DEE18C00053DEE /* eviofmt.c in Sources */,
+				407047D821DEE18C00053DEE /* evioswap.c in Sources */,
+				407047DB21DEE18C00053DEE /* evio.c in Sources */,
+				407047DA21DEE18C00053DEE /* eviofmtswap.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		407047C321DEE12900053DEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4070480121DEE1B800053DEE /* evioBufferChannel.cc in Sources */,
+				407047FF21DEE1B800053DEE /* evioBankIndex.cc in Sources */,
+				4070480D21DEE1B800053DEE /* evioUtil.cc in Sources */,
+				4070480821DEE1B800053DEE /* evioFileChannel.cc in Sources */,
+				4070480A21DEE1B800053DEE /* evioSocketChannel.cc in Sources */,
+				4070480621DEE1B800053DEE /* evioException.cc in Sources */,
+				4070480421DEE1B800053DEE /* evioDictionary.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4070481321DEE29100053DEE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4070479821DEDFF000053DEE /* evio-4.4.6 */;
+			targetProxy = 4070481221DEE29100053DEE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		407047A221DEDFF000053DEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 407047C121DEE0F400053DEE /* libevio-4.4.6.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		407047A321DEDFF000053DEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 407047C121DEE0F400053DEE /* libevio-4.4.6.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		407047A521DEDFF000053DEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		407047A621DEDFF000053DEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		407047CF21DEE12900053DEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		407047D021DEE12900053DEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4070479421DEDFF000053DEE /* Build configuration list for PBXProject "evio-4.4.6" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				407047A221DEDFF000053DEE /* Debug */,
+				407047A321DEDFF000053DEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		407047A421DEDFF000053DEE /* Build configuration list for PBXNativeTarget "evio-4.4.6" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				407047A521DEDFF000053DEE /* Debug */,
+				407047A621DEDFF000053DEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		407047CE21DEE12900053DEE /* Build configuration list for PBXNativeTarget "eviocxx-4.4.6" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				407047CF21DEE12900053DEE /* Debug */,
+				407047D021DEE12900053DEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4070479121DEDFF000053DEE /* Project object */;
+}

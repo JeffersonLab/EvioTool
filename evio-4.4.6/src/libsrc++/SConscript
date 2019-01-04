@@ -1,0 +1,15 @@
+# scons build file for evio
+Import('env', 'libInstallDir', 'incInstallDir', 'archIncInstallDir', 'debugSuffix')
+
+# Headers to install
+headerList = Glob('*.h*',  strings=True)
+
+# Files to compile
+fileList = Glob('*.cc',  strings=True)
+
+env.AppendUnique(CPPPATH = ['.', '#src/libsrc'])
+evioxxLib = env.SharedLibrary(target = 'evioxx'+debugSuffix, source = fileList)
+    
+if 'install' in COMMAND_LINE_TARGETS:
+    env.Alias("install", env.Install(target = [incInstallDir, archIncInstallDir], source = headerList))
+    env.Alias("install", env.Install(target = libInstallDir, source = evioxxLib))

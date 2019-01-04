@@ -1,0 +1,10 @@
+The program
+    xml2evio
+has been removed.
+It has been replaced by the java program
+    org.jlab.coda.jevio.apps.Xml2evio
+which works with the new composite data type.
+
+To run it, put the jevio jar file in your classpath,
+then run:
+    java org.jlab.coda.jevio.apps.Xml2evio

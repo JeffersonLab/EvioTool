@@ -1,0 +1,74 @@
+<!-- 
+
+    Example JEVIO Maven config
+
+    Jeremy McCormick <jeremym@slac.stanford.edu>
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!-- name to appear in generated jars etc. -->
+    <artifactId>jevio</artifactId>
+
+    <!-- name of the project -->
+    <name>Java EVIO Library</name>
+
+    <!-- description of project -->
+    <description>Java EVIO Library (JEVIO)</description>
+
+    <!-- group's ID e.g. JLab CODA group which determines directory structure in repo -->
+    <groupId>org.jlab.coda</groupId>
+
+    <!-- current rolling version using snapshot release -->
+    <version>4.4.6-SNAPSHOT</version>
+    
+    <!-- Package code into jar file -->
+    <packaging>jar</packaging>
+
+    <!-- build customization -->
+    <build>
+        <!-- copy jar into external directory -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-installed</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>${project.packaging}</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${env.CODA}/common/jar</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+
+        <sourceDirectory>./java/</sourceDirectory>
+        <defaultGoal>install</defaultGoal>
+    </build>
+
+    <!-- distribution for deployment -->
+    <distributionManagement>
+        <repository>
+            <id>jlab-coda-repo</id>
+            <!-- FIXME: Set this to a real repo location. -->
+            <url>file:/group/da/distribution/maven</url>
+        </repository>
+    </distributionManagement>
+
+</project>

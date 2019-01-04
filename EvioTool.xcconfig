@@ -17,7 +17,7 @@ DYLIB_CURRENT_VERSION=0
 GCC_UNROLL_LOOPS = Yes
 
 // === Add EVIO and ET =======
-EVIO= ${PROJECT_DIR}/evio-4.4.5
+EVIO= ${PROJECT_DIR}/evio-5.1
 //EVIO_LIB=${EVIO}/Darwin-x86_64/lib/libevio.a ${EVIO}/Darwin-x86_64/lib/libevioxx.a
 //EVIO_LIB=${EVIO}/build/Release/libevio-4.4.5.a
 
