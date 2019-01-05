@@ -7,7 +7,7 @@
 //
 
 #include "Leaf.h"
-#include "EvioParser.h"
+#include "EvioTool.h"
 
 // Template Specifications.
 template<> int Leaf<int>::type(void){ return(Leaf_Int); };
@@ -33,7 +33,7 @@ template<> int Leaf<FADCdata>::type(void){ return(Leaf_FADC); };
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-template <> int EvioParser::AddOrFillLeaf<string>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
+template <> int EvioTool::AddOrFillLeaf<string>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
   // Add or Fill a float leaf in the bank node.
   // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
   // If fAutoAdd is true, if not found, a new leaf is added and filled.

@@ -67,17 +67,17 @@ endif()
 
 set(SOURCE_FILES_EVIOTOOL
   EvioTool/Bank.cc
-  EvioTool/EvioParser.cc
+  EvioTool/EvioTool.cc
   EvioTool/FADCdata.h
   EvioTool/Leaf.cc
   EvioTool/Bank.h
-  EvioTool/EvioParser.h
+  EvioTool/EvioTool.h
   EvioTool/FADCdata.cc
   EvioTool/Leaf.h  
   )
 
 set(DICTS_EVIOTOOL
-  EvioParser_Dict.cxx
+  EvioTool_Dict.cxx
   Leaf_Dict.cxx
   FADCdata_Dict.cxx
   )
@@ -92,7 +92,7 @@ set(DICTS_HPSEVIOREADER
   )
 
 
-ROOT_GENERATE_DICTIONARY(EvioTool_Dict EvioTool/Leaf.h EvioTool/FADCdata.h EvioTool/EvioParser.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
+ROOT_GENERATE_DICTIONARY(EvioTool_Dict      EvioTool/EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
 ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader/SVTbank.h LINKDEF HPSEvioReader/SVTbank_LinkDef.h MODULE HPSEvioReader)
 
 

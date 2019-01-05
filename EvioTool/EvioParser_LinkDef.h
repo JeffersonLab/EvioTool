@@ -39,4 +39,37 @@
 #pragma link C++ function Bank::Get_data_vector<double>;
 #pragma link C++ function Bank::Get_data_vector<string>;
 //
+
+#pragma link C++ class Leaf_base+;
+#pragma link C++ enum  LeafDataTypes_t;
+
+#pragma link C++ class Leaf<char>+;
+#pragma link C++ class Leaf<unsigned char>+;
+#pragma link C++ class Leaf<short>+;
+#pragma link C++ class Leaf<unsigned short>+;
+#pragma link C++ class Leaf<int>+;
+#pragma link C++ class Leaf<unsigned int>+;
+#pragma link C++ class Leaf<float>+;
+#pragma link C++ class Leaf<double>+;
+#pragma link C++ class Leaf<string>+;
+#pragma link C++ class Leaf<long long>+;
+#pragma link C++ class Leaf<unsigned long long>+;
+
+#pragma link C++ class vector<Leaf<char> >;
+#pragma link C++ class vector<Leaf<unsigned char> >;
+#pragma link C++ class vector<Leaf<short> >;
+#pragma link C++ class vector<Leaf<unsigned short> >;
+#pragma link C++ class vector<Leaf<int> >;
+#pragma link C++ class vector<Leaf<unsigned int> >;
+#pragma link C++ class vector<Leaf<long long> >;
+#pragma link C++ class vector<Leaf<unsigned long long> >;
+#pragma link C++ class vector<Leaf<float> >;
+#pragma link C++ class vector<Leaf<double> >;
+#pragma link C++ class vector<Leaf<string> >;
+
+
+#pragma link C++ class FADCdata+;
+#pragma link C++ class Leaf<FADCdata>+;
+#pragma link C++ class vector<Leaf<FADCdata> >;
+
 #endif

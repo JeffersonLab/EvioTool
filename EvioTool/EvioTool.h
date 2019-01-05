@@ -1,5 +1,5 @@
 //
-//  EvioParser.h
+//  EvioTool.h
 //  AprimeAna
 //
 //  Created by Maurik Holtrop on 5/17/14.
@@ -14,8 +14,8 @@
 // Of course, the cost is a litte overhead, but frankly, that is not much to worry
 // about here.
 
-#ifndef __EvioParser__
-#define __EvioParser__
+#ifndef __EvioTool__
+#define __EvioTool__
 
 #include <cstdio>
 #include <iostream>
@@ -29,11 +29,6 @@ using namespace std;
 // %%%%%%%%%%%%
 #ifndef __CINT__
 #include "evio.h"
-
-//#include "evioUtil.hxx"
-//#include "evioFileChannel.hxx"
-//#include "evioDictionary.hxx"
-//using namespace evio;
 #endif
 
 #include <iostream>
@@ -54,7 +49,7 @@ enum DebugType_t {
   Debug_L2    = 0x08 };
 
 
-class EvioParser: public Bank {
+class EvioTool: public Bank {
   
 public:
   int fDebug;   // Bit wise!!!  0001 = Info on banks. 0x00
@@ -75,7 +70,7 @@ public:
   unsigned int evio_buflen;     // length of buffer.
   
 public:
-  EvioParser();
+  EvioTool();
   int  Open(const char *filename,const char *dictf=NULL);
   void parseDictionary(const char *dictf);
   int NextNoParse(void);
@@ -118,9 +113,9 @@ public:
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-  ClassDef(EvioParser,1);
+  ClassDef(EvioTool,1);
 #pragma clang diagnostic pop
 
 };
 
-#endif /* defined(__AprimeAna__EvioParser__) */
+#endif /* defined(__EvioTool__) */

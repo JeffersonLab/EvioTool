@@ -15,7 +15,7 @@
 #include <string>
 using namespace std;
 
-#include "EvioParser.h"
+#include "EvioTool.h"
 #include "SVTbank.h"
 
 struct Arguments_t {
@@ -42,13 +42,13 @@ int main(int argc, const char * argv[])
   Arguments_t args;
   Parse_Args(&argc,argv,&args);
   
-  EvioParser *etool;
+  EvioTool *etool;
   
   if(args.use_et){
     cout << "Error ET system not yet implemented. Exit. \n";
     exit(1);
   }else{
-    etool= new EvioParser();
+    etool= new EvioTool();
     etool->Open(args.filename.c_str());
   }
   if(args.debug==0){

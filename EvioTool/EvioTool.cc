@@ -1,5 +1,5 @@
 //
-//  EvioParser.cpp
+//  EvioTool.cpp
 //  AprimeAna
 //
 //  Created by Maurik Holtrop on 5/17/14.
@@ -11,13 +11,13 @@
 // - Add types for uint32_t = unsigned int
 // - A
 
-#include "EvioParser.h"
+#include "EvioTool.h"
 
 //----------------------------------------------------------------------------------
-// EvioParser
+// EvioTool
 //----------------------------------------------------------------------------------
 
-EvioParser::EvioParser(): Bank("EvioParser",{},0,"The top node of the EVIO tree"){
+EvioTool::EvioTool(): Bank("EvioTool",{},0,"The top node of the EVIO tree"){
   // Initialization....
   fDebug=0;
   fAutoAdd=true;           // Automatically add banks, even if not in dictionary.
@@ -32,11 +32,11 @@ EvioParser::EvioParser(): Bank("EvioParser",{},0,"The top node of the EVIO tree"
   // of an EVIO file.
 }
 
-int EvioParser::Open(const char *filename,const char *dictf){
+int EvioTool::Open(const char *filename,const char *dictf){
     // Open an EVIO file for parsing.
     int stat;
     if((stat=evOpen((char *)filename,(char *)"r",&evio_handle))!=S_SUCCESS){
-        cerr << "EvioParser::Open -- ERROR -- Could not open file " << filename << endl;
+        cerr << "EvioTool::Open -- ERROR -- Could not open file " << filename << endl;
         return(1);
     }
     
@@ -49,34 +49,34 @@ int EvioParser::Open(const char *filename,const char *dictf){
     return(0);
 }
 
-void EvioParser::parseDictionary(const char *dictf){
+void EvioTool::parseDictionary(const char *dictf){
     // Open the file pointed to by dictf and parse the XML as a dictionary for the file.
     
     //  ifstream f(dictf);
     //  Dictionary = new evioDictionary(f);
 }
 
-int EvioParser::NextNoParse(){
+int EvioTool::NextNoParse(){
   // Read an event from the EVIO file and parse it.
   
   int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
   if(stat==EOF) return(0);
   if(stat!=S_SUCCESS){
-    cerr << "EvioParser::Next() -- ERROR -- problem reading file. \n";
+    cerr << "EvioTool::Next() -- ERROR -- problem reading file. \n";
     return(-1);
   }
   
   return 1;
 }
 
-int EvioParser::Next(){
+int EvioTool::Next(){
     // Read an event from the EVIO file and parse it.
     // Returns 0 on success, or an error code if not.
     
     int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
     if(stat==EOF) return(-1);
     if(stat!=S_SUCCESS){
-        cerr << "EvioParser::Next() -- ERROR -- problem reading file. \n";
+        cerr << "EvioTool::Next() -- ERROR -- problem reading file. \n";
         return(-2);
     }
     if(fFullErase) Clear("Full"); // Clear out old data.
@@ -95,7 +95,7 @@ int EvioParser::Next(){
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int EvioParser::ParseEvioBuff(const unsigned int *buf){
+int EvioTool::ParseEvioBuff(const unsigned int *buf){
   
 // Assumes data type 0x10 for the top EVIO bank.
   this_tag    = buf[1]>>16;
@@ -103,7 +103,7 @@ int EvioParser::ParseEvioBuff(const unsigned int *buf){
 
   unsigned short contentType = (buf[1]>>8)&0x3f;
   
-  if( fChop_level>0){ // This means the EvioParser is the top level. Check if OK.
+  if( fChop_level>0){ // This means the EvioTool is the top level. Check if OK.
     if(contentType != 0x10 && contentType != 0x0e){ // So the events better be of Container type and not Leaf type.
       printf("ERROR Parsing EVIO file. Top level is not 0x10 or 0x0e container type but: 0x%02x \n",contentType);
       printf("Aborting event \n");
@@ -125,7 +125,7 @@ int EvioParser::ParseEvioBuff(const unsigned int *buf){
   return(S_SUCCESS);
 }
 
-int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node){
+int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node){
     
     int length,dataOffset,p,bankLen;
     int contentType;
@@ -169,7 +169,7 @@ int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank
             break;
             
         default:
-            cerr << "EvioParser::ParseBank -- ERROR -- illegal bank type: " << bankType << endl;
+            cerr << "EvioTool::ParseBank -- ERROR -- illegal bank type: " << bankType << endl;
             return(-4);
     }
     
@@ -280,16 +280,16 @@ int EvioParser::ParseBank(const unsigned int *buf, int bankType, int depth, Bank
             break;
             
         default:
-            cerr << "EvioParser::ParseBank -- ERROR -- illegal bank contents. \n";
+            cerr << "EvioTool::ParseBank -- ERROR -- illegal bank contents. \n";
             return(-5);
     }
     return(stat);
 };
 
-Bank *EvioParser::ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType, unsigned short tag,unsigned char num, Bank *node,int depth){
+Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType, unsigned short tag,unsigned char num, Bank *node,int depth){
   
   if(depth<fChop_level || depth > fMax_level){  // We are pruning the tree.
-    if(fDebug & Debug_L2) cout << "EvioParser::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
+    if(fDebug & Debug_L2) cout << "EvioTool::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
     node->this_tag = tag; // TODO: VERIFY that this is correct and needed here.
     node->this_num = num;
     return node;
@@ -315,7 +315,7 @@ Bank *EvioParser::ContainerNodeHandler(const unsigned int *buf, int len, int pad
 };
 
 
-//int EvioParser::LeafNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag,unsigned char num, Bank *node){
+//int EvioTool::LeafNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag,unsigned char num, Bank *node){
 //    
 //    int stat;
 //    switch(contentType){
@@ -368,7 +368,7 @@ Bank *EvioParser::ContainerNodeHandler(const unsigned int *buf, int len, int pad
 //    return 1;
 //}
 
-void EvioParser::Test(void){
+void EvioTool::Test(void){
     Bank *test_bank = Add_Bank("test_bank",10,10,"A test bank");
     test_bank->Add_Leaf<int>("First",1,1,"The first leaf");
     test_bank->Add_Leaf("Second",1,2,"The second leaf",Leaf_Int);
@@ -406,4 +406,4 @@ void EvioParser::Test(void){
 //    PrintBank(20,10,0);
 }
 
-ClassImp(EvioParser);
+ClassImp(EvioTool);

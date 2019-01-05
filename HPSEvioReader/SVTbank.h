@@ -23,7 +23,7 @@
 
 #include "TROOT.h"
 #include "TObject.h"
-#include "EvioParser.h"
+#include "EvioTool.h"
 #include "Bank.h"
 
 // For an explanation on bit packing with CLANG or G++: http://jkz.wtf/bit-field-packing-in-gcc-and-clang
@@ -69,8 +69,8 @@ public:
 //    Init();
   };
 
-  // Initialize the SVT bank with a pointer to the EvioParser.
-  SVTbank(EvioParser *p, string n,std::initializer_list<unsigned short> tags,unsigned char num,string desc): Bank(n,tags,num,desc){
+  // Initialize the SVT bank with a pointer to the EvioTool.
+  SVTbank(EvioTool *p, string n,std::initializer_list<unsigned short> tags,unsigned char num,string desc): Bank(n,tags,num,desc){
     p->banks->Add(this);
     Init();
   };

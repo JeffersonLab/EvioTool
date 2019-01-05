@@ -6,7 +6,7 @@
 //  Copyright © 2018 UNH. All rights reserved.
 //
 #include "FADCdata.h"
-#include "EvioParser.h"
+#include "EvioTool.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -16,7 +16,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-template <> int EvioParser::AddOrFillLeaf<FADCdata>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
+template <> int EvioTool::AddOrFillLeaf<FADCdata>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
   // Add or Fill a float leaf in the bank node.
   // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
   // If fAutoAdd is true, if not found, a new leaf is added and filled.
@@ -91,7 +91,7 @@ ClassImp(FADCdata);
 ClassImp(Leaf<FADCdata>);
 
 
-//template <> int EvioParser::AddOrFillLeaf<FADCdata>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
+//template <> int EvioTool::AddOrFillLeaf<FADCdata>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
 //  // Add or Fill a float leaf in the bank node.
 //  // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
 //  // If fAutoAdd is true, if not found, a new leaf is added and filled.
