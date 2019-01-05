@@ -16,7 +16,6 @@
 using namespace std;
 
 #include "EvioParser.h"
-#include "SVTbank.h"
 
 struct Arguments_t {
   string filename;

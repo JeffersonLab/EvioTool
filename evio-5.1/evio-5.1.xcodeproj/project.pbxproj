@@ -15,7 +15,6 @@
 		4070474C21DEC7AB00053DEE /* evio.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070474521DEC7AB00053DEE /* evio.h */; };
 		4070474D21DEC7AB00053DEE /* evio.c in Sources */ = {isa = PBXBuildFile; fileRef = 4070474621DEC7AB00053DEE /* evio.c */; };
 		4070475121DEDBC400053DEE /* libevio-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49D81190494FE00390847 /* libevio-5.1.dylib */; };
-		4070475221DEDBCD00053DEE /* libevio-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49D81190494FE00390847 /* libevio-5.1.dylib */; };
 		4070475321DEDBD600053DEE /* libevio-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49D81190494FE00390847 /* libevio-5.1.dylib */; };
 		4070476121DEDCC300053DEE /* msinttypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070474021DEC7AB00053DEE /* msinttypes.h */; };
 		4070476221DEDCC300053DEE /* evio.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070474521DEC7AB00053DEE /* evio.h */; };
@@ -37,20 +36,15 @@
 		4070478821DEDD0500053DEE /* evioBankIndex.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4070477721DEDD0500053DEE /* evioBankIndex.cc */; };
 		4070478921DEDD0500053DEE /* evioSocketChannel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4070477821DEDD0500053DEE /* evioSocketChannel.cc */; };
 		4070478C21DEDD7900053DEE /* libevio-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49D81190494FE00390847 /* libevio-5.1.dylib */; };
+		407048A021DFFDE600053DEE /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070489F21DFFDE600053DEE /* libexpat.tbd */; };
+		407048A121DFFE3100053DEE /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070489F21DFFDE600053DEE /* libexpat.tbd */; };
+		407048A221DFFE6000053DEE /* libexpat.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070489F21DFFDE600053DEE /* libexpat.tbd */; };
+		407048A421DFFE8400053DEE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 407048A321DFFE8400053DEE /* libz.tbd */; };
 		40940F431AC2FD9400BABC02 /* evio2xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 40940F411AC2FD8C00BABC02 /* evio2xml.c */; };
 		40F6DAC41FD899BF008F9FE2 /* eviocopy.c in Sources */ = {isa = PBXBuildFile; fileRef = 40F6DAB81FD89947008F9FE2 /* eviocopy.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		408352201CD3E46E00CE644C /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 		40940F381AC2FCF000BABC02 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -97,7 +91,8 @@
 		4070477621DEDD0500053DEE /* evioTypedefs.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = evioTypedefs.hxx; path = "src/libsrc++/evioTypedefs.hxx"; sourceTree = "<group>"; };
 		4070477721DEDD0500053DEE /* evioBankIndex.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioBankIndex.cc; path = "src/libsrc++/evioBankIndex.cc"; sourceTree = "<group>"; };
 		4070477821DEDD0500053DEE /* evioSocketChannel.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = evioSocketChannel.cc; path = "src/libsrc++/evioSocketChannel.cc"; sourceTree = "<group>"; };
-		408352241CD3E46E00CE644C /* evio_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = evio_test; sourceTree = BUILT_PRODUCTS_DIR; };
+		4070489F21DFFDE600053DEE /* libexpat.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libexpat.tbd; path = usr/lib/libexpat.tbd; sourceTree = SDKROOT; };
+		407048A321DFFE8400053DEE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40940F3A1AC2FCF000BABC02 /* evio2xml */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = evio2xml; sourceTree = BUILT_PRODUCTS_DIR; };
 		40940F411AC2FD8C00BABC02 /* evio2xml.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = evio2xml.c; path = src/execsrc/evio2xml.c; sourceTree = "<group>"; };
 		40E49D81190494FE00390847 /* libevio-5.1.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libevio-5.1.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,15 +106,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				407048A021DFFDE600053DEE /* libexpat.tbd in Frameworks */,
 				4070478C21DEDD7900053DEE /* libevio-5.1.dylib in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4083521E1CD3E46E00CE644C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4070475221DEDBCD00053DEE /* libevio-5.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +115,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				407048A421DFFE8400053DEE /* libz.tbd in Frameworks */,
+				407048A221DFFE6000053DEE /* libexpat.tbd in Frameworks */,
 				4070475321DEDBD600053DEE /* libevio-5.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				407048A121DFFE3100053DEE /* libexpat.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,6 +181,8 @@
 		4070475021DEDBC400053DEE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				407048A321DFFE8400053DEE /* libz.tbd */,
+				4070489F21DFFDE600053DEE /* libexpat.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -220,7 +213,6 @@
 			children = (
 				40E49D81190494FE00390847 /* libevio-5.1.dylib */,
 				40940F3A1AC2FCF000BABC02 /* evio2xml */,
-				408352241CD3E46E00CE644C /* evio_test */,
 				40F6DAC31FD89982008F9FE2 /* eviocopy */,
 				4070476721DEDCC300053DEE /* libeviocxx-5.1.dylib */,
 			);
@@ -286,24 +278,6 @@
 			productName = "evio-5.1";
 			productReference = 4070476721DEDCC300053DEE /* libeviocxx-5.1.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
-		};
-		4083521B1CD3E46E00CE644C /* evio_test */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 408352211CD3E46E00CE644C /* Build configuration list for PBXNativeTarget "evio_test" */;
-			buildPhases = (
-				4083521C1CD3E46E00CE644C /* Sources */,
-				4083521E1CD3E46E00CE644C /* Frameworks */,
-				408352201CD3E46E00CE644C /* CopyFiles */,
-				4070475621DEDC5E00053DEE /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = evio_test;
-			productName = evio2xml;
-			productReference = 408352241CD3E46E00CE644C /* evio_test */;
-			productType = "com.apple.product-type.tool";
 		};
 		40940F391AC2FCF000BABC02 /* evio2xml */ = {
 			isa = PBXNativeTarget;
@@ -391,7 +365,6 @@
 				40E49D80190494FE00390847 /* evio-5.1 */,
 				4070475821DEDCC300053DEE /* eviocxx-5.1 */,
 				40940F391AC2FCF000BABC02 /* evio2xml */,
-				4083521B1CD3E46E00CE644C /* evio_test */,
 				40F6DABA1FD89982008F9FE2 /* eviocopy */,
 			);
 		};
@@ -417,24 +390,6 @@
 			showEnvVarsInLog = 0;
 		};
 		4070475521DEDC5300053DEE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
-			showEnvVarsInLog = 0;
-		};
-		4070475621DEDC5E00053DEE /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -505,13 +460,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4083521C1CD3E46E00CE644C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		40940F361AC2FCF000BABC02 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -553,24 +501,6 @@
 		4070476621DEDCC300053DEE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		408352221CD3E46E00CE644C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_EXTENSION = "";
-				EXECUTABLE_PREFIX = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		408352231CD3E46E00CE644C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_EXTENSION = "";
-				EXECUTABLE_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -704,15 +634,6 @@
 			buildConfigurations = (
 				4070476521DEDCC300053DEE /* Debug */,
 				4070476621DEDCC300053DEE /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		408352211CD3E46E00CE644C /* Build configuration list for PBXNativeTarget "evio_test" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				408352221CD3E46E00CE644C /* Debug */,
-				408352231CD3E46E00CE644C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
