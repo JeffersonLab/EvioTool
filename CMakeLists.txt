@@ -1,7 +1,26 @@
 cmake_minimum_required(VERSION 3.0)
 project(EvioTool)
 
-set(CMAKE_BUILD_TYPE Release)
+#---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
+find_package(ROOT REQUIRED COMPONENTS Core)
+message(STATUS "ROOT found at: ${ROOT_DIR}")
+
+#
+# Set a default build type if none was specified
+set(default_build_type "RELEASE")
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
+  set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
+#
+# Shortcut to control which version of EVIO or ET is linked against.
+#
+set(EVIO_LIBRARY evio-4.4.6)
+set(ET_LIBRARY   et-16.1)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
@@ -15,15 +34,11 @@ message("CMAKE_CXX_FLAGS_RELEASE  = ${CMAKE_CXX_FLAGS_RELEASE}")
 message("CMAKE_CXX_FLAGS_DEBUG    = ${CMAKE_CXX_FLAGS_DEBUG}")
 message("---------------------------------------------")
 
-#---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
-find_package(ROOT REQUIRED COMPONENTS Core)
-message(STATUS "ROOT found at: ${ROOT_DIR}")
-
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 
-add_subdirectory(evio-5.1)
-add_subdirectory(et-16.1)
+add_subdirectory(${EVIO_LIBRARY})
+add_subdirectory(${ET_LIBRARY})
 
 include_directories(evio-5.1/src/libsrc EvioTool HPSEvioReader) 
 
@@ -76,30 +91,33 @@ set(DICTS_HPSEVIOREADER
   SVTbank_Dict.cxx
   )
 
-ROOT_GENERATE_DICTIONARY(EvioParser_Dict EvioTool/EvioParser.h EvioTool/Bank.h  LINKDEF EvioTool/EvioParser_LinkDef.h)
-ROOT_GENERATE_DICTIONARY(Leaf_Dict EvioTool/Leaf.h LINKDEF EvioTool/Leaf_LinkDef.h)
-ROOT_GENERATE_DICTIONARY(FADCdata_Dict EvioTool/FADCdata.h LINKDEF EvioTool/FADCdata_LinkDef.h)
 
-ROOT_GENERATE_DICTIONARY(SVTbank_Dict HPSEvioReader/SVTbank.h LINKDEF HPSEvioReader/SVTbank_LinkDef.h)
+ROOT_GENERATE_DICTIONARY(EvioTool_Dict EvioTool/Leaf.h EvioTool/FADCdata.h EvioTool/EvioParser.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
+ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader/SVTbank.h LINKDEF HPSEvioReader/SVTbank_LinkDef.h MODULE HPSEvioReader)
 
 
 #---Create a shared library with geneated dictionary
-add_library(EvioTool SHARED ${SOURCE_FILES_EVIOTOOL} ${DICTS_EVIOTOOL} )
-target_link_libraries(EvioTool ${ROOT_LIBRARIES} evio-5.1)
+#add_library(EvioTool SHARED ${SOURCE_FILES_EVIOTOOL} ${DICTS_EVIOTOOL} )
+add_library(EvioTool SHARED ${SOURCE_FILES_EVIOTOOL} EvioTool_Dict.cxx )
+target_link_libraries(EvioTool ${ROOT_LIBRARIES} ${EVIO_LIBRARY})
 
 add_executable(EvioTool_Test EvioTool_Test/EvioTool_Test.cpp)
 add_dependencies(EvioTool_Test EvioTool)
-target_link_libraries(EvioTool_Test EvioTool evio-5.1)
+target_link_libraries(EvioTool_Test EvioTool ${EVIO_LIBRARY})
 
-add_library(HPSEvioReader SHARED ${SOURCE_FILES_HPSEVIOREADER} ${DICTS_HPSEVIOREADER})
-target_link_libraries(HPSEvioReader EvioTool ${ROOT_LIBRARIES} evio-5.1)
+add_library(HPSEvioReader SHARED ${SOURCE_FILES_HPSEVIOREADER} HPSEvioReader_Dict.cxx)
+target_link_libraries(HPSEvioReader EvioTool ${ROOT_LIBRARIES} ${EVIO_LIBRARY})
 
 add_executable(HPSEvioReader_Test HPSEvioReader_Test/HPSEvioReader_Test.cpp)
 add_dependencies(HPSEvioReader_Test HPSEvioReader EvioTool)
-target_link_libraries(HPSEvioReader_Test HPSEvioReader EvioTool evio-5.1)
+target_link_libraries(HPSEvioReader_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
 
-install(TARGETS EvioTool            DESTINATION lib)
-install(TARGETS EvioTool_Test       DESTINATION bin)
+
+
+install(TARGETS EvioTool              DESTINATION lib)
+install(FILES ${PROJECT_BINARY_DIR}/libEvioTool_rdict.pcm DESTINATION lib)
+install(TARGETS EvioTool_Test         DESTINATION bin)
 
 install(TARGETS HPSEvioReader       DESTINATION lib)
+install(FILES ${PROJECT_BINARY_DIR}/libHPSEvioReader_rdict.pcm  DESTINATION lib)
 install(TARGETS HPSEvioReader_Test  DESTINATION bin)

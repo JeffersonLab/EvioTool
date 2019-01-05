@@ -14,8 +14,6 @@
 			);
 			dependencies = (
 				40EBBBF821D468B20013747B /* PBXTargetDependency */,
-				40D968AD21C92C9F0075DF34 /* PBXTargetDependency */,
-				40D968AB21C92C940075DF34 /* PBXTargetDependency */,
 				40C13D3219704840008307A1 /* PBXTargetDependency */,
 				40C13D3419704840008307A1 /* PBXTargetDependency */,
 				40C13D3619704840008307A1 /* PBXTargetDependency */,
@@ -50,11 +48,6 @@
 		40C7638D1ABCED7100410152 /* Leaf.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C7638A1ABCED7100410152 /* Leaf.h */; };
 		40C763921ABCED8600410152 /* Bank.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40C7638F1ABCED8600410152 /* Bank.cc */; };
 		40C763931ABCED8600410152 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C763901ABCED8600410152 /* Bank.h */; };
-		40D9689421C860D60075DF34 /* libet-14.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9687F21C857400075DF34 /* libet-14.0.a */; };
-		40D968A321C890F10075DF34 /* libet-14.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9687F21C857400075DF34 /* libet-14.0.a */; };
-		40D968A421C890F70075DF34 /* libevio-4.4.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9686E21C857260075DF34 /* libevio-4.4.5.a */; };
-		40D968A521C8914D0075DF34 /* libet-14.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9687F21C857400075DF34 /* libet-14.0.a */; };
-		40D968A621C891580075DF34 /* libevio-4.4.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D9686E21C857260075DF34 /* libevio-4.4.5.a */; };
 		40E6BFED1917E1F400BF03CA /* et_evio_blaster.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */; };
 		40E6BFEF1917E1F400BF03CA /* et_evio_blaster.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E6BFEE1917E1F400BF03CA /* et_evio_blaster.1 */; };
 		40E74638191DA8F0008E4235 /* et_evio_test_consumer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */; };
@@ -116,13 +109,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 40940F3A1AC2FCF000BABC02;
 			remoteInfo = evio2xml;
-		};
-		4070473B21DEC6F400053DEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4070472C21DEC6F300053DEE /* evio-5.1.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 408352241CD3E46E00CE644C;
-			remoteInfo = evio_test;
 		};
 		4070473D21DEC6F400053DEE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -264,97 +250,6 @@
 			remoteGlobalIDString = 40E74634191DA8F0008E4235;
 			remoteInfo = et_evio_test_consumer;
 		};
-		40D9686B21C857260075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686621C857260075DF34 /* evio-4.4.5.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40E49D81190494FE00390847;
-			remoteInfo = "evio-4.4.5";
-		};
-		40D9686D21C857260075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686621C857260075DF34 /* evio-4.4.5.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40CB86341A75C0AB00A3EE12;
-			remoteInfo = "evio-4.4.5-static";
-		};
-		40D9687C21C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40907ED519128223004B41EB;
-			remoteInfo = "et-14.0";
-		};
-		40D9687E21C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 401CBA851AF1A7D4000E393E;
-			remoteInfo = "et-14.0 Static";
-		};
-		40D9688021C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40907F5719128A69004B41EB;
-			remoteInfo = "et-remote";
-		};
-		40D9688221C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40907F7019128B9F004B41EB;
-			remoteInfo = "et-jni";
-		};
-		40D9688421C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40E6BEE8191318A900BF03CA;
-			remoteInfo = et_start;
-		};
-		40D9688621C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40E6BFA919131B5700BF03CA;
-			remoteInfo = et_monitor;
-		};
-		40D9688821C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40E6BFBA19131BC800BF03CA;
-			remoteInfo = et_producer;
-		};
-		40D9688A21C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40E6BFCB1915D32500BF03CA;
-			remoteInfo = et_producer1;
-		};
-		40D9688C21C857400075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 40E7464219228068008E4235;
-			remoteInfo = et_consumer;
-		};
-		40D968AA21C92C940075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686621C857260075DF34 /* evio-4.4.5.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 40E49D80190494FE00390847;
-			remoteInfo = "evio-4.4.5";
-		};
-		40D968AC21C92C9F0075DF34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40D9686621C857260075DF34 /* evio-4.4.5.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 40CB86161A75C0AB00A3EE12;
-			remoteInfo = "evio-4.4.5-static";
-		};
 		40E74619191B0198008E4235 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
@@ -439,8 +334,6 @@
 		40C7638A1ABCED7100410152 /* Leaf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leaf.h; sourceTree = "<group>"; };
 		40C7638F1ABCED8600410152 /* Bank.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bank.cc; sourceTree = "<group>"; };
 		40C763901ABCED8600410152 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bank.h; sourceTree = "<group>"; };
-		40D9686621C857260075DF34 /* evio-4.4.5.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "evio-4.4.5.xcodeproj"; path = "evio-4.4.5/evio-4.4.5.xcodeproj"; sourceTree = "<group>"; };
-		40D9686F21C857400075DF34 /* et-14.0.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "et-14.0.xcodeproj"; path = "et-14.0/et-14.0.xcodeproj"; sourceTree = "<group>"; };
 		40E49CFE19034D3E00390847 /* libEvioTool.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libEvioTool.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E49D1119044F4B00390847 /* EvioParser_LinkDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EvioParser_LinkDef.h; sourceTree = "<group>"; };
 		40E6BFEA1917E1F400BF03CA /* et_evio_blaster */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = et_evio_blaster; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -478,7 +371,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4070474F21DEDB6300053DEE /* libevio-5.1.dylib in Frameworks */,
-				40D9689421C860D60075DF34 /* libet-14.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,8 +378,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40D968A621C891580075DF34 /* libevio-4.4.5.a in Frameworks */,
-				40D968A521C8914D0075DF34 /* libet-14.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,8 +394,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40D968A421C890F70075DF34 /* libevio-4.4.5.a in Frameworks */,
-				40D968A321C890F10075DF34 /* libet-14.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,7 +414,6 @@
 				4070473621DEC6F400053DEE /* libevio-5.1.dylib */,
 				407047BE21DEDFF100053DEE /* libeviocxx-5.1.dylib */,
 				4070473A21DEC6F400053DEE /* evio2xml */,
-				4070473C21DEC6F400053DEE /* evio_test */,
 				4070473E21DEC6F400053DEE /* eviocopy */,
 			);
 			name = Products;
@@ -575,31 +462,6 @@
 			path = HPSEvioReader;
 			sourceTree = "<group>";
 		};
-		40D9686721C857260075DF34 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				40D9686C21C857260075DF34 /* libevio-4.4.5.dylib */,
-				40D9686E21C857260075DF34 /* libevio-4.4.5.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		40D9687021C857400075DF34 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				40D9687D21C857400075DF34 /* libet-14.0.dylib */,
-				40D9687F21C857400075DF34 /* libet-14.0.a */,
-				40D9688121C857400075DF34 /* libet-remote.dylib */,
-				40D9688321C857400075DF34 /* libet-jni.dylib */,
-				40D9688521C857400075DF34 /* et_start */,
-				40D9688721C857400075DF34 /* et_monitor */,
-				40D9688921C857400075DF34 /* et_producer */,
-				40D9688B21C857400075DF34 /* et_producer1 */,
-				40D9688D21C857400075DF34 /* et_consumer */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		40D9689021C85DD10075DF34 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -611,9 +473,7 @@
 			isa = PBXGroup;
 			children = (
 				407047A721DEDFF000053DEE /* evio-4.4.6.xcodeproj */,
-				40D9686621C857260075DF34 /* evio-4.4.5.xcodeproj */,
 				4070472C21DEC6F300053DEE /* evio-5.1.xcodeproj */,
-				40D9686F21C857400075DF34 /* et-14.0.xcodeproj */,
 				4070485421DEF22C00053DEE /* et-16.1.xcodeproj */,
 				409A4A1B19086D81001AF63B /* Config */,
 				40E49D0019034D3E00390847 /* EvioTool */,
@@ -857,16 +717,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 40D9687021C857400075DF34 /* Products */;
-					ProjectRef = 40D9686F21C857400075DF34 /* et-14.0.xcodeproj */;
-				},
-				{
 					ProductGroup = 4070485521DEF22C00053DEE /* Products */;
 					ProjectRef = 4070485421DEF22C00053DEE /* et-16.1.xcodeproj */;
-				},
-				{
-					ProductGroup = 40D9686721C857260075DF34 /* Products */;
-					ProjectRef = 40D9686621C857260075DF34 /* evio-4.4.5.xcodeproj */;
 				},
 				{
 					ProductGroup = 407047A821DEDFF000053DEE /* Products */;
@@ -903,13 +755,6 @@
 			fileType = "compiled.mach-o.executable";
 			path = evio2xml;
 			remoteRef = 4070473921DEC6F400053DEE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4070473C21DEC6F400053DEE /* evio_test */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = evio_test;
-			remoteRef = 4070473B21DEC6F400053DEE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		4070473E21DEC6F400053DEE /* eviocopy */ = {
@@ -994,83 +839,6 @@
 			fileType = "compiled.mach-o.executable";
 			path = et_consumer;
 			remoteRef = 4070487121DEF22C00053DEE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9686C21C857260075DF34 /* libevio-4.4.5.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = "libevio-4.4.5.dylib";
-			remoteRef = 40D9686B21C857260075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9686E21C857260075DF34 /* libevio-4.4.5.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = "libevio-4.4.5.a";
-			remoteRef = 40D9686D21C857260075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9687D21C857400075DF34 /* libet-14.0.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = "libet-14.0.dylib";
-			remoteRef = 40D9687C21C857400075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9687F21C857400075DF34 /* libet-14.0.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = "libet-14.0.a";
-			remoteRef = 40D9687E21C857400075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9688121C857400075DF34 /* libet-remote.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = "libet-remote.dylib";
-			remoteRef = 40D9688021C857400075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9688321C857400075DF34 /* libet-jni.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = "libet-jni.dylib";
-			remoteRef = 40D9688221C857400075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9688521C857400075DF34 /* et_start */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = et_start;
-			remoteRef = 40D9688421C857400075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9688721C857400075DF34 /* et_monitor */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = et_monitor;
-			remoteRef = 40D9688621C857400075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9688921C857400075DF34 /* et_producer */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = et_producer;
-			remoteRef = 40D9688821C857400075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9688B21C857400075DF34 /* et_producer1 */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = et_producer1;
-			remoteRef = 40D9688A21C857400075DF34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D9688D21C857400075DF34 /* et_consumer */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = et_consumer;
-			remoteRef = 40D9688C21C857400075DF34 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1290,16 +1058,6 @@
 			isa = PBXTargetDependency;
 			target = 40E74634191DA8F0008E4235 /* et_evio_test_consumer */;
 			targetProxy = 40C13D3719704840008307A1 /* PBXContainerItemProxy */;
-		};
-		40D968AB21C92C940075DF34 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "evio-4.4.5";
-			targetProxy = 40D968AA21C92C940075DF34 /* PBXContainerItemProxy */;
-		};
-		40D968AD21C92C9F0075DF34 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "evio-4.4.5-static";
-			targetProxy = 40D968AC21C92C9F0075DF34 /* PBXContainerItemProxy */;
 		};
 		40E7461A191B0198008E4235 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

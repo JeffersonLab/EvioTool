@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(et-16.1)
 
-set(CMAKE_BUILD_TYPE RELEASE)
-
 #include_directories($ENV{CODA}/common/include $ENV{JAVA_HOME}/include $ENV{JAVA_HOME}/include/linux $ENV{JAVA_HOME}/Headers)
 
 IF(APPLE)

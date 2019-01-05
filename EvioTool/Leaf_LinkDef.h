@@ -20,10 +20,6 @@
 #pragma link off all typedef;
 
 #pragma link C++ class Leaf_base+;
-#pragma link C++ class FADCchan+;
-#pragma link C++ class FADCchan_raw+;
-#pragma link C++ class FADCdata+;
-
 #pragma link C++ enum  LeafDataTypes_t;
 
 #pragma link C++ class Leaf<char>+;
@@ -49,6 +45,9 @@
 #pragma link C++ class vector<Leaf<float> >;
 #pragma link C++ class vector<Leaf<double> >;
 #pragma link C++ class vector<Leaf<string> >;
+//#pragma link C++ class FADCchan+;
+//#pragma link C++ class FADCchan_raw+;
+//#pragma link C++ class FADCdata+;
 // #pragma link C++ class vector<Leaf<FADCdata> >;
 // #pragma link C++ class Leaf<FADCdata>+;
 
