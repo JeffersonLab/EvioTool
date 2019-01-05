@@ -1,0 +1,14 @@
+.svn
+.scon*
+*~
+coda.pyc
+*.iml
+config.log
+doxyerrors.log
+doc/javadoc/*
+tar/et*
+src/libsrc/.*
+src/execsrc/.*
+src/examples/.*
+build
+.idea

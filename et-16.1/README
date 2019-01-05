@@ -1,0 +1,226 @@
+ET Software Package
+
+The ET or Event Transfer system is used to transfer events (data)
+between different user processes using shared memory. It's designed
+for speed and reliability. Remote access to ET system data is possible
+over TCP sockets as well.
+ 
+It was written by Carl Timmer of the Data Acquisition group of the
+Thomas Jefferson National Accelerator Facility.
+
+This software runs on Linux and Darwin (Mac OSX).
+
+You must install Java version 1.7 or higher if you plan to compile
+the ET java code and run it. If you're using the jar file from the CODA
+website, version 1.8 or higher is necessary since it was compiled with
+version 1.8.
+
+
+1) Getting & Installing ET
+
+The ET package, including documentation, can be found on the
+JLab Data Acquisition Group CODA wiki at http://coda.jlab.org.
+For Java users, a jar file is available for download and is
+usually all that is needed. See item 3) for more details.
+
+To install all of ET, download the et-16.x.tar.gz
+file (or whatever version happens to be current) and untar it.
+This will give you a full ET distribution with the top level
+directory being et-16.x. The documentation, is available on the
+above-mentioned web site but also exists in the doc subdirectory
+of the full distribution.
+
+Note that for C, only Linux and Darwin (Mac OSX)
+operating systems are supported. The libraries and executables
+are placed into the $CODA/<arch>/lib and bin subdirectories
+(eg. ...Linux-x86_64/lib).  Be sure to change your LD_LIBRARY_PATH
+environmental variable to include the correct lib directory.
+
+
+2) C code
+
+Compiling using SCons
+
+From the SCons website:
+"SCons is an Open Source software
+construction tool -- that is, a next-generation build tool.
+Think of SCons as an improved, cross-platform substitute for
+the classic Make utility with integrated functionality similar
+to autoconf/automake and compiler caches such as ccache. In short,
+SCons is an easier, more reliable and faster way to build software."
+
+SCons is written in python, thus to use this build system with ET,
+both python and SCons packages need previous installation. If your
+system does not have one or the other, go to the http://www.python.org/
+and http://www.scons.org/ websites for downloading.
+
+The SCons files needed for compiling are already included as part of
+the ET distribution. To compile, the user needs merely to run "scons"
+in the top level ET directory. To compile and install libraries and
+header files, first define the CODA environmental variable containing
+the directory in which to install things and then run "scons install".
+
+The following is a table of SCons compilation options:
+
+scons -h              print out help
+
+scons                 make C libraries
+
+scons -c              remove all generated files
+
+scons install         make C libraries
+                      place libraries in architecture-specific lib directory
+                      make binaries
+                      place execsrc binaries in architecture-specific bin directory
+                      place example binaries in bin/examples directory
+                      place test binaries in bin/test directory
+                      place headers in include directory
+
+scons install -c      uninstall libs, headers, and binaries
+
+scons tar             create a tar file (et-16.x.tgz) of the ET top level
+                      directory and put in ./tar directory
+
+scons doc             generate html documentation from javadoc and doxygen
+                      comments in the source code and put in ./doc directory
+
+scons undoc           remove the doc/javadoc directory
+
+scons --dbg           compile with debug flag
+scons --32bits        compile 32bit libraries & executables on 64bit system
+
+scons --prefix=<dir>  use base directory <dir> when doing install.
+                      Defaults to CODA environmental variable.
+                      Libs go in <dir>/<arch>/lib, headers in <dir>/<arch>/include
+                      and executables in <dir>/<arch>/bin
+
+scons --incdir=<dir>  copy header files to directory <dir> when doing install
+                      (takes precedence over --prefix or default location)
+
+scons --libdir=<dir>  copy library files to directory <dir> when doing install
+                      (takes precedence over --prefix or default location)
+
+scons --bindir=<dir>  copy executable files to directory <dir> when doing install
+                      (takes precedence over --prefix or default location)
+
+
+You can see these options by running "scons -h"
+
+
+Note that currently only Linux and Darwin (Mac OSX)
+operating systems are supported. The libraries and executables
+are placed into the $CODA/<arch>/lib and bin subdirectories
+(eg. ...Linux-x86_64/lib).  Be sure to change your LD_LIBRARY_PATH
+environmental variable to include the correct lib directory.
+
+VxWorks is no longer supported in this version.
+
+MACS:
+
+    A word about making C libs on the Mac. The jni.h and jni_md.h header files
+    supplied with the java JDK have lived in different places over the years.
+    These are needed for compilation. The best way to facilitate that is to
+    set your JAVA_HOME enviromental variable so that these includes can be found.
+    These days the Oracle Java is placed so that you need to do a:
+
+       setenv JAVA_HOME /Library/Java/JavaVirtualMachines/<jdk_dir>/Contents/Home
+
+    where <jdk_dir> is the directory in which your specific java distribution lives.
+    This package assumes the header files are found in $JAVA_HOME/include and in
+    $JAVA_HOME/include/darwin.
+
+
+3) JAVA
+
+One can download the et-16.x.jar file from the CODA website or it can
+be generated from the general ET distribution.  In either case,
+put the jar file into your classpath and run your java application.
+
+If you're using the jar file from the CODA website, java version 1.6 or
+higher is necessary since it was compiled with version 1.6. If
+generating it, use java version 1.6 or higher to compile.
+
+If you wish to recompile the java part of ET, ant must be installed
+on your system (http://ant.apache.org). First extract the package files
+from the general ET tar file:
+  
+# download et-16.x.tar.gz into <top>
+$ cd <top>
+$ tar -fxz et-16.x.tar.gz
+$ cd et-16.x
+$ ant
+
+To get a list of options with ant, type "ant help":
+
+ ant  help       - print out usage
+ ant  env        - print out build file variables' values
+ ant  compile    - compile java files
+ ant  clean      - remove class files
+ ant  cleanall   - remove all generated files
+ ant  jar        - compile and create et jar file
+ and  install    - create et jar file, remove other version et jars,
+                   and install all jars into 'prefix'
+                   if given on command line by -Dprefix=dir',
+                   else install into CODA if defined" />
+ ant  uninstall  - remove all current jar files previously installed
+                   into 'prefix' or CODA
+ ant  all        - clean, compile and create et jar file
+ ant  javadoc    - create javadoc documentation
+ ant  developdoc - create javadoc documentation for developer
+ ant  undoc      - remove all javadoc documentation
+ ant  prepare    - create necessary directories
+
+
+To generate a new ET jar file, type "ant jar" which will
+create the file and place it in <top>/build/lib .
+
+Included in the <top>/java/jars subdirectory are all auxiliary jar files used
+by the GUI graphics. These are installed when executing "ant install"
+and uninstalled when executing "ant uninstall".
+
+
+4) Documentation
+
+All documentation is available from http://coda.jlab.org.
+
+However, if using the downloaded distribution, some of the documentation
+needs to be generated and some already exists. For existing docs look in
+doc/users_guide and doc/developers_guide for pdf and Microsoft Word
+format documents.
+
+Some of the documentation is in the source code itself and must be generated
+and placed into its own directory.
+The java code is documented with, of course, javadoc and the C/C++ code is
+documented with doxygen comments (identical to javadoc comments).
+
+To generate all the these docs, from the top level directory type:
+    "scons doc"
+To remove it all type:
+    "scons undoc"
+
+The javadoc is placed in the doc/javadoc directory.
+The doxygen docs for C code are placed in the doc/doxygen/C/html directory,
+and the doxygen docs for C++ code are placed in the doc/doxygen/CC/html directory.
+To view the html documentation, just point your browser to the index.html
+file in each of those directories.
+In the C/C++ html docs, select the "modules" option to get a nice summary
+of all routines needed by a user.
+
+Alternatively, just the java documentation can be generated by typing
+    "ant javadoc"
+for user-level documentation, or
+    "ant developdoc"
+for developer-level documentation. To remove it:
+    "ant undoc"
+
+
+
+5) Problems
+
+Carl Timmer - timmer@jlab.org  (757)269-5130
+
+
+6) Copyright
+
+For any issues regarding use and copyright, read the NOTICE file.
+

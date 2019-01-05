@@ -1,0 +1,128 @@
+Changes to ET:
+
+ET_14.0
+
+- in C code, add mutex protection when calling et_close and other routines
+  so there is much more thread safety. It is necessary to run this version
+  of ET (14.0) in order not to crash the emu with a JVM seg fault.
+  
+- in C code, after et_close() is called, its et id cannot be used,
+  returns new error, ET_ERROR_CLOSED
+  
+- in C and Java, when broad/multicasting to connect to an ET system, an
+  ET client will use all the IP addresses sent by the ET system to try and
+  connect, starting with addresses on the same subnets. A timeout of 3 seconds
+  maximum exists for each address tried.
+
+- the "scons install" option now installs et_start and et_monitor but the examples
+  must now be installed by doing "scons examples"
+
+- add scons options:
+    -- to remove documentation
+    -- It now installs into $CODA unless --prefix given on cmd line.
+       It can also install into --incdir, --bindir, and --libdir if
+       more installation control is needed
+
+- add ant options to:
+    -- remove documentation
+    -- install & uninstall jar files
+    -- install into CODA env var or into --prefix
+
+
+1/21/2014
+	Made ET file other-readable & other-writeable
+	Deprecate routines that swap (use evio)
+
+
+
+ET-15.0
+
+4/16/2014
+    - SystemCreate.getStations() returns an ArrayList not a LinkedList
+    - replace all LinkedLists with ArrayLists for performance
+    - make certain methods public so a java process which runs an ET
+      server in its own JVM can efficiently access that ET system
+      (avoid sockets)
+
+6/18/2014
+    -Fix bug in java ET system (server) in which the getEvents() delay
+     will become negative due to rounding error
+    -Fix bug in java ET system (server) in which the getEvents() delay
+     will become infinite if 0 time left
+
+7/10/2014
+    - et_monitor can now use multicasting to find ET system
+      and so can its java counterpart, org.jlab.coda.et.apps.EtMonitor
+    - graphical et monitor no longer needs a schema
+
+9/22/2014
+    - fix flags for Mac OSX compilation
+    - fix bad return values in et_jni.c when error
+
+11/12/14
+    - fix bug in which SystemCreate.shutdown() did not end all the ET system threads
+
+12/12/14
+    - fix bug in which C ET system seg faults due to null pointer in server code handling
+      et_event_new() from remote and no-share C clients
+
+5/2015
+    - have ET sys send broadcast addresses in addition to IP addresses when client connecting
+    - setNetworkInterface() now sets the preferred subnet. It can now accept a subnet address
+        or a regular IP address which it will internally convert to a subnet address.
+        It will set the outgoing interface to that subnet as well as choosing the ET sys
+        IP address on that same subnet so both ends of the socket are well-defined.
+    - if C client is trying to open a local, Java-based ET system file, it will recognize
+        this and instead of returning an error, it will attempt a remote connection (using sockets).
+    - mutex protect reading/writing of heartbeat so no issues with reading old, cached values
+        of heartbeat and thinking the system is dead when it is not.
+    - fix bug in which et_alive will try to lock an already locked system mutex during internal
+        calls to it while cleaning up after dead clients and such. This was causing the ET system
+        to stop functioning after client died.
+    - find bug in remote et_events_get() causing an error to be returned even if OK.
+
+ET-15.1 (created 6/5/2015)
+    - same as 15.0
+    - fix bug in remote et_event(s)_get which is given a ET_NOALLOC flag ORed into the ET_SLEEP arg.
+      ET_NOALLOC no longer used in get.
+    - et_openconfig_, et_event_, et_statconfig_, et_sysconfig_, & et_bridge_ return additional errors
+      due to more rigorous argument checking.
+    - doxygen doc comments placed in files for all user functions.
+    - enable generation of doxygen pages through scons
+
+ET-16.0 (created 7/29/2015, updated 4/8/2016)
+    - pass user's LD_LIBRARY_PATH into scons build environment
+    - get rid of vxworks and solaris dependencies in C code and in scons files
+    - condense C ET system server UDP listening code into 1 thread.
+    - get rid of MacOS clang compilation errors
+
+    - fix bugs in java client's handling of ET server connection communication
+    - fix bug setting java client debug level
+    - fix bug which made java client act as remote even when local
+
+    - make java consumer, producer, and ET system take same cmd line args as C counterparts
+    - make Java ET system's broadcast port and multicast port the same.
+      This change will break code that relies on setting the multicast port explicitly
+      including changing constructors, getters, and setters for EtSystemOpenConfig class.
+    - fix bug in Java throwing exception when 1 ET system gives more than one response to
+      broad/multicast and policy is error on multiple responses.
+    - fix bug in Java EtSystemOpenConfig constructor when using a TTL value of 0 to
+      signify the default (32).
+
+    - if cue > #-of-events when creating a non-blocking station, don't return an error,
+      just set cue = #-of-events.
+
+    - add script (etmonitor) to start gui et monitor and have script installed with
+      "ant install"
+
+    - add method, EtSystem.getLocalAddress(), which gets the local, dot-decimal IP address
+      used to connect to the ET system. Useful to see which interface being used. 4/8/2016
+
+ ET-16.1 (created 4/21/2016)
+
+    - added isTemp() method to java EtEvent(Impl) classes in order to tell if an event,
+      representing an event in a C-based ET system, is a temp event or not. This
+      necessitated a change in et_jni.c as well. Useful in debugging the operation of
+      an ET system.
+
+    - got rid of the "-dbg" suffix when making libs/executables

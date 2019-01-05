@@ -1,0 +1,17 @@
+//
+//  et-14.0.xcconfig
+//  et-14.0
+//
+//  Created by Maurik Holtrop on 5/1/14.
+//  Copyright (c) 2014 JLab. All rights reserved.
+//
+#include "../../master.xcconfig"
+
+PRODUCT_NAME = ${TARGET_NAME}
+EXECUTABLE_PREFIX=lib
+EXECUTABLE_EXTENSION = dylib
+
+DYLIB_COMPATIBILITY_VERSION=0
+DYLIB_CURRENT_VERSION=0
+
+HEADER_SEARCH_PATHS= $(inherited) /Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/include /Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/include/darwin

@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jlab.coda</groupId>
+    <artifactId>et</artifactId>
+    <packaging>jar</packaging>
+    <version>16.0</version>
+    <name>Event Transfer Java Library</name>
+    <build>
+        <sourceDirectory>./java/</sourceDirectory>
+        <defaultGoal>install</defaultGoal>
+    </build>
+        
+
+    <repositories>
+        <repository>
+            <id>coda-maven-repository</id>
+            <name>CODA Maven Repository</name>
+            <url>http://coda.jlab.org/maven/</url>
+        </repository>
+    </repositories>
+    
+    <distributionManagement>
+        <repository>
+            <id>jlab-coda-repo</id>
+            <!-- FIXME: Change to real deployment dir. -->
+            <url>file:/group/da/distribution/maven</url>
+        </repository>
+    </distributionManagement>
+    
+    <dependencies>
+        
+        <dependency>
+            <groupId>com.loox</groupId>
+            <artifactId>jloox</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.loox</groupId>
+            <artifactId>jlayout</artifactId>
+            <version>3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.loox</groupId>
+            <artifactId>jlm</artifactId>
+            <version>2.0</version>
+        </dependency>
+        
+    </dependencies>
+</project>

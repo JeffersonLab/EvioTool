@@ -1,0 +1,12 @@
+# ignore all files/dirs beginning with .
+.*
+
+# except this one
+!.gitignore
+
+# ignore generated files/dirs
+coda.pyc
+build/
+doc/doxygen/C/
+doc/javadoc/
+doxyerrors.log

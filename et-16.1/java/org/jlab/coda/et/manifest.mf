@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: coda.jlab.org
+Specification-Title: et
+Sealed: true
+Main-Class: org.jlab.coda.et.apps.EtMonitor

@@ -1,0 +1,17 @@
+#!/bin/csh -f
+
+# Script to start up an ET system graphical monitor
+# Optional argument is "-f <config file>"
+
+if ($#argv != 0 && $#argv != 2) then
+  echo "Usage: etmonitor -f <config file>"
+  exit
+endif
+
+#setenv PATH $CODA/$MACHINE/bin
+#setenv LD_LIBRARY_PATH $CODA/$MACHINE/lib
+
+$JAVA_HOME/bin/java -cp $CODA/common/jar/\* \
+    -Djava.net.preferIPv4Stack=true \
+    -Djava.library.path=$CODA/$MACHINE/lib \
+    org.jlab.coda.et.monitorGui.Monitor $1 $2
