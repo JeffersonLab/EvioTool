@@ -22,7 +22,7 @@ endif()
 set(EVIO_LIBRARY evio-4.4.6)
 set(ET_LIBRARY   et-16.1)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 message("---------------------------------------------")
 message("We have CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
