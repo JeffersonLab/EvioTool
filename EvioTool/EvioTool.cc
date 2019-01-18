@@ -87,6 +87,72 @@ int EvioTool::Next(){
     return stat;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// Template Specification on how to fill leafs of specific not simple types.
+//
+// These are specification for: template<typename T> int AddOrFillLeaf(const unsigned int *buf,int len,int tag,int num,Bank *node)
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+
+int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
+  // Add or Fill a float leaf in the bank node.
+  // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
+  // If fAutoAdd is true, if not found, a new leaf is added and filled.
+  int loc = node->Find(tag,num);
+  if( loc == -1){
+    if(fAutoAdd){
+      char str[100];
+      sprintf(str,"FADC-%u-%u",tag,num);
+      if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
+      node->Add_Leaf<FADCdata>(str,tag,num,"Auto added string leaf");
+      loc= node->leafs->GetEntriesFast()-1;
+    }else{
+      return 0;
+    }
+  }
+  
+  if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " with specified AddOrFillLeaf<FADCdata> \n";
+  
+  unsigned short formatTag  = (buf[0]>>20)&0xfff;
+  unsigned short formatLen  = buf[0]&0xffff;
+#ifdef DEBUG
+  string formatString       = string((const char *) &(((uint32_t*)buf)[1]));
+#endif
+  int dataLen               = buf[1+formatLen]-1;
+#ifdef DEBUG
+  int dataTag         = (buf[1+formatLen+1]>>16)&0xffff;
+  int dataNum         = buf[1+formatLen+1]&0xff;
+#endif
+  
+  unsigned char *cbuf = (unsigned char *) &buf[3+formatLen];
+  
+  int buflen = dataLen*4 - 4;
+  int indx=0;
+  
+  // We use emplace_back instead of creating the class and then push_back. This should save at least one copying step of the data
+  // thus speeding up the code. Turns out that this code is 4 to 5x faster than the commented code at end of file.
+  // The constructor for FADCdata is created to do the work of re-interpreting the buffer.
+  // See: Effective Modern C++, item 42.
+  
+  Leaf<FADCdata> *ll =(Leaf<FADCdata> *)node->leafs->At(loc);
+  ll->data.reserve(16);
+  unsigned char crate = node->this_tag;
+  while( indx < buflen){
+    unsigned char slot       = GET_CHAR(cbuf,indx);
+    unsigned int  trig       = GET_INT(cbuf,indx);
+    unsigned long long time  = GET_L64(cbuf,indx);
+    int nchan  = GET_INT(cbuf,indx);
+    for(int jj=0; jj<nchan; ++jj){
+      ll->data.emplace_back(crate,slot,trig,time, indx, cbuf);
+      //      ll->data.emplace_back(indx, cbuf);
+    }
+  }
+  
+  return 1;
+};
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //  Main Parsing Code
@@ -215,7 +281,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
         stat = AddOrFillLeaf<int>(buf, len, tag, num, node);
         break;
       case 0xf:   // FADC compound type
-        stat = AddOrFillLeaf<FADCdata>(buf, len, tag, num, node);
+        stat = AddOrFillLeaf_FADCdata(buf, len, tag, num, node);
         break;
         // --------------------- one-byte types
       case 0x4:   // int16_t = short

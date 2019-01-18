@@ -71,19 +71,19 @@ target_link_libraries(et-jni-16.1 et-16.1)
 
 add_executable(et_start src/execsrc/et_start.c)
 add_dependencies(et_start et-16.1)
-target_link_libraries(et_start et-16.1)
+target_link_libraries(et_start et-16.1 dl m pthread)
 
 add_executable(et_monitor src/execsrc/et_monitor.c)
 add_dependencies(et_monitor et-16.1)
-target_link_libraries(et_monitor et-16.1)
+target_link_libraries(et_monitor et-16.1 dl m pthread)
 
 add_executable(et_2_et src/execsrc/et_2_et.c)
 add_dependencies(et_2_et et-16.1)
-target_link_libraries(et_2_et et-16.1)
+target_link_libraries(et_2_et et-16.1 dl m pthread) 
 
 add_executable(et_killer src/execsrc/et_killer.c)
 add_dependencies(et_killer et-16.1)
-target_link_libraries(et_killer et-16.1)
+target_link_libraries(et_killer et-16.1 dl m pthread)
 
 install(TARGETS et-16.1 et-jni-16.1   DESTINATION lib)
 install(TARGETS et_start et_monitor et_2_et et_killer DESTINATION bin)

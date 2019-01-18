@@ -1,6 +1,6 @@
 //
-//  SVTdata.cpp
-//  EvioTool
+//  SVTbank.cc
+//  HPSEvioReader
 //
 //  Created by Maurik Holtrop on 1/2/19.
 //

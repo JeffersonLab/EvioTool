@@ -103,6 +103,7 @@ public:
   virtual unsigned short GetTag(void){ return(this_tag);};
   vector<unsigned short> &GetTags(void){return(tags);}
   
+  // Add a new leaf type to this bank. COPY the leaf into the array.
   virtual int Add_Leaf(string name,unsigned short itag, unsigned char inum,string desc,int type);
   template<typename T> Leaf<T> * Add_Leaf(Leaf<T> &leaf){
     int location= leafs->GetEntriesFast();
@@ -111,6 +112,15 @@ public:
     leafs->Add(new_leaf);
     return(new_leaf);
   }
+
+  // Add a new leaf type to this bank. DON'T COPY the leaf into the array.
+  template<typename T> void Add_This_Leaf(Leaf<T> *new_leaf){
+    int location= leafs->GetEntriesFast();
+    string name=StoreLocation(new_leaf->GetName(),location);
+    leafs->Add(new_leaf);
+    return;
+  }
+  
   
   template<typename T> Leaf<T> *Add_Leaf(string name,unsigned short itag,unsigned char inum, string desc){
     int location= leafs->GetEntriesFast();
