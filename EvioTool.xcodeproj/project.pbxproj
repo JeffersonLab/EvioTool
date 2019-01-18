@@ -15,9 +15,7 @@
 			dependencies = (
 				40EBBBF821D468B20013747B /* PBXTargetDependency */,
 				40C13D3219704840008307A1 /* PBXTargetDependency */,
-				40C13D3419704840008307A1 /* PBXTargetDependency */,
 				40C13D3619704840008307A1 /* PBXTargetDependency */,
-				40C13D3819704840008307A1 /* PBXTargetDependency */,
 				4011BB2321D7D6FF00256470 /* PBXTargetDependency */,
 			);
 			name = AllEvioTool;
@@ -230,26 +228,12 @@
 			remoteGlobalIDString = 40E49CFD19034D3E00390847;
 			remoteInfo = EvioTool;
 		};
-		40C13D3319704840008307A1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 40E6BFE91917E1F400BF03CA;
-			remoteInfo = et_evio_blaster;
-		};
 		40C13D3519704840008307A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 40E74622191B0BFC008E4235;
 			remoteInfo = EvioTool_Test;
-		};
-		40C13D3719704840008307A1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 40E74634191DA8F0008E4235;
-			remoteInfo = et_evio_test_consumer;
 		};
 		40E74619191B0198008E4235 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1053,20 +1037,10 @@
 			target = 40E49CFD19034D3E00390847 /* EvioTool */;
 			targetProxy = 40C13D3119704840008307A1 /* PBXContainerItemProxy */;
 		};
-		40C13D3419704840008307A1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 40E6BFE91917E1F400BF03CA /* et_evio_blaster */;
-			targetProxy = 40C13D3319704840008307A1 /* PBXContainerItemProxy */;
-		};
 		40C13D3619704840008307A1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 40E74622191B0BFC008E4235 /* HPSEvioReader_Test */;
 			targetProxy = 40C13D3519704840008307A1 /* PBXContainerItemProxy */;
-		};
-		40C13D3819704840008307A1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 40E74634191DA8F0008E4235 /* et_evio_test_consumer */;
-			targetProxy = 40C13D3719704840008307A1 /* PBXContainerItemProxy */;
 		};
 		40E7461A191B0198008E4235 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
