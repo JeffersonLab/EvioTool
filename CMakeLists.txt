@@ -26,9 +26,6 @@ set(ET_LIBRARY   et-16.1)
 add_subdirectory(${ET_LIBRARY})
 
 
-
-
-
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 message("---------------------------------------------")
@@ -97,8 +94,7 @@ set(DICTS_HPSEVIOREADER
 
 
 ROOT_GENERATE_DICTIONARY(EvioTool_Dict      EvioTool/EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
-ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader/SVTbank.h LINKDEF HPSEvioReader/SVTbank_LinkDef.h MODULE HPSEvioReader)
-
+ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader/HPSEvioReader.h LINKDEF HPSEvioReader/HPSEvioReader_LinkDef.h MODULE HPSEvioReader)
 
 #---Create a shared library with geneated dictionary
 #add_library(EvioTool SHARED ${SOURCE_FILES_EVIOTOOL} ${DICTS_EVIOTOOL} )
