@@ -79,7 +79,7 @@ public:
   int ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node); // Recursive buffer parser.
   int LeafNodeHandler(const unsigned int *buf,int len, int padding, int contentType,unsigned short tag,unsigned char num,Bank *node);
   Bank *ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag, unsigned char num, Bank *node, int depth);
-  
+  int AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node); // Non template special case for FADC.
   template<typename T> int AddOrFillLeaf(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
     // Add or Fill an int leaf in the bank node.
     // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
@@ -97,7 +97,7 @@ public:
       }
     }
     
-    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " generic for <" << ((Leaf<T> *)node->leafs->At(loc))->type() << "> \n";
+    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " templated for type <" << ((Leaf<T> *)node->leafs->At(loc))->type() << "> \n";
     node->Push_data_array(loc, (T *)buf, len);
     
     return 1;

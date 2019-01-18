@@ -20,7 +20,14 @@ endif()
 # Shortcut to control which version of EVIO or ET is linked against.
 #
 set(EVIO_LIBRARY evio-4.4.6)
+add_subdirectory(${EVIO_LIBRARY})
+
 set(ET_LIBRARY   et-16.1)
+add_subdirectory(${ET_LIBRARY})
+
+
+
+
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
@@ -36,9 +43,6 @@ message("---------------------------------------------")
 
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
-
-add_subdirectory(${EVIO_LIBRARY})
-add_subdirectory(${ET_LIBRARY})
 
 include_directories(evio-5.1/src/libsrc EvioTool HPSEvioReader) 
 

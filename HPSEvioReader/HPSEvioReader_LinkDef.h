@@ -13,4 +13,6 @@
 #pragma link C++ class SVTbank+;
 #pragma link C++ struct SVT_chan_t;
 #pragma link C++ struct SVT_header_t;
+
+#pragma link C++ class Header+;
 #endif
