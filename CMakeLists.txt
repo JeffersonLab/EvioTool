@@ -26,7 +26,7 @@ set(ET_LIBRARY   et-16.1)
 add_subdirectory(${ET_LIBRARY})
 
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 message("---------------------------------------------")
 message("We have CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
