@@ -23,7 +23,7 @@ using namespace std;
 #include "TH1D.h"
 
 struct Arguments_t {
-  string filename;
+  vector<string> filenames;
   string et_name;
   string et_host_name;
   int    et_port;
@@ -46,15 +46,13 @@ int main(int argc, const char * argv[])
   Arguments_t args;
   Parse_Args(&argc,argv,&args);
   
-  EvioTool *etool;
+  EvioTool *etool=new EvioTool();
   
   if(args.use_et){
     cout << "Error ET system not yet implemented. Exit. \n";
     exit(1);
-  }else{
-    etool= new EvioTool();
-    etool->Open(args.filename.c_str());
   }
+  
   if(args.debug==0){
     etool->fDebug = 0b000000;
   }else if(args.debug==1){
@@ -73,7 +71,8 @@ int main(int argc, const char * argv[])
   etool->fAutoAdd=false;
   etool->fChop_level=1;
   etool->tags={136,132,130,129};  // Parse HPS physics events only.
-  Header head(etool,49152,0);
+
+  auto head = new Header(etool,49152,0);
 //  Leaf<unsigned int> *Header = etool->Add_Leaf<unsigned int>("Header",49152,0,"Header bank");
   auto ECAL = etool->Add_Bank("Ecal",{37,39},0,"Ecal banks");
   auto FADC = ECAL->Add_Leaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
@@ -94,39 +93,41 @@ int main(int argc, const char * argv[])
   auto start = std::chrono::system_clock::now();
   auto time1 = start;
   
-  etool->Next();
-  int first_event = head.GetEventNumber();
-  cout << "First event number = " << first_event << endl;
-  while(etool->Next() == S_SUCCESS){
-    if(args.debug) cout<<"EVIO Event " << evt_count << endl;
-    evt_count++;
-    event_hist->Fill((double)head.GetEventNumber());
-    if(args.print_evt) {
-      etool->PrintBank(10);
-//      if(args.show_head) {};
-//      if(args.show_svt)  {};
-//      if(args.show_ecal) {};
+  for(auto file: args.filenames){
+    etool->Open(file.c_str());
+    while(etool->Next() == S_SUCCESS){
+      if(args.debug) cout<<"EVIO Event " << evt_count << endl;
+      evt_count++;
+      event_hist->Fill((double)head->GetEventNumber());
+      if(args.print_evt) {
+        etool->PrintBank(10);
+  //      if(args.show_head) {};
+  //      if(args.show_svt)  {};
+  //      if(args.show_ecal) {};
+      }
+      if(!args.quiet && evt_count%100000 ==0 ){
+  //      /* statistics */
+          auto time2 = std::chrono::system_clock::now();
+          std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
+          totalTime += delta_t;
+          double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
+          totalCount += evt_count;
+          double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
+          printf("%s: %6.1f kHz,  %6.1f kHz Avg. Event: %9d\n", argv[0], rate/1000., avgRate/1000.,head->GetEventNumber());
+          evt_count = 0;
+          time1 = std::chrono::system_clock::now();
+      }
     }
-    if(!args.quiet && evt_count%100000 ==0 ){
-//      /* statistics */
-        auto time2 = std::chrono::system_clock::now();
-        std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
-        totalTime += delta_t;
-        double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
-        totalCount += evt_count;
-        double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-        printf("%s: %3.4g kHz,  %3.4g kHz Avg. Event: %6d\n", argv[0], rate/1000., avgRate/1000.,head.GetEventNumber());
-        evt_count = 0;
-        time1 = std::chrono::system_clock::now();
-    }
+    cout << " ------------- \n";
+    etool->Close();
   }
   auto time2 = std::chrono::system_clock::now();
   std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
   totalTime += delta_t;
   totalCount += evt_count;
   double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-  printf("Last event: %6d\n",head.GetEventNumber());
-  printf("Total events: %6ld (%6d) ",totalCount, head.GetEventNumber()-first_event);
+  printf("Last event: %6d\n",head->GetEventNumber());
+  printf("Total events: %6ld \n",totalCount);
   printf("Final: %3.4g kHz \n", avgRate/1000.);
   root_file.Write();
   root_file.Close();
@@ -146,7 +147,7 @@ void Parse_Args(int *argc,const char **argv, Arguments_t *p_arg){
   p_arg->auto_add=false;
   p_arg->print_evt=false;
   p_arg->use_et=0;
-  p_arg->filename="";
+  p_arg->filenames.clear();
   p_arg->et_name="";
   p_arg->et_host_name="";
   p_arg->et_port=0;
@@ -212,17 +213,26 @@ void Parse_Args(int *argc,const char **argv, Arguments_t *p_arg){
       REMOVE_ONE;
     }
   }
-  if( (*argc) != 2 && !p_arg->use_et){
-    fprintf(stderr,"\nPlease supply one and only one file name\n");
+
+  if( (*argc) < 2){
+    std::cout << "Please supply at least one EVIO file to parse.\n";
     exit(1);
   }
-  if((*argc) >= 2) p_arg->filename = argv[1];
+
+  for(int i=1;i<(*argc);++i){
+    p_arg->filenames.push_back(argv[i]);
+  }
+  
   if(p_arg->debug){
     cout << "Debug set to: " << p_arg->debug << endl;
     if(p_arg->use_et){
       cout << "Opening a channel to the ET system." << endl;
     }else{
-      cout << "File to open: " << p_arg->filename << endl;
+      std::cout << "File to open: ";
+      for(auto f : p_arg->filenames){
+        std::cout << f << " ";
+      }
+      std::cout << endl;
     }
   }
 }

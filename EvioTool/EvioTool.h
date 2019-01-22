@@ -66,12 +66,13 @@ public:
   // private:
   int evio_handle;
 
-  const unsigned int *evio_buf; // Buf ptr to read event into.
-  unsigned int evio_buflen;     // length of buffer.
+  const unsigned int *evio_buf;  // Buf ptr to read event into.
+  unsigned int evio_buflen;      // length of buffer.
   
 public:
   EvioTool();
   int  Open(const char *filename,const char *dictf=NULL);
+  void Close();
   void parseDictionary(const char *dictf);
   int NextNoParse(void);
   int Next(void);
