@@ -1,3 +1,12 @@
+#
+# CMakeLists.txt
+#
+# Build the et package.
+#
+# Author: Maurik Holtrop
+#
+# Note: If you want to build the JAVA component, you need jni libraries. Uncomment the relevant lines to do this.
+# 
 cmake_minimum_required(VERSION 3.0)
 project(et-16.1)
 
