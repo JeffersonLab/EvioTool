@@ -50,11 +50,6 @@ set(SOURCE_FILES
   
   )
 
-set(SOURCE_FILES_JNI
-  src/libsrc/et_jni.c
-  src/libsrc/org_jlab_coda_et_EtJniAccess.h
-  )
-
 set(SOURCE_FILES_REMOTE
   src/libsrc/et_remoteclient.c
 )
@@ -64,11 +59,20 @@ set(SOURCE_FILES_REMOTE
 
 #Generate the shared library from the sources
 add_library(et-16.1     SHARED ${SOURCE_FILES})
-add_library(et-jni-16.1 SHARED ${SOURCE_FILES_JNI})
-
-add_dependencies(et-jni-16.1 et-16.1)
-target_link_libraries(et-jni-16.1 et-16.1)
-
+#
+# The jni lib is not needed for this project, but can be
+# build by uncommenting the following lines.
+#
+#set(SOURCE_FILES_JNI
+#  src/libsrc/et_jni.c
+#  src/libsrc/org_jlab_coda_et_EtJniAccess.h
+#  )
+#add_library(et-jni-16.1 SHARED ${SOURCE_FILES_JNI})
+#add_dependencies(et-jni-16.1 et-16.1)
+#target_link_libraries(et-jni-16.1 et-16.1)
+#
+# install(TARGETS et-16.1 et-jni-16.1   DESTINATION lib)
+#
 add_executable(et_start src/execsrc/et_start.c)
 add_dependencies(et_start et-16.1)
 target_link_libraries(et_start et-16.1 dl m pthread)
@@ -85,6 +89,5 @@ add_executable(et_killer src/execsrc/et_killer.c)
 add_dependencies(et_killer et-16.1)
 target_link_libraries(et_killer et-16.1 dl m pthread)
 
-install(TARGETS et-16.1 et-jni-16.1   DESTINATION lib)
 install(TARGETS et_start et_monitor et_2_et et_killer DESTINATION bin)
 
