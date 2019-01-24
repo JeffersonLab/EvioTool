@@ -1,3 +1,13 @@
+#
+# CMakeLists.txt
+#
+# This file allows you to build the EvioTool, evio and et packages in a single step with cmake.
+# Building this package requires the ROOT system from CERN.
+#
+# Author: Maurik Holtrop
+#
+
+
 cmake_minimum_required(VERSION 3.0)
 project(EvioTool)
 
