@@ -8,7 +8,7 @@ This tool was created to avoid the issues with the libevioxx library, the standa
 
 The current version, though a work in progress, is functional and has shown read speeds of 100kHz on a laptop, about 10x faster than libevioxx. 
 
-For more details on this code, go to the [Wiki](https://github.com/JeffersonLab/EvioTool/wiki/Building-EvioTool)
+For more details on this code, go to the [Wiki](https://github.com/JeffersonLab/EvioTool/wiki)
 
 ## Building EvioTool
 
