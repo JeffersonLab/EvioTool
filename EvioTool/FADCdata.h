@@ -48,12 +48,15 @@ public:
 
   
 public:
-  size_t GetSampleSize(){
-    return samples.size();
-  }
-  unsigned short GetSample(int i){
-    return samples[i];
-  }
+  size_t GetSampleSize(){return samples.size();};
+  unsigned short GetSample(int i){return samples[i];};
+  unsigned char GetCrate(){return( crate);};
+  unsigned char GetSlot(){return(slot);};
+  unsigned char GetChan(){return(chan);};
+  unsigned int  GetTrig(){return(trig);};
+  unsigned long long GetRefTime(){return(reftime);};
+  unsigned short GetTime();
+  unsigned short GetAdc();
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
