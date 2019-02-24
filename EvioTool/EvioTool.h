@@ -61,10 +61,10 @@ public:
   // Setting fMax_level = fChop_level+1 means you get only one deep banks.
   // With fChop_level=0, fMax_level at 2 and fAutoAdd=true, you can explore the top level banks
   // of an EVIO file.
-  int fDebug = 0;      //!-  Bit wise!!!  0001 = Info on banks. 0x00
+  int fDebug = 0;          //!-  Bit wise!!! See DebugType_t
   bool fAutoAdd = false;   //!-  If true, add any bank encountered. If false add only banks already known, i.e. from the dictionary.
-  int fChop_level = 0; //!-  Chop, or collapse, the top N bank levels.
-  int fMax_level = 0;  //!-  Prune, or collapse, the bottom (deepest) N bank levels.
+  int fChop_level = 1;     //!-  Chop, or collapse, the top N bank levels. Usually you want to collapse the top level (event structure) bank.
+  int fMax_level = 9999;      //!-  Prune, or collapse, the bottom (deepest) N bank levels.
   // Setting fChop_level = 1 will mean the top most bank, usually a container bank tag=1 num=0,
   // is not copied but instead treated as if it wasn't there.
   // Setting fMax_level = fChop_level means you get only one deep banks. All banks of
@@ -113,7 +113,24 @@ public:
   };
   
 
+  void SetAutoAdd(bool stat=true){
+    // Automatically add new data structures found in the EVIO file.
+    // This really slows things down, but it does allow you to explore the EVIO data.
+    fAutoAdd=stat;
+  }
   
+  void SetFullErase(bool stat=false){
+    // If FullErase is set to true, then with AutoAdd on, each new event will first have the
+    // event structure erased. If false, the event structure of the previous events remains.
+    fFullErase=stat;
+  }
+  
+  void SetChopLevel(int level=1){
+    // Set ChopLevel=0 if you want your 0 level bank to be the *event* bank. Usually you would want =1, so that
+    // EvioTool contains the *content* of the event, instead of a bank that is the event.
+    // Setting higher than 1 collapses the next level(s) into level 0.
+    fChop_level=level;
+  }
   
   void SetDebug(int bits=0x0F){ fDebug = bits; }
 //  int AddBank(Bank &b);

@@ -89,6 +89,8 @@ int main(int argc, const char * argv[])
     if(args.debug) cout<<"EVIO Event " << evt_count << endl;
     evt_count++;
     cout << "Header: size= " << Header->Size() << endl;
+    vector<unsigned int> hdat = etool->GetDataVector<unsigned int>(0);
+    cout << "Header: size= " << hdat.size() << endl;
     if(args.print_evt) {
       etool->PrintBank(10);
 //      if(args.show_head) {};

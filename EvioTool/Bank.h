@@ -308,6 +308,15 @@ public:
   
   vector<string>  GetNames();
 
+  int GetNumLeaves(){
+    return( leafs->GetEntries());
+  }
+
+  int GetNumBanks(){
+    return( banks->GetEntries());
+  }
+
+  
   size_t GetLeafSize(int loc){
     // Return the size of the leaf at index loc
     return ((Leaf_base *)leafs->At(loc))->Size();
@@ -338,20 +347,36 @@ public:
   }
 
   template<typename T> vector<T> &GetDataVector(int loc){
-// Return a reference to the vector of the data for leaf at loc
-    if( leafs->At(loc)->IsA() != Leaf<T>::Class() ){
-      cerr << "Banks::Get_data_vector -- ERROR incorrect vector type for leaf. \n";
-      return vector<T>(); // return an empty vector.
-    }
-    return( &(((Leaf<T> *)leafs->At(loc))->data) );
+    // Return a reference to the vector of the data for leaf at loc
+    // Warning: The reference may go out of scope when the Bank goes out of scope!
+//    if( leafs->At(loc)->IsA() != Leaf<T>::Class() ){
+//      cerr << "Banks::Get_data_vector -- ERROR incorrect vector type for leaf. \n";
+//      return 0; // return an empty vector.
+//    }
+    return( (static_cast<Leaf<T> *>(leafs->At(loc))->data) );
   }
 
   template<typename T> vector<T> &GetDataVector(string leaf_name){
-// Return a reference to the data vector for the leaf with leaf_name.
+  // Return a reference to the data vector for the leaf with leaf_name.
     int loc=GetIndexFromName(leaf_name);
     return GetDataVector<T>(loc);
   }
+
+  template<typename T> vector<T> *GetDataVectorPtr(int loc){
+    // Return a pointer to the vector of the data for leaf at loc
+    if( leafs->At(loc)->IsA() != Leaf<T>::Class() ){
+      cerr << "Banks::Get_data_vector -- ERROR incorrect vector type for leaf. \n";
+      return nullptr; // return an empty vector.
+    }
+    return( &(static_cast<Leaf<T> *>(leafs->At(loc))->data) );
+  }
   
+  template<typename T> vector<T> *GetDataVectorPtr(string leaf_name){
+    // Return a reference to the data vector for the leaf with leaf_name.
+    int loc=GetIndexFromName(leaf_name);
+    return GetDataVector<T>(loc);
+  }
+
   
   virtual Bank  *GetBankPtr(string name){
     // Return pointer to bank with name.

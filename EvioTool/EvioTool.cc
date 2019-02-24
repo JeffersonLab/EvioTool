@@ -345,8 +345,8 @@ Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int paddi
   
   if(depth<fChop_level || depth > fMax_level){  // We are pruning the tree.
     if(fDebug & Debug_L2) cout << "EvioTool::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
-    node->this_tag = tag; // TODO: VERIFY that this is correct and needed here.
-    node->this_num = num;
+      node->this_tag = tag; // TODO: VERIFY that this is correct and needed here.
+      node->this_num = num;
     return node;
   }
   

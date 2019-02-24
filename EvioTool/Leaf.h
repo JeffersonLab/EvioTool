@@ -81,6 +81,17 @@ public:
     return(data.at(indx));
   }
 
+  T At(const int indx){
+    // Get the data at indx. Throws exception if out of range.
+    return(data.at(indx));
+  }
+  
+  T operator[](const int indx){
+    // Get the data at indx. Throws exception if out of range.
+    return(data.at(indx));
+  }
+
+  
   size_t Size(void){
     // Get the size in the data vector.
     return(data.size());
@@ -90,6 +101,9 @@ public:
     // Leaf<int>::Get_type() etc.
     return(Leaf_None);
   };
+  
+  
+  
   
   void Print(Option_t *op) const{
     // Print your self, and num of the contents.
