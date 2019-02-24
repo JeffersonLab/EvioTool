@@ -17,7 +17,7 @@ class Header: public Leaf<unsigned int>{
 public:
   Header(){};
   Header(Bank *b,unsigned short itag,unsigned short inum): Leaf("Header",itag,inum,"Event Header data"){
-    b->Add_This_Leaf(this);
+    b->AddThisLeaf(this);
   };
   unsigned int GetEventNumber(){
     if(data.size()>2){

@@ -15,7 +15,16 @@
 // store pointers to TObject, since the whole point of this class is to be ROOT compliant.
 // In that situation, we may as well use TObjArray, which is a reasonable implementation, and get Find and
 // other useful functionality. I hesitantly will do this the ROOT way. I have an inherent bias towards STL.
-
+//
+// Note on OOP versus Generic Programming (STL)
+//
+//  There is tension between "Generic Programming" i.e. using STL, and "Object Oriented Programming" (OOP).
+//  See an explanation at: https://www.artima.com/cppsource/type_erasure.html
+//
+//  The templates work just fine, most of the time, but they do not allow you to write a super class which overrides these function.
+//  That would be OK, if we used STL everywhere, however the ROOT model is OOP, with TObject as the base class, and we run into problems there.
+//  We also run into problems for those situations where we want make a special version of the Bank class that understands the contents of the leafs.
+//  In those cases, C++ would not know to call the super class when filling.
 
 #ifndef __Bank__
 #define __Bank__
@@ -44,14 +53,14 @@ class Bank : public TNamed {
   // Mimicks a container bank in EVIO, with extra's.
 public:
   vector< unsigned short>tags;  // Tags to select bank with.
-  unsigned char  num;           // num to select bank with. If set to 0, ignore.
+  unsigned char  num=0;           // num to select bank with. If set to 0, ignore.
   
-  unsigned short this_tag;      // The actual tag of the parsed bank.
-  unsigned char  this_num;      // The actual num of the parsed bank.
+  unsigned short this_tag=0;      // The actual tag of the parsed bank.
+  unsigned char  this_num=0;      // The actual num of the parsed bank.
   
   map<string,unsigned short> name_index;    // Maps names to index.
-  TObjArray  *leafs;             // Stores the leafs.
-  TObjArray  *banks;             // Stores other banks. In separate array, since separte content.
+  TObjArray  *leafs = nullptr;             // Stores the leafs. Must be able to store heterogeneous objects.
+  TObjArray  *banks = nullptr;             // Stores other banks. In separate array, since separte content.
   
 public:
   Bank(){
@@ -104,7 +113,7 @@ public:
   vector<unsigned short> &GetTags(void){return(tags);}
   
   // Add a new leaf type to this bank. COPY the leaf into the array.
-  virtual int Add_Leaf(string name,unsigned short itag, unsigned char inum,string desc,int type);
+  virtual int AddLeaf(string name,unsigned short itag, unsigned char inum,string desc,int type);
   template<typename T> Leaf<T> * Add_Leaf(Leaf<T> &leaf){
     int location= leafs->GetEntriesFast();
     string name=StoreLocation(leaf.GetName(),location);
@@ -114,15 +123,15 @@ public:
   }
 
   // Add a new leaf type to this bank. DON'T COPY the leaf into the array.
-  template<typename T> void Add_This_Leaf(Leaf<T> *new_leaf){
+  template<typename T> void AddThisLeaf(Leaf<T> *new_leaf){
     int location= leafs->GetEntriesFast();
     string name=StoreLocation(new_leaf->GetName(),location);
     leafs->Add(new_leaf);
     return;
   }
   
-  
-  template<typename T> Leaf<T> *Add_Leaf(string name,unsigned short itag,unsigned char inum, string desc){
+  // Create a new leaf and store it.
+  template<typename T> Leaf<T> *AddLeaf(string name,unsigned short itag,unsigned char inum, string desc){
     int location= leafs->GetEntriesFast();
     name=StoreLocation(name,location);
     Leaf<T> *new_leaf =new Leaf<T>(name,itag,inum,desc);
@@ -130,7 +139,7 @@ public:
     return(new_leaf);
   }
   
-  virtual Bank *Add_Bank(string name,unsigned short itags,unsigned char inum, string desc){
+  virtual Bank *AddBank(string name,unsigned short itags,unsigned char inum, string desc){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
@@ -140,7 +149,7 @@ public:
     return(newbank);
   }
 
-  virtual Bank *Add_Bank(string name,std::initializer_list<unsigned short> itags, unsigned char inum, string desc){
+  virtual Bank *AddBank(string name,std::initializer_list<unsigned short> itags, unsigned char inum, string desc){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
@@ -165,7 +174,7 @@ public:
     return(name);
   }
   
-  virtual int Find(string name){
+  virtual int FindLeaf(string name){
     // Find the leaf item with name, return location.
     // If not found, return -1.
     map<string,unsigned short>::iterator loc=name_index.find(name);
@@ -174,7 +183,7 @@ public:
     }else return( -1);
   }
   
-  virtual int Find(unsigned short itag,unsigned char inum){
+  virtual int FindLeaf(unsigned short itag,unsigned char inum){
     // Find the location of the leaf with num, tag.
     // Returns the location, or -1 if not found.
     // If a leaf has num=0, or inum = 0 then inum is ignored.
@@ -188,14 +197,14 @@ public:
     return(-1);
   }
 
-  virtual int Find_bank(string name){
+  virtual int FindBank(string name){
     // Find a bank by name.
     TObject *o = banks->FindObject(name.c_str());
     int idx=banks->IndexOf(o);
     return(idx);
   }
   
-  virtual int Find_bank(unsigned short itag,unsigned char inum){
+  virtual int FindBank(unsigned short itag,unsigned char inum){
     // Find the location of the bank with tag, num.
     // Since "num" is not always used to identify a specific bank,
     // bank->num=0 or inum=0 is treated as "don't care".
@@ -210,135 +219,77 @@ public:
     return(-1);
   }
 
-//  template<typename T> void  Push_data(string leaf_name, T dat){
-//    // Push an individual data element to the end of the leaf with leaf_name
-//    int index = Get_index_from_name(leaf_name);
-//    if(index<0){
-//      cout << "Bank::Push_data - ERROR - We do not know about the Leaf called " << leaf_name << endl;
-//      return;
-//    }
-//    Push_data(index,dat);
-//    return;
-//  }
-//
-//  template<typename T> void Push_data(int leaf_index,T dat){
-//    // Add data to the end of leaf at leaf_index.
-//    if( leafs->At(leaf_index)->IsA() == Leaf<T>::Class() ){
-//      Leaf<T> *l=(Leaf<T> *)leafs->At(leaf_index);
-//      l->Push_back(dat);
-//    }else{   /// This is mis-use of the method. Carry on best as we can.
-//      cerr << "Leaf::Push_data("<<leaf_index<<","<< dat << ") -- Trying to add incorrect data type to leaf\n";
-//    }
-//  }
-//  
-//
-//  Here there is tension between "Generic Programming" i.e. using STL, and "Object Oriented Programming" (OOP).
-//  See an explanation at: https://www.artima.com/cppsource/type_erasure.html
-//
-//  The templates work just fine, most of the time, but they do not allow you to write a super class which overrides these function.
-//  That would be OK, if we used STL everywhere, however the ROOT model is OOP, with TObject as the base class, and we run into problems there.
-//  We also run into problems for those situations where we want make a special version of the Bank class that understands the contents of the leafs.
-//  In those cases, C++ would not know to call the super class when filling. 
-//
-//  template<typename T> void  Push_data_vector(string leaf_name, vector<T> &dat){
-//    // Add the vector to the back of the data of leaf with name leaf_name
-//    int index = Get_index_from_name(leaf_name);
-//    if(index<0){
-//      cout << "Bank::Push_data_vector - ERROR - We do not know about the Leaf called " << leaf_name << endl;
-//      return;
-//    }
-//
-//    Push_data_vector(index,dat);
-//    return;
-//  }
-//
-//  template<typename T> void  Push_data_vector(const int idx, vector<T> &dat){
-//    // Add the vector to the back of the data of the leaf at index idx
-//    Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
-//    ll->Push_data_vector(dat);
-//  }
-//
-//  template<typename T> void  Push_data_array(const int idx, const T *dat,const int len){
-//    // Add the vector to the back of the data of the leaf at index idx
-//    Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
-//    ll->Push_data_array(dat,len);
-//  }
-//
   
-//
-  // Unfortunately, OOP design requires one Push_data_array for every possible type that we support.
-//
-  
-  virtual void  Push_data_array(const int idx, const unsigned long long *dat,const int len){
+  virtual void  PushDataArray(const int idx, const unsigned long long *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<unsigned long long> *ll=(Leaf<unsigned long long> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
 
-  virtual void  Push_data_array(const int idx, const long long *dat,const int len){
+  virtual void  PushDataArray(const int idx, const long long *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<long long> *ll=(Leaf<long long> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
 
-  virtual void  Push_data_array(const int idx, const unsigned int *dat,const int len){
+  virtual void  PushDataArray(const int idx, const unsigned int *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<unsigned int> *ll=(Leaf<unsigned int> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
   
-  virtual void  Push_data_array(const int idx, const int *dat,const int len){
+  virtual void  PushDataArray(const int idx, const int *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<int> *ll=(Leaf<int> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
 
-  virtual void  Push_data_array(const int idx, const unsigned short *dat,const int len){
+  virtual void  PushDataArray(const int idx, const unsigned short *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<unsigned short> *ll=(Leaf<unsigned short> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
   
-  virtual void  Push_data_array(const int idx, const short *dat,const int len){
+  virtual void  PushDataArray(const int idx, const short *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<short> *ll=(Leaf<short> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
 
   
-  virtual void  Push_data_array(const int idx, const unsigned char *dat,const int len){
+  virtual void  PushDataArray(const int idx, const unsigned char *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<unsigned char> *ll=(Leaf<unsigned char> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
 
-  virtual void Push_data_array(const int idx, const char *dat,const int len){
+  virtual void PushDataArray(const int idx, const char *dat,const int len){
     // Add the vector to the leaf at index.
     // Put a buffer of char into the string if Leaftype is string
     Leaf<char> *ll=(Leaf<char> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
   
-  virtual void  Push_data_array(const int idx, const double *dat,const int len){
+  virtual void  PushDataArray(const int idx, const double *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<double> *ll=(Leaf<double> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
   
-  virtual void  Push_data_array(const int idx, const float *dat,const int len){
+  virtual void  PushDataArray(const int idx, const float *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<float> *ll=(Leaf<float> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
   
-  virtual void  Push_data_array(const int idx, const FADCdata *dat,const int len){
+  virtual void  PushDataArray(const int idx, const FADCdata *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
     Leaf<FADCdata> *ll=(Leaf<FADCdata> *)leafs->At(idx);
-    ll->Push_data_array(dat,len);
+    ll->PushDataArray(dat,len);
   }
 
   // Specialized version for an array of character strings.
- virtual void Push_data_array(int index, const string *dat, int len){
+ virtual void PushDataArray(int index, const string *dat, int len){
     // Add the vector to the leaf at index.
     // Put a buffer of char into the string if Leaftype is string
     const char *start =(const char *) dat;
@@ -349,80 +300,80 @@ public:
       while( std::isprint(*n++)){};
       if( (n-c-1)>0){
         s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
-        ((Leaf<string> *)leafs->At(index))->Push_back(s);
+        ((Leaf<string> *)leafs->At(index))->PushBack(s);
       }
       c=n;
     }
   }
   
-  vector<string>  Get_names();
+  vector<string>  GetNames();
 
-  size_t Get_Leaf_size(int loc){
+  size_t GetLeafSize(int loc){
     // Return the size of the leaf at index loc
-    return ((Leaf_base *)leafs->At(loc))->Get_size();
+    return ((Leaf_base *)leafs->At(loc))->Size();
   }
   
-  size_t Get_Leaf_size(string leaf_name){
+  size_t GetLeafSize(string leaf_name){
     // Return the size of the leaf with name leaf_name
-    int loc=Get_index_from_name(leaf_name);
+    int loc=GetIndexFromName(leaf_name);
     if(loc<0){
       return 0;
     }
-    return Get_Leaf_size(loc);
+    return GetLeafSize(loc);
   }
   
-  template<typename T> T Get_data(int location, int ind){
+  template<typename T> T GetData(int location, int ind){
     // Return the data for the leaf at location and index ind.
     Leaf<T> *li= (Leaf<T> *)leafs->At(location);
-    return li->Get_data(ind);
+    return li->GetData(ind);
   }
 
-  template<typename T> T Get_data(string leaf_name, int ind){
+  template<typename T> T GetData(string leaf_name, int ind){
     // Return the data for the leaf with leaf_name at index ind.
-    int loc=Get_index_from_name(leaf_name);
+    int loc=GetIndexFromName(leaf_name);
     if(loc<0){
       return 0;
     }
-    return Get_data<T>(loc,ind);
+    return GetData<T>(loc,ind);
   }
 
-  template<typename T> vector<T> Get_data_vector(int loc){
-// Return a vector of the data for leaf at loc
+  template<typename T> vector<T> &GetDataVector(int loc){
+// Return a reference to the vector of the data for leaf at loc
     if( leafs->At(loc)->IsA() != Leaf<T>::Class() ){
       cerr << "Banks::Get_data_vector -- ERROR incorrect vector type for leaf. \n";
       return vector<T>(); // return an empty vector.
     }
-    return ((Leaf<T> *)leafs->At(loc))->data;
+    return( &(((Leaf<T> *)leafs->At(loc))->data) );
   }
 
-  template<typename T> vector<T> Get_data_vector(string leaf_name){
-// Return the data vector for the leaf with leaf_name.
-    int loc=Get_index_from_name(leaf_name);
-    return Get_data_vector<T>(loc);
+  template<typename T> vector<T> &GetDataVector(string leaf_name){
+// Return a reference to the data vector for the leaf with leaf_name.
+    int loc=GetIndexFromName(leaf_name);
+    return GetDataVector<T>(loc);
   }
   
   
-  virtual Bank  *Get_bank_ptr(string name){
+  virtual Bank  *GetBankPtr(string name){
     // Return pointer to bank with name.
     return ((Bank *)banks->FindObject(name.c_str()));
   }
 
-  virtual Bank  *Get_bank_ptr(int idx){
+  virtual Bank  *GetBankPtr(int idx){
     // Return pointer to bank at idx.
     return (Bank *)banks->At(idx);
   }
 
-  
-  virtual int    Get_data_int(string name,int idx);
-  virtual float  Get_data_float(string name,int idx);
-  virtual double Get_data_double(string name,int idx);
-  virtual string Get_data_string(string name,int idx);
-  virtual int    Get_data_int(int ind,int idx);
-  virtual float  Get_data_float(int ind,int idx);
-  virtual double Get_data_double(int ind,int idx);
-  virtual string Get_data_string(int ind,int idx);
+  // Full acknowledgement that these are redudant with GetData template version!
+  virtual int    GetDataInt(string name,int idx);
+  virtual float  GetDataFloat(string name,int idx);
+  virtual double GetDataDouble(string name,int idx);
+  virtual string GetDataString(string name,int idx);
+  virtual int    GetDataInt(int ind,int idx);
+  virtual float  GetDataFloat(int ind,int idx);
+  virtual double GetDataDouble(int ind,int idx);
+  virtual string GetDataString(int ind,int idx);
 
-  virtual inline int Get_index_from_name(string leaf_name){
+  virtual inline int GetIndexFromName(string leaf_name){
     // Gets the *location*, i.e type*MAX_DATA + index
     // map<string,unsigned short>::iterator found;
     auto found = name_index.find(leaf_name);
@@ -452,6 +403,75 @@ public:
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //           SCRAP HEAP OF DISCARDED IDEAS
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//  template<typename T> void  Push_data(string leaf_name, T dat){
+//    // Push an individual data element to the end of the leaf with leaf_name
+//    int index = Get_index_from_name(leaf_name);
+//    if(index<0){
+//      cout << "Bank::Push_data - ERROR - We do not know about the Leaf called " << leaf_name << endl;
+//      return;
+//    }
+//    Push_data(index,dat);
+//    return;
+//  }
+//
+//  template<typename T> void Push_data(int leaf_index,T dat){
+//    // Add data to the end of leaf at leaf_index.
+//    if( leafs->At(leaf_index)->IsA() == Leaf<T>::Class() ){
+//      Leaf<T> *l=(Leaf<T> *)leafs->At(leaf_index);
+//      l->Push_back(dat);
+//    }else{   /// This is mis-use of the method. Carry on best as we can.
+//      cerr << "Leaf::Push_data("<<leaf_index<<","<< dat << ") -- Trying to add incorrect data type to leaf\n";
+//    }
+//  }
+//
+//
+//  Here there is tension between "Generic Programming" i.e. using STL, and "Object Oriented Programming" (OOP).
+//  See an explanation at: https://www.artima.com/cppsource/type_erasure.html
+//
+//  The templates work just fine, most of the time, but they do not allow you to write a super class which overrides these function.
+//  That would be OK, if we used STL everywhere, however the ROOT model is OOP, with TObject as the base class, and we run into problems there.
+//  We also run into problems for those situations where we want make a special version of the Bank class that understands the contents of the leafs.
+//  In those cases, C++ would not know to call the super class when filling.
+//
+//  template<typename T> void  Push_data_vector(string leaf_name, vector<T> &dat){
+//    // Add the vector to the back of the data of leaf with name leaf_name
+//    int index = Get_index_from_name(leaf_name);
+//    if(index<0){
+//      cout << "Bank::Push_data_vector - ERROR - We do not know about the Leaf called " << leaf_name << endl;
+//      return;
+//    }
+//
+//    Push_data_vector(index,dat);
+//    return;
+//  }
+//
+//  template<typename T> void  Push_data_vector(const int idx, vector<T> &dat){
+//    // Add the vector to the back of the data of the leaf at index idx
+//    Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
+//    ll->Push_data_vector(dat);
+//  }
+//
+//  template<typename T> void  Push_data_array(const int idx, const T *dat,const int len){
+//    // Add the vector to the back of the data of the leaf at index idx
+//    Leaf<T> *ll=(Leaf<T> *)leafs->At(idx);
+//    ll->Push_data_array(dat,len);
+//  }
+//
+
+//
+// Unfortunately, OOP design requires one Push_data_array for every possible type that we support.
+//
+
+
+
+
+
+
+
+
+
+
 
 // The commented out template method above works, except when you try to put 123 in a Leaf<double>
 // or other constructs that you would expect to work with automatic casting.

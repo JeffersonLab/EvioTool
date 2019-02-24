@@ -65,12 +65,12 @@ int main(int argc, const char * argv[])
   // Setup the Event structure"
   etool->fAutoAdd=false;
   etool->fChop_level=1;
-  etool->tags={136,132,130,129};  // Parse HPS physics events only.
-  Leaf<unsigned int> *Header = etool->Add_Leaf<unsigned int>("Header",49152,0,"Header bank");
-  Bank *ECAL = etool->Add_Bank("Ecal",{37,39},0,"Ecal banks");
-  Leaf<FADCdata> *FADC = ECAL->Add_Leaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
-  Bank *SVTraw = etool->Add_Bank("SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
-  Leaf<unsigned int> *SVTint = SVTraw->Add_Leaf<unsigned int>("SVTint",3,0,"SVT unparsed");
+//  etool->tags={136,132,130,129};  // Parse HPS physics events only.
+  Leaf<unsigned int> *Header = etool->AddLeaf<unsigned int>("Header",49152,0,"Header bank");
+  Bank *ECAL = etool->AddBank("Ecal",{37,39},0,"Ecal banks");
+  Leaf<FADCdata> *FADC = ECAL->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
+  Bank *SVTraw = etool->AddBank("SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
+  Leaf<unsigned int> *SVTint = SVTraw->AddLeaf<unsigned int>("SVTint",3,0,"SVT unparsed");
 
   etool->fAutoAdd = args.auto_add;
   
@@ -88,6 +88,7 @@ int main(int argc, const char * argv[])
   while(etool->Next() == S_SUCCESS){
     if(args.debug) cout<<"EVIO Event " << evt_count << endl;
     evt_count++;
+    cout << "Header: size= " << Header->Size() << endl;
     if(args.print_evt) {
       etool->PrintBank(10);
 //      if(args.show_head) {};

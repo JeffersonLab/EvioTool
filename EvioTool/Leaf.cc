@@ -10,12 +10,12 @@
 #include "EvioTool.h"
 
 // Template Specifications.
-template<> int Leaf<int>::type(void){ return(Leaf_Int); };
-template<> int Leaf<uint32_t>::type(void){ return(Leaf_Uint32); };
-template<> int Leaf<float>::type(void){ return(Leaf_Float); };
-template<> int Leaf<double>::type(void){ return(Leaf_Double); };
-template<> int Leaf<string>::type(void){ return(Leaf_String); };
-template<> int Leaf<FADCdata>::type(void){ return(Leaf_FADC); };
+template<> int Leaf<int>::Type(void){ return(Leaf_Int); };
+template<> int Leaf<uint32_t>::Type(void){ return(Leaf_Uint32); };
+template<> int Leaf<float>::Type(void){ return(Leaf_Float); };
+template<> int Leaf<double>::Type(void){ return(Leaf_Double); };
+template<> int Leaf<string>::Type(void){ return(Leaf_String); };
+template<> int Leaf<FADCdata>::Type(void){ return(Leaf_FADC); };
 
 // Push the array if T is "string".
 // This needs specification, because strings are not a simple type.
@@ -37,13 +37,13 @@ template <> int EvioTool::AddOrFillLeaf<string>(const unsigned int *buf,int len,
   // Add or Fill a float leaf in the bank node.
   // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
   // If fAutoAdd is true, if not found, a new leaf is added and filled.
-  int loc = node->Find(tag,num);
+  int loc = node->FindLeaf(tag,num);
   if( loc == -1){
     if(fAutoAdd){
       char str[100];
       sprintf(str,"String-%u-%u",tag,num);
       if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
-      node->Add_Leaf<string>(str,tag,num,"Auto added string leaf");
+      node->AddLeaf<string>(str,tag,num,"Auto added string leaf");
       loc= node->leafs->GetEntriesFast()-1;
     }else{
       return 0;
@@ -63,7 +63,7 @@ template <> int EvioTool::AddOrFillLeaf<string>(const unsigned int *buf,int len,
       while( std::isprint(*n++)){};
       if( (n-c-1)>0){
         s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
-        ((Leaf<string> *)node->leafs->At(loc))->Push_back(s);
+        ((Leaf<string> *)node->leafs->At(loc))->PushBack(s);
       }
       c=n;
     }
