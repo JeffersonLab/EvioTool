@@ -46,6 +46,15 @@ public:
   unsigned short adc;
   std::vector<unsigned short> samples;
 
+  
+public:
+  size_t GetSampleSize(){
+    return samples.size();
+  }
+  unsigned short GetSample(int i){
+    return samples[i];
+  }
+  
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(FADCdata,1);

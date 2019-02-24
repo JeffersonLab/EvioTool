@@ -52,22 +52,31 @@ enum DebugType_t {
 class EvioTool: public Bank {
   
 public:
-  int fDebug;   // Bit wise!!!  0001 = Info on banks. 0x00
-  bool fAutoAdd; // If true, add any bank encountered. If false add only banks already known, i.e. from the dictionary.
-  int fChop_level; // Chop, or collapse, the top N bank levels.
-  int fMax_level;  // Prune, or collapse, the bottom (deepest) N bank levels.
+  // None of these control variables need to be written to root files, so all are //!
+  //
+  // Initialization, done the C++11 way.
+  //
+  // Setting fChop_level = 1 will mean the top most bank, the "event" bank
+  // is not copied but instead treated as if it wasn't there.
+  // Setting fMax_level = fChop_level+1 means you get only one deep banks.
+  // With fChop_level=0, fMax_level at 2 and fAutoAdd=true, you can explore the top level banks
+  // of an EVIO file.
+  int fDebug = 0;          //!-  Bit wise!!! See DebugType_t
+  bool fAutoAdd = false;   //!-  If true, add any bank encountered. If false add only banks already known, i.e. from the dictionary.
+  int fChop_level = 1;     //!-  Chop, or collapse, the top N bank levels. Usually you want to collapse the top level (event structure) bank.
+  int fMax_level = 9999;      //!-  Prune, or collapse, the bottom (deepest) N bank levels.
   // Setting fChop_level = 1 will mean the top most bank, usually a container bank tag=1 num=0,
   // is not copied but instead treated as if it wasn't there.
   // Setting fMax_level = fChop_level means you get only one deep banks. All banks of
   // higher level will have their contends inserted in the parent bank instead.
   
-  bool fFullErase; // Useful with fAutoAdd=true and no dictionary, erase fully at new event, so bank structure is gone completely. Otherwise the bank structure is kept.
+  bool fFullErase = false; //!- Useful with fAutoAdd=true and no dictionary, erase fully at new event, so bank structure is gone completely. Otherwise the bank structure is kept.
 
   // private:
-  int evio_handle;
+  int evio_handle = 0;  //!-
 
-  const unsigned int *evio_buf; // Buf ptr to read event into.
-  unsigned int evio_buflen;     // length of buffer.
+  const unsigned int *evio_buf = nullptr; //!- Buf ptr to read event into.
+  unsigned int evio_buflen     = 0;     //!- length of buffer.
   
 public:
   EvioTool();
@@ -84,27 +93,44 @@ public:
     // Add or Fill an int leaf in the bank node.
     // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
     // If fAutoAdd is true, if not found, a new leaf is added and filled.
-    int loc = node->Find(tag,num);
+    int loc = node->FindLeaf(tag,num);
     if( loc == -1){
       if(fAutoAdd){
         char str[100];
         sprintf(str,"Int-%ud-%ud",tag,num);
         if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
-        node->Add_Leaf<T>(str,tag,num,"Auto added int leaf");
+        node->AddLeaf<T>(str,tag,num,"Auto added int leaf");
         loc= node->leafs->GetEntriesFast()-1;
       }else{
         return 0;
       }
     }
     
-    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " templated for type <" << ((Leaf<T> *)node->leafs->At(loc))->type() << "> \n";
-    node->Push_data_array(loc, (T *)buf, len);
+    if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " templated for type <" << ((Leaf<T> *)node->leafs->At(loc))->Type() << "> \n";
+    node->PushDataArray(loc, (T *)buf, len);
     
     return 1;
   };
   
 
+  void SetAutoAdd(bool stat=true){
+    // Automatically add new data structures found in the EVIO file.
+    // This really slows things down, but it does allow you to explore the EVIO data.
+    fAutoAdd=stat;
+  }
   
+  void SetFullErase(bool stat=false){
+    // If FullErase is set to true, then with AutoAdd on, each new event will first have the
+    // event structure erased. If false, the event structure of the previous events remains.
+    fFullErase=stat;
+  }
+  
+  void SetChopLevel(int level=1){
+    // Set ChopLevel=0 if you want your 0 level bank to be the *event* bank. Usually you would want =1, so that
+    // EvioTool contains the *content* of the event, instead of a bank that is the event.
+    // Setting higher than 1 collapses the next level(s) into level 0.
+    fChop_level=level;
+  }
   
   void SetDebug(int bits=0x0F){ fDebug = bits; }
 //  int AddBank(Bank &b);

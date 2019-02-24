@@ -6,28 +6,32 @@ void FADC_plot(){
   p->Open("hps_005772.evio");
   int i=0;
   TStopwatch st;
-  p->fAutoAdd=0;  // Do not add in all the data found in the file.
-  p->Add_Leaf<unsigned int>("Header",49152,0,"Header bank"); // Add a Leaf for the Header data of type unsigned_int.
-  Bank *ECAL = p->Add_Bank("Ecal",{37,39},0,"Ecal banks"); // Add the ECAL Bank, with can have tag 37 or 39
+  p->SetAutoAdd(false);  // Do not add in all the data found in the file. (not needed, it is the default :-)
+  auto head = p->AddLeaf<unsigned int>("Header",49152,0,"Header bank"); // Add a Leaf for the Header data of type unsigned_int.
+  Bank *ECAL = p->AddBank("Ecal",{37,39},0,"Ecal banks"); // Add the ECAL Bank, with can have tag 37 or 39
   // Then, in the ECAL bank, add the FADC data Leaf for mode 1 data.
-  Leaf<FADCdata> *FADC = ECAL->Add_Leaf<FADCdata>("FADC",57601,0,"FADC mode 1 data"); 
+  Leaf<FADCdata> *FADC = ECAL->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data"); 
 
   TH2F *fa=new TH2F("fa","FADC pulse accumulation",51,0,50,201,0,400); // Book 2-D histogram.
 
   cout << "Start Stopwatch\n";
   st.Start();
   
-  while(p->Next()==0  && i<1000000){     // Run through the events.
-    if( (++i % 50000) == 0 ){
+  while(p->Next()==0 ){     // Run through the events.
+    if( (++i % 10000) == 0 ){
       st.Stop();
       double time=st.RealTime(); 
       cout << i << " at " << time << "  ";
       cout << (double)i/time/1000. << " kHz " << 1.e6*time/i << " micro s/event"<< endl;
       st.Continue();
     }
-    for(int ii=0;ii<FADC->size(); ++ii){            // For each bit of FADC data found
-      for(int j=0;j<FADC->Get_data(ii).samples.size();++j){ // Run through the size of the Leaf
-	fa->Fill(j,FADC->Get_data(ii).samples[j]);  // Fill histogram with each pulse sample.
+
+    // Retrieve the data for the FADCs and fill the 2D histogram.
+
+    
+    for(int ii=0;ii<FADC->Size(); ++ii){            // For each bit of FADC data found
+      for(int j=0;j<FADC->At(ii).GetSampleSize();++j){    // Run through the size of the Leaf
+	fa->Fill(j,FADC->At(ii).GetSample(j));         // Fill histogram with each pulse sample.
       }
     }
   };   

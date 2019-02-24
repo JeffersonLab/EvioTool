@@ -26,7 +26,8 @@ set(SOURCE_FILES_EVIO
   src/libsrc/evioswap.c
   )
 #Generate the shared library from the sources
-add_library(evio-5.1 SHARED ${SOURCE_FILES_EVIO})
+add_library(evio-5.1       SHARED ${SOURCE_FILES_EVIO})
+add_library(evio-5.1static STATIC ${SOURCE_FILES_EVIO})
 
 set(SOURCE_FILES_EVIOCXX
   src/libsrc++/evioBankIndex.hxx
@@ -53,12 +54,12 @@ add_dependencies(eviocxx-5.1 evio-5.1)
 target_link_libraries(eviocxx-5.1 evio-5.1 expat z )
 
 add_executable(evio2xml src/execsrc/evio2xml.c)
-add_dependencies(evio2xml evio-5.1)
-target_link_libraries(evio2xml evio-5.1 expat z)
+add_dependencies(evio2xml evio-5.1static)
+target_link_libraries(evio2xml evio-5.1static expat z)
 
 add_executable(eviocopy src/execsrc/eviocopy.c)
-add_dependencies(eviocopy evio-5.1)
-target_link_libraries(eviocopy evio-5.1)
+add_dependencies(eviocopy evio-5.1static)
+target_link_libraries(eviocopy evio-5.1static)
 
 install(TARGETS evio-5.1 eviocxx-5.1      DESTINATION lib)
 install(TARGETS evio2xml eviocopy         DESTINATION bin)

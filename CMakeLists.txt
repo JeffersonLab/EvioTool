@@ -29,7 +29,8 @@ endif()
 #
 # Shortcut to control which version of EVIO or ET is linked against.
 #
-set(EVIO_LIBRARY evio-4.4.6)
+#set(EVIO_LIBRARY evio-4.4.6)
+set(EVIO_LIBRARY evio-5.1)
 add_subdirectory(${EVIO_LIBRARY})
 
 set(ET_LIBRARY   et-16.1)
