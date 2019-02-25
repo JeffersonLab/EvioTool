@@ -18,18 +18,7 @@
 //----------------------------------------------------------------------------------
 
 EvioTool::EvioTool(): Bank("EvioTool",{},0,"The top node of the EVIO tree"){
-  // Initialization....
-  fDebug=0;
-  fAutoAdd=true;           // Automatically add banks, even if not in dictionary.
-  fFullErase=false;        // Do not erase the bank structure on a new event.
-  fChop_level=1;           // Chop, or collapse, the top N bank levels.
-  fMax_level=1000000;      // Prune, or collapse, the bottom (deepest) N bank levels.
-  
-  // Setting fChop_level = 1 will mean the top most bank, the "event" bank
-  // is not copied but instead treated as if it wasn't there.
-  // Setting fMax_level = fChop_level+1 means you get only one deep banks.
-  // With fChop_level=0, fMax_level at 2 and fAutoAdd=true, you can explore the top level banks
-  // of an EVIO file.
+
 }
 
 int EvioTool::Open(const char *filename,const char *dictf){
@@ -103,13 +92,13 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
   // Add or Fill a float leaf in the bank node.
   // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
   // If fAutoAdd is true, if not found, a new leaf is added and filled.
-  int loc = node->Find(tag,num);
+  int loc = node->FindLeaf(tag,num);
   if( loc == -1){
     if(fAutoAdd){
       char str[100];
       sprintf(str,"FADC-%u-%u",tag,num);
       if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
-      node->Add_Leaf<FADCdata>(str,tag,num,"Auto added string leaf");
+      node->AddLeaf<FADCdata>(str,tag,num,"Auto added string leaf");
       loc= node->leafs->GetEntriesFast()-1;
     }else{
       return 0;
@@ -360,19 +349,19 @@ Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int paddi
   
   if(depth<fChop_level || depth > fMax_level){  // We are pruning the tree.
     if(fDebug & Debug_L2) cout << "EvioTool::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
-    node->this_tag = tag; // TODO: VERIFY that this is correct and needed here.
-    node->this_num = num;
+      node->this_tag = tag; // TODO: VERIFY that this is correct and needed here.
+      node->this_num = num;
     return node;
   }
   
-  int loc = node->Find_bank(tag,num);
+  int loc = node->FindBank(tag,num);
   if( loc == -1){
     if(fAutoAdd){
       char str[100];
       sprintf(str,"Bank-%d-%d",tag,num);
       if(fDebug&Debug_L2) cout << "Adding a new Bank to " << node->GetName() << " with name: " << str << endl;
       loc=node->banks->GetEntriesFast();
-      node->Add_Bank(str,tag,num,"Auto added Bank");
+      node->AddBank(str,tag,num,"Auto added Bank");
     }else{
       if(fDebug&Debug_L2) cout << "Not adding a new bank for tag= " << tag<< " num= " << num << endl;
       return NULL;
@@ -385,68 +374,16 @@ Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int paddi
 };
 
 
-//int EvioTool::LeafNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag,unsigned char num, Bank *node){
-//    
-//    int stat;
-//    switch(contentType){
-//        // ----------------------- four-byte types
-//      case 0x0:   // uint32_t
-//      case 0x1:   // uint32_t
-//        stat = AddOrFillLeaf<uint32_t>(buf,len,tag, num, node);
-//        break;
-//      case 0x2:   // float
-//        stat = AddOrFillLeaf<float>(buf, len, tag, num, node);
-//        break;
-//      case 0x3:    // char's
-//        stat = AddOrFillLeaf<string>(buf,len*4-padding,tag, num, node);
-////        stat = AddOrFillLeaf_string((const char *)buf,len*4-padding,tag, num, node);
-//        break;
-//
-//      case 0x8: // double
-//        stat = AddOrFillLeaf<double>(buf, len*2-padding/2, tag, num, node);
-//        break;
-//
-//      case 0xb:   // int32_t = int
-//        stat = AddOrFillLeaf<int>(buf, len, tag, num, node);
-//        break;
-//      case 0xf:   // FADC compound type
-//        stat = AddOrFillLeaf<FADCdata>(buf, len, tag, num, node);
-//        break;
-//                  // --------------------- one-byte types
-//      case 0x4:   // int16_t = short
-////        break;
-//      case 0x5:   // uint16_t = unsigned short
-////        break;
-//      case 0x6:  // int8_t = char
-////        break;
-//      case 0x7:  // uint8_t = unsigned char
-////        break;
-//        //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,&buf[0],(length-dataOffset)*4-padding,
-//        //                              (int8_t*)(&buf[dataOffset]),userArg);
-//        // -------------------------- two-byte types
-//        //newLeaf=handler.leafNodeHandler(length,bankType,contentType,tag,num,depth,
-//        //                              &buf[0],(length-dataOffset)*2-padding/2,(int16_t*)(&buf[dataOffset]),userArg);
-//        // ---------------------------- eight-byte types
-//      case 0x9: // int64_t
-////        break;
-//      case 0xa: // uint64_t
-////        break;
-//      default:
-//        std::cout << "Unhandled Leaf node type: " << contentType << std::endl;
-//    }
-//    
-//    return 1;
-//}
 
 void EvioTool::Test(void){
-    Bank *test_bank = Add_Bank("test_bank",10,10,"A test bank");
-    test_bank->Add_Leaf<int>("First",1,1,"The first leaf");
-    test_bank->Add_Leaf("Second",1,2,"The second leaf",Leaf_Int);
+    Bank *test_bank = AddBank("test_bank",10,10,"A test bank");
+    test_bank->AddLeaf<int>("First",1,1,"The first leaf");
+    test_bank->AddLeaf("Second",1,2,"The second leaf",Leaf_Int);
     Leaf<int> new_leaf("New",1,3,"A new leaf");
     Add_Leaf(new_leaf);
     
-    Add_Leaf<double>("D1",1,4,"Second leaf Double");
-    Add_Leaf<string>("S1",1,5,"Third leaf, string");
+    AddLeaf<double>("D1",1,4,"Second leaf Double");
+    AddLeaf<string>("S1",1,5,"Third leaf, string");
     
     vector<int> test_int;
     string name="First";

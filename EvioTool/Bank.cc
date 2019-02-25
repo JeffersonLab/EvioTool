@@ -10,7 +10,7 @@
 
 ClassImp(Bank);
 
-int  Bank::Add_Leaf(string name,unsigned short itag,unsigned char inum,string desc,int type){
+int  Bank::AddLeaf(string name,unsigned short itag,unsigned char inum,string desc,int type){
   // Add a leaf to the Bank with definitions given in the parameters.
   int location= leafs->GetEntriesFast();
   name=StoreLocation(name,location);
@@ -41,7 +41,7 @@ int  Bank::Add_Leaf(string name,unsigned short itag,unsigned char inum,string de
   return(location);
 }
 
-vector<string> Bank::Get_names(){
+vector<string> Bank::GetNames(){
   // Get all the names stored in the bank for type.
   vector<string> out;
   // map<string,unsigned short>::iterator it;
@@ -52,31 +52,31 @@ vector<string> Bank::Get_names(){
 }
 
 
-int Bank::Get_data_int(string name,int idx){
-  return Get_data<int>(name,idx);
+int Bank::GetDataInt(string name,int idx){
+  return GetData<int>(name,idx);
 }
-float Bank::Get_data_float(string name,int idx){
-  return Get_data<float>(name,idx);
+float Bank::GetDataFloat(string name,int idx){
+  return GetData<float>(name,idx);
 }
-double Bank::Get_data_double(string name,int idx){
-  return Get_data<double>(name,idx);
+double Bank::GetDataDouble(string name,int idx){
+  return GetData<double>(name,idx);
 }
-string Bank::Get_data_string(string name,int idx){
-  return Get_data<string>(name,idx);
-}
-
-int Bank::Get_data_int(int ind,int idx){
-  return Get_data<int>(ind,idx);
+string Bank::GetDataString(string name,int idx){
+  return GetData<string>(name,idx);
 }
 
-float Bank::Get_data_float(int ind,int idx){
-  return Get_data<float>(ind,idx);
+int Bank::GetDataInt(int ind,int idx){
+  return GetData<int>(ind,idx);
 }
-double Bank::Get_data_double(int ind,int idx){
-  return Get_data<double>(ind,idx);
+
+float Bank::GetDataFloat(int ind,int idx){
+  return GetData<float>(ind,idx);
 }
-string Bank::Get_data_string(int ind,int idx){
-  return Get_data<string>(ind,idx);
+double Bank::GetDataDouble(int ind,int idx){
+  return GetData<double>(ind,idx);
+}
+string Bank::GetDataString(int ind,int idx){
+  return GetData<string>(ind,idx);
 }
 
 void Bank::Clear(Option_t*opt){

@@ -1,3 +1,13 @@
+#
+# CMakeLists.txt
+#
+# This file allows you to build the EvioTool, evio and et packages in a single step with cmake.
+# Building this package requires the ROOT system from CERN.
+#
+# Author: Maurik Holtrop
+#
+
+
 cmake_minimum_required(VERSION 3.0)
 project(EvioTool)
 
@@ -19,7 +29,8 @@ endif()
 #
 # Shortcut to control which version of EVIO or ET is linked against.
 #
-set(EVIO_LIBRARY evio-4.4.6)
+#set(EVIO_LIBRARY evio-4.4.6)
+set(EVIO_LIBRARY evio-5.1)
 add_subdirectory(${EVIO_LIBRARY})
 
 set(ET_LIBRARY   et-16.1)

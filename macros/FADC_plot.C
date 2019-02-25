@@ -28,6 +28,7 @@ void FADC_plot(){
 
     // Retrieve the data for the FADCs and fill the 2D histogram.
 
+    
     for(int ii=0;ii<FADC->Size(); ++ii){            // For each bit of FADC data found
       for(int j=0;j<FADC->At(ii).GetSampleSize();++j){    // Run through the size of the Leaf
 	fa->Fill(j,FADC->At(ii).GetSample(j));         // Fill histogram with each pulse sample.
@@ -37,4 +38,5 @@ void FADC_plot(){
   st.Stop();
   cout << "Processing for " << st.RealTime() << endl;
   cout << (double)i/st.RealTime()/1000. << " kHz " << 1.e6*st.RealTime()/i << " micro seconds/event."<< endl;
+  fa->Draw("colz");
 }

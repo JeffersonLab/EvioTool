@@ -77,14 +77,14 @@ public:
 
   void Init(void) override {
     // Initialize the bank substructure.
-    SVTleaf = Add_Leaf<unsigned int>("SVTLeaf",3,0,"SVT unsigned int data");
+    SVTleaf = AddLeaf<unsigned int>("SVTLeaf",3,0,"SVT unsigned int data");
   }
   
   void Clear(Option_t* = "") override {
     svt_data.clear();
   }
   
-  void  Push_data_array(const int idx, const unsigned int *dat,const int len) override{
+  void  PushDataArray(const int idx, const unsigned int *dat,const int len) override{
     // Add the vector to the back of the data of the leaf at index idx
     
     // First and last int in the block are the header and tail.
@@ -101,7 +101,7 @@ public:
       }
     }
     if( fStoreRaw){
-      SVTleaf->Push_data_array(dat,len);         // This will call the Leaf to store the raw data as well.
+      SVTleaf->PushDataArray(dat,len);         // This will call the Leaf to store the raw data as well.
     }
     // Fill the svt_data vector with the data in the SVTleaf.
   }

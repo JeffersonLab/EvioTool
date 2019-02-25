@@ -30,7 +30,7 @@ public:
   Leaf_base(): tag(0),num(0){;};
   Leaf_base(int itag, int inum): tag(itag),num(inum){;};
   virtual void Clear(Option_t *){;};
-  virtual size_t Get_size(void){return(0);};
+  virtual size_t Size(void){cerr<<"ERROR-Must have override!\n";return(-99);};  // Pure virtual; Must have an override, but =0 does not work with rootcling.
   virtual void Print(Option_t *op) const {;};
   ClassDef(Leaf_base,1);
 };
@@ -54,41 +54,56 @@ public:
     data.clear();
   }
   
-  void Push_data_vector(vector<T> &vec){
+  void PushDataVector(vector<T> &vec){
     // Put the data from vector at the end of the leaf.
     data.insert(data.end(),vec.begin(),vec.end());
   }
 
-  void Push_data_array(const T* dat, const int len){
+  void PushDataArray(const T* dat, const int len){
     // Put the data from vector at the end of the leaf.
     data.insert(data.end(),dat,dat+len);
   }
 
-  void Swap_data_vector(vector<T> &vec){
+  void SwapDataVector(vector<T> &vec){
     // Put the data from vector at the end of the leaf.
     data.swap(vec);
   }
   
-  void Push_back(T dat){
+  void PushBack(T dat){
     data.push_back(dat);
   }
-  vector<T> Get_data_vector(void){
+  vector<T> GetDataVector(void){
     // Get the data vector.
     return data;
   }
-  T Get_data(const int indx){
+  T GetData(const int indx){
     // Get the data at indx. Throws exception if out of range.
     return(data.at(indx));
   }
-  size_t size(void){
+
+  T At(const int indx){
+    // Get the data at indx. Throws exception if out of range.
+    return(data.at(indx));
+  }
+  
+  T operator[](const int indx){
+    // Get the data at indx. Throws exception if out of range.
+    return(data.at(indx));
+  }
+
+  
+  size_t Size(void){
     // Get the size in the data vector.
     return(data.size());
   }
-  static int type(void){
+  static int Type(void){
     // Return the type stored in this leaf. Static so can be used as
     // Leaf<int>::Get_type() etc.
     return(Leaf_None);
   };
+  
+  
+  
   
   void Print(Option_t *op) const{
     // Print your self, and num of the contents.

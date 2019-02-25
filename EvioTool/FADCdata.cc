@@ -21,6 +21,14 @@ std::ostream &operator<<(std::ostream &os, FADCdata const &m) {
   return(os);
 }
 
+unsigned short FADCdata::GetTime(){
+  return(time);
+}
+
+unsigned short FADCdata::GetAdc(){
+  return(adc);
+}
+
 
 ClassImp(FADCdata);
 ClassImp(Leaf<FADCdata>);
