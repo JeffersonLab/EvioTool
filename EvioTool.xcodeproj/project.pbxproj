@@ -50,6 +50,9 @@
 		40C7638D1ABCED7100410152 /* Leaf.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C7638A1ABCED7100410152 /* Leaf.h */; };
 		40C763921ABCED8600410152 /* Bank.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40C7638F1ABCED8600410152 /* Bank.cc */; };
 		40C763931ABCED8600410152 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C763901ABCED8600410152 /* Bank.h */; };
+		40DAD1C9225FE92A0003C58C /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
+		40DAD1CA225FE92A0003C58C /* libHPSEvioReader.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */; };
+		40DAD1D1225FE94B0003C58C /* EvioReaderApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40DAD1B2225FE90B0003C58C /* EvioReaderApp.cpp */; };
 		40E6BFED1917E1F400BF03CA /* et_evio_blaster.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */; };
 		40E6BFEF1917E1F400BF03CA /* et_evio_blaster.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E6BFEE1917E1F400BF03CA /* et_evio_blaster.1 */; };
 		40E74638191DA8F0008E4235 /* et_evio_test_consumer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */; };
@@ -252,6 +255,20 @@
 			remoteGlobalIDString = 40E74622191B0BFC008E4235;
 			remoteInfo = EvioTool_Test;
 		};
+		40DAD1C3225FE92A0003C58C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40A1036721D29A9A0022AD2E;
+			remoteInfo = HPSEvioReader;
+		};
+		40DAD1C5225FE92A0003C58C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40E49CFD19034D3E00390847;
+			remoteInfo = EvioTool;
+		};
 		40E74619191B0198008E4235 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
@@ -286,6 +303,15 @@
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 		4024EB9E21F3F1CB00FE10F0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		40DAD1CB225FE92A0003C58C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -351,6 +377,8 @@
 		40C7638A1ABCED7100410152 /* Leaf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leaf.h; sourceTree = "<group>"; };
 		40C7638F1ABCED8600410152 /* Bank.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bank.cc; sourceTree = "<group>"; };
 		40C763901ABCED8600410152 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bank.h; sourceTree = "<group>"; };
+		40DAD1B2225FE90B0003C58C /* EvioReaderApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EvioReaderApp.cpp; sourceTree = "<group>"; };
+		40DAD1D0225FE92A0003C58C /* HodoEvioReader */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HodoEvioReader; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E49CFE19034D3E00390847 /* libEvioTool.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libEvioTool.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E6BFEA1917E1F400BF03CA /* et_evio_blaster */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = et_evio_blaster; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_blaster.cc; sourceTree = "<group>"; };
@@ -388,6 +416,15 @@
 			files = (
 				4070483421DEEFE000053DEE /* libevio-5.1.dylib in Frameworks */,
 				4070471C21DEA98300053DEE /* libEvioTool.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40DAD1C8225FE92A0003C58C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40DAD1C9225FE92A0003C58C /* libEvioTool.dylib in Frameworks */,
+				40DAD1CA225FE92A0003C58C /* libHPSEvioReader.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +564,7 @@
 				40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */,
 				4011BB1B21D7C45300256470 /* EvioTool_Test */,
 				4024EBA321F3F1CB00FE10F0 /* HPSEvioReader_MT */,
+				40DAD1D0225FE92A0003C58C /* HodoEvioReader */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -559,6 +597,7 @@
 		40E74624191B0BFC008E4235 /* HPSEvioReader_Test */ = {
 			isa = PBXGroup;
 			children = (
+				40DAD1B2225FE90B0003C58C /* EvioReaderApp.cpp */,
 				4070470D21DEA89A00053DEE /* HPSEvioReader_Test.cpp */,
 				4024EB8621F3F1C100FE10F0 /* HPSEvioReader_MT.cpp */,
 			);
@@ -662,6 +701,26 @@
 			productReference = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
+		40DAD1C1225FE92A0003C58C /* HodoEvioReader */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40DAD1CD225FE92A0003C58C /* Build configuration list for PBXNativeTarget "HodoEvioReader" */;
+			buildPhases = (
+				40DAD1C6225FE92A0003C58C /* Sources */,
+				40DAD1C8225FE92A0003C58C /* Frameworks */,
+				40DAD1CB225FE92A0003C58C /* CopyFiles */,
+				40DAD1CC225FE92A0003C58C /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				40DAD1C2225FE92A0003C58C /* PBXTargetDependency */,
+				40DAD1C4225FE92A0003C58C /* PBXTargetDependency */,
+			);
+			name = HodoEvioReader;
+			productName = EvioTool_Test;
+			productReference = 40DAD1D0225FE92A0003C58C /* HodoEvioReader */;
+			productType = "com.apple.product-type.tool";
+		};
 		40E49CFD19034D3E00390847 /* EvioTool */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40E49D0B19034D3E00390847 /* Build configuration list for PBXNativeTarget "EvioTool" */;
@@ -763,6 +822,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 40E49CF519034D3E00390847;
@@ -792,6 +852,7 @@
 				40E6BFE91917E1F400BF03CA /* et_evio_blaster */,
 				40E74634191DA8F0008E4235 /* et_evio_test_consumer */,
 				40C13D2D19704834008307A1 /* AllEvioTool */,
+				40DAD1C1225FE92A0003C58C /* HodoEvioReader */,
 			);
 		};
 /* End PBXProject section */
@@ -1020,6 +1081,24 @@
 			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
 			showEnvVarsInLog = 0;
 		};
+		40DAD1CC225FE92A0003C58C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1046,6 +1125,14 @@
 				400E859521F10A93002CA87E /* HPSEvioReader.h in Sources */,
 				400E859221F10998002CA87E /* Header.cpp in Sources */,
 				4070470B21DEA83100053DEE /* SVTbank.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40DAD1C6225FE92A0003C58C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40DAD1D1225FE94B0003C58C /* EvioReaderApp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1137,6 +1224,16 @@
 			isa = PBXTargetDependency;
 			target = 40E74622191B0BFC008E4235 /* HPSEvioReader_Test */;
 			targetProxy = 40C13D3519704840008307A1 /* PBXContainerItemProxy */;
+		};
+		40DAD1C2225FE92A0003C58C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40A1036721D29A9A0022AD2E /* HPSEvioReader */;
+			targetProxy = 40DAD1C3225FE92A0003C58C /* PBXContainerItemProxy */;
+		};
+		40DAD1C4225FE92A0003C58C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40E49CFD19034D3E00390847 /* EvioTool */;
+			targetProxy = 40DAD1C5225FE92A0003C58C /* PBXContainerItemProxy */;
 		};
 		40E7461A191B0198008E4235 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1315,6 +1412,22 @@
 			};
 			name = Release;
 		};
+		40DAD1CE225FE92A0003C58C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E74618191826EB008E4235 /* programs.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		40DAD1CF225FE92A0003C58C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E74618191826EB008E4235 /* programs.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		40E49D0919034D3E00390847 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40E74617191826B8008E4235 /* EvioTool.xcconfig */;
@@ -1433,6 +1546,15 @@
 			buildConfigurations = (
 				40C13D2E19704834008307A1 /* Debug */,
 				40C13D2F19704834008307A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40DAD1CD225FE92A0003C58C /* Build configuration list for PBXNativeTarget "HodoEvioReader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40DAD1CE225FE92A0003C58C /* Debug */,
+				40DAD1CF225FE92A0003C58C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

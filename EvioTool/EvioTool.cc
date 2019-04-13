@@ -157,7 +157,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
 int EvioTool::ParseEvioBuff(const unsigned int *buf){
   
 // Assumes data type 0x10 for the top EVIO bank.
-  this_tag    = buf[1]>>16;
+  this_tag    = (buf[1]>>16) & tag_mask;
   this_num    = buf[1]&0xff;
 
   unsigned short contentType = (buf[1]>>8)&0x3f;

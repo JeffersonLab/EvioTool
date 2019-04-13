@@ -5,6 +5,9 @@
 //  Created by Maurik Holtrop on 12/28/18.
 //  Copyright © 2018 UNH. All rights reserved.
 //
+// The FADCdata must be filled by a special method in EvioTool.cc to make sure the data is parsed
+// properly. This is an exception to the most other data types.
+//
 #include "FADCdata.h"
 #include "EvioTool.h"
 
@@ -29,71 +32,88 @@ unsigned short FADCdata::GetAdc(){
   return(adc);
 }
 
+std::tuple<float,float,float,int,int> FADCdata::ComputeMode3(float thres){
+  // return integral and time and pedestal as Mode3 computes it.
+  // The first 10 samples determine the pedestal.
+  // This routine then simply scans the data for the first sample above threshold+pedestal
+  // For time, it returns the 4 * the max sample index.
+  // For integral it returns the sum of all samples - pedestal*nsamples.
+  // If no threshold crossing is found, return zero.
+  //
+  int max=0;
+  int max_loc = -1;
+  int thres_loc = -1;
+  unsigned int pedest=0;
+  unsigned int sum=0;
+  for(int i=0;i< samples.size();++i){
+    if(i<N_PEDESTAL) pedest+=samples[i];
+    if(i>=N_PEDESTAL && samples[i]>thres+pedest/N_PEDESTAL && thres_loc == -1) thres_loc = i;
+    sum +=samples[i];
+    if(samples[i]>max){
+      max = samples[i];
+      max_loc = i;
+    }
+  }
+  
+  float pedestal   = ((float)pedest)/N_PEDESTAL;
+  float integral = sum - samples.size()*pedestal;
+  float time;
+  if(thres_loc<0) time = 0;
+  else time = thres_loc;
+  return( std::make_tuple(integral,time,pedestal,max,max_loc));
+};
+
+std::tuple<float,float,float,int,int> FADCdata::ComputeMode7(float thres, int NSB,int NSA){
+  // Return integral,time and pedestal as Mode7 computes it.
+  int max=0;
+  int max_loc = -1;
+  int thres_loc = -1;
+  unsigned int pedest=0;
+  unsigned int sum=0;
+  for(int i=0;i< samples.size();++i){
+    if(i<N_PEDESTAL) pedest+=samples[i];
+    if(i>=N_PEDESTAL && samples[i]>thres+pedest/N_PEDESTAL && thres_loc == -1) thres_loc = i;
+    if(samples[i]>max){
+      max = samples[i];
+      max_loc = i;
+    }
+  }
+  float pedestal   = ((float)pedest)/N_PEDESTAL;
+  
+  int half_max_loc_p1=-1;
+  int start=thres_loc-NSB;
+  int stop=thres_loc+NSA+1;
+  if(thres_loc<=NSB){
+    start=0;
+  }
+  if(thres_loc+NSA+1 >= samples.size()){
+    stop = samples.size()-1;
+  }
+
+  for(int i=start;i<stop; ++i){
+    sum += samples[i];
+    if(half_max_loc_p1 == -1 && samples[i] > (max+pedestal)/2){
+      half_max_loc_p1 = i;
+    }
+  }
+  
+  if(thres_loc<0) return( std::make_tuple(0.,0.,0.,0,0));
+  
+  float time = 0;
+  if(samples[half_max_loc_p1] > samples[half_max_loc_p1-1]){
+    float mid_line = samples[half_max_loc_p1] - samples[half_max_loc_p1-1];
+    time = (((max+pedestal)/2-samples[half_max_loc_p1-1])/mid_line) + half_max_loc_p1-1;
+  }
+
+  float integral = sum - pedestal*(stop - start);
+  return( std::make_tuple(integral,time,pedestal,max,max_loc));
+}
+
+std::tuple<float,float,float> FADCdata::PulseFit(float width){
+// return integral and time and pedestal using a 3-pole fit.
+  return( std::make_tuple(0.,0.,0.));
+}
+
 
 ClassImp(FADCdata);
 ClassImp(Leaf<FADCdata>);
-
-
-//template <> int EvioTool::AddOrFillLeaf<FADCdata>(const unsigned int *buf,int len,unsigned short tag,unsigned char num,Bank *node){
-//  // Add or Fill a float leaf in the bank node.
-//  // If fAutoAdd is false, find the leaf with tag, num and fill it. If not found do nothing.
-//  // If fAutoAdd is true, if not found, a new leaf is added and filled.
-//  int loc = node->Find(tag,num);
-//  if( loc == -1){
-//    if(fAutoAdd){
-//      char str[100];
-//      sprintf(str,"FADC-%u-%u",tag,num);
-//      if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
-//      node->Add_Leaf<FADCdata>(str,tag,num,"Auto added string leaf");
-//      loc= node->leafs->GetEntriesFast()-1;
-//    }else{
-//      return 0;
-//    }
-//  }
-//
-//  if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " with specified AddOrFillLeaf<FADCdata> \n";
-//  //  node->Push_data_array(loc, buf, len);
-//
-//  const uint32_t *d   = (const uint32_t*)buf;
-//  unsigned short formatTag       = (d[0]>>20)&0xfff;
-//  unsigned short formatLen       = d[0]&0xffff;
-//  string formatString = string((const char *) &(((uint32_t*)buf)[1]));
-//  int dataLen         = d[1+formatLen]-1;
-//  //  int dataTag         = (d[1+formatLen+1]>>16)&0xffff;
-//  //  int dataNum         = d[1+formatLen+1]&0xff;
-//
-//  unsigned char *cbuf = (unsigned char *) &d[3+formatLen];
-//
-//#define GET_CHAR(b,i)   b[i]; i+=1;
-//#define GET_SHORT(b,i) ((short *)(&b[i]))[0];i+=2;
-//#define GET_INT(b,i)  ((int *)(&b[i]))[0];i+=4;
-//#define GET_L64(b,i) ((unsigned long long *)(&b[i]))[0];i+=8;
-//
-//  int buflen = dataLen*4 - 4;
-//  int indx=0;
-//  vector<FADCdata> fadc_data;
-//  fadc_data.reserve(16);
-//  FADCdata fadc;
-//  fadc.crate      = node->this_tag;
-//  while( indx < buflen){
-//    if(formatTag == 13){
-//      fadc.slot       = cbuf[indx];indx+=1;    // GET_CHAR(buf,indx);
-//      fadc.trig       = GET_INT(cbuf,indx);
-//      fadc.time  = GET_L64(cbuf,indx);
-//      int nchan                = GET_INT(cbuf,indx);
-//      fadc.raw_data.reserve(nchan);
-//      for(int jj=0; jj<nchan; ++jj){
-//        FADCchan_raw ch;
-//        ch.chan = GET_CHAR(cbuf,indx);
-//        int nsample = GET_INT(cbuf,indx);
-//        ch.samples.reserve(nsample);
-//        unsigned short *samples=(unsigned short *)&cbuf[indx];
-//        ch.samples.assign(samples,samples+nsample);                           // Takes 3.3 micro seconds/event
-//        indx+=nsample*2;
-//      }
-//      fadc_data.push_back(fadc);
-//    }
-//  }
-//
-//  return 1;
-//};

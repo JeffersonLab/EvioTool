@@ -53,6 +53,7 @@ class Bank : public TNamed {
   // Mimicks a container bank in EVIO, with extra's.
 public:
   vector< unsigned short>tags;  // Tags to select bank with.
+  unsigned short tag_mask = 0xFFFF;  // If != 0, this mask is applied to a tag before comparing with tags list. 
   unsigned char  num=0;           // num to select bank with. If set to 0, ignore.
   
   unsigned short this_tag=0;      // The actual tag of the parsed bank.
