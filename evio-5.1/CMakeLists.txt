@@ -70,4 +70,4 @@ add_dependencies(eviosplit evio-5.1static)
 target_link_libraries(eviosplit evio-5.1static pthread)
 
 install(TARGETS evio-5.1 eviocxx-5.1      DESTINATION lib)
-install(TARGETS evio2xml eviocopy         DESTINATION bin)
+install(TARGETS evio2xml eviocopy evioconcat eviosplit    DESTINATION bin)
