@@ -20,7 +20,7 @@
 #define GET_INT(b,i)  ((int *)(&b[i]))[0];i+=4;
 #define GET_L64(b,i) ((unsigned long long *)(&b[i]))[0];i+=8;
 
-#define N_PEDESTAL 10  // Number of initial values to use for the pedestal
+#define N_PEDESTAL 4  // Number of initial values to use for the pedestal
 
 class FADCdata{
   
