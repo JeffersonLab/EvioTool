@@ -38,6 +38,10 @@ int EvioTool::Open(const char *filename,const char *dictf){
     return(0);
 }
 
+void EvioTool::Close(){
+  evClose(evio_handle);
+}
+
 void EvioTool::parseDictionary(const char *dictf){
     // Open the file pointed to by dictf and parse the XML as a dictionary for the file.
     
@@ -46,7 +50,7 @@ void EvioTool::parseDictionary(const char *dictf){
 }
 
 int EvioTool::NextNoParse(){
-  // Read an event from the EVIO file and parse it.
+  // Read an event from the EVIO file, but don't parse it.
   
   int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
   if(stat==EOF) return(0);
@@ -153,7 +157,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
 int EvioTool::ParseEvioBuff(const unsigned int *buf){
   
 // Assumes data type 0x10 for the top EVIO bank.
-  this_tag    = buf[1]>>16;
+  this_tag    = (buf[1]>>16) & tag_mask;
   this_num    = buf[1]&0xff;
 
   unsigned short contentType = (buf[1]>>8)&0x3f;

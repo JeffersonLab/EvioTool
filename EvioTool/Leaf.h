@@ -73,9 +73,14 @@ public:
     data.push_back(dat);
   }
   vector<T> GetDataVector(void){
-    // Get the data vector.
+    // Get the data vector. Creates a copy of the data.
     return data;
   }
+  vector<T> *GetDataVectorPtr(void){
+    // Get the pointer to the data vector.
+    return &data;
+  }
+
   T GetData(const int indx){
     // Get the data at indx. Throws exception if out of range.
     return(data.at(indx));
@@ -91,11 +96,11 @@ public:
     return(data.at(indx));
   }
 
-  
-  size_t Size(void){
+  size_t size(void){
     // Get the size in the data vector.
     return(data.size());
   }
+  
   static int Type(void){
     // Return the type stored in this leaf. Static so can be used as
     // Leaf<int>::Get_type() etc.

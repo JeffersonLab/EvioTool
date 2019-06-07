@@ -20,7 +20,20 @@
 #define GET_INT(b,i)  ((int *)(&b[i]))[0];i+=4;
 #define GET_L64(b,i) ((unsigned long long *)(&b[i]))[0];i+=8;
 
+#define N_PEDESTAL 4  // Number of initial values to use for the pedestal
+
 class FADCdata{
+  
+public:
+  unsigned char crate=0;
+  unsigned char  slot=0;
+  unsigned char  chan=0;
+  unsigned int  trig=0;
+  unsigned long long reftime=0;       /* 64 bit unsinged int */
+  unsigned short time=0;
+  unsigned short adc=0;
+  std::vector<unsigned short> samples;
+
 public:
   FADCdata(){};
   FADCdata(unsigned char cr,unsigned char sl,unsigned int tr,unsigned long long refti, unsigned short ch, unsigned short ti, unsigned short adc_val):
@@ -36,24 +49,19 @@ public:
     indx+=nsamples*2;
   };
   
-  public:
-  unsigned char crate;
-  unsigned char  slot;
-  unsigned char  chan;
-  unsigned int  trig;
-  unsigned long long reftime;       /* 64 bit unsinged int */
-  unsigned short time;
-  unsigned short adc;
-  std::vector<unsigned short> samples;
-
-  
 public:
-  size_t GetSampleSize(){
-    return samples.size();
-  }
-  unsigned short GetSample(int i){
-    return samples[i];
-  }
+  size_t         GetSampleSize(){return samples.size();};
+  unsigned short GetSample(int i){return samples[i];};
+  unsigned char  GetCrate(){return( crate);};
+  unsigned char  GetSlot(){return(slot);};
+  unsigned char  GetChan(){return(chan);};
+  unsigned int   GetTrig(){return(trig);};
+  unsigned long long GetRefTime(){return(reftime);};
+  unsigned short GetTime();
+  unsigned short GetAdc();
+  std::tuple<float,float,float,int,int> ComputeMode3(float thres=0); // return integral and time and pedestal as Mode3 computes it.
+  std::tuple<float,float,float,int,int> ComputeMode7(float thres=0, int NSB=5,int NSA=25); // return integral and time and pedestal as Mode7 computes it.
+  std::tuple<float,float,float> PulseFit(float width=0.);  // return integral and time and pedestal using a 3-pole fit.
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"

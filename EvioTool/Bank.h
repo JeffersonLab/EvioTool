@@ -53,6 +53,7 @@ class Bank : public TNamed {
   // Mimicks a container bank in EVIO, with extra's.
 public:
   vector< unsigned short>tags;  // Tags to select bank with.
+  unsigned short tag_mask = 0xFFFF;  // If != 0, this mask is applied to a tag before comparing with tags list. 
   unsigned char  num=0;           // num to select bank with. If set to 0, ignore.
   
   unsigned short this_tag=0;      // The actual tag of the parsed bank.
@@ -70,7 +71,8 @@ public:
     delete leafs;
     delete banks;
   }
-  Bank(string n,std::initializer_list<unsigned short> tags,unsigned char num,string desc):tags(tags),num(num){
+
+  Bank(string n,std::vector<unsigned short> itags,unsigned char inum,string desc):tags(itags),num(inum){
     SetName(n.c_str());
     SetTitle(desc.c_str());
     Init();
@@ -149,7 +151,7 @@ public:
     return(newbank);
   }
 
-  virtual Bank *AddBank(string name,std::initializer_list<unsigned short> itags, unsigned char inum, string desc){
+  virtual Bank *AddBank(string name,std::vector<unsigned short> itags, unsigned char inum, string desc){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
@@ -158,6 +160,7 @@ public:
     banks->Add(newbank);
     return(newbank);
   }
+  
   
   virtual void  Clear(Option_t* = "");
   
