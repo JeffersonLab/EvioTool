@@ -61,5 +61,13 @@ add_executable(eviocopy src/execsrc/eviocopy.c)
 add_dependencies(eviocopy evio-5.1static)
 target_link_libraries(eviocopy evio-5.1static)
 
+add_executable(evioconcat src/execsrc/evioconcat.cc)
+add_dependencies(evioconcat evio-5.1static )
+target_link_libraries(evioconcat evio-5.1static)
+
+add_executable(eviosplit src/execsrc/eviosplit.cc)
+add_dependencies(eviosplit evio-5.1static)
+target_link_libraries(eviosplit evio-5.1static)
+
 install(TARGETS evio-5.1 eviocxx-5.1      DESTINATION lib)
 install(TARGETS evio2xml eviocopy         DESTINATION bin)
