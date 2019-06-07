@@ -51,23 +51,23 @@ set(SOURCE_FILES_EVIOCXX
 
 add_library(eviocxx-5.1 SHARED ${SOURCE_FILES_EVIOCXX})
 add_dependencies(eviocxx-5.1 evio-5.1)
-target_link_libraries(eviocxx-5.1 evio-5.1 expat z )
+target_link_libraries(eviocxx-5.1 evio-5.1 expat z pthread)
 
 add_executable(evio2xml src/execsrc/evio2xml.c)
 add_dependencies(evio2xml evio-5.1static)
-target_link_libraries(evio2xml evio-5.1static expat z)
+target_link_libraries(evio2xml evio-5.1static expat z pthread)
 
 add_executable(eviocopy src/execsrc/eviocopy.c)
 add_dependencies(eviocopy evio-5.1static)
-target_link_libraries(eviocopy evio-5.1static)
+target_link_libraries(eviocopy evio-5.1static pthread)
 
 add_executable(evioconcat src/execsrc/evioconcat.cc)
 add_dependencies(evioconcat evio-5.1static )
-target_link_libraries(evioconcat evio-5.1static)
+target_link_libraries(evioconcat evio-5.1static pthread)
 
 add_executable(eviosplit src/execsrc/eviosplit.cc)
 add_dependencies(eviosplit evio-5.1static)
-target_link_libraries(eviosplit evio-5.1static)
+target_link_libraries(eviosplit evio-5.1static pthread)
 
 install(TARGETS evio-5.1 eviocxx-5.1      DESTINATION lib)
 install(TARGETS evio2xml eviocopy         DESTINATION bin)
