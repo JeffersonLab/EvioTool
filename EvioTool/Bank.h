@@ -110,9 +110,19 @@ public:
     banks->SetOwner(kTRUE);
   }
   
-  virtual unsigned char GetNum(void){ return(this_num);};
-  virtual unsigned short GetTag(void){ return(this_tag);};
+  unsigned char GetNum(void){ return(this_num);};
+  unsigned short GetTag(void){ return(this_tag);};
   vector<unsigned short> &GetTags(void){return(tags);}
+  
+  virtual bool CheckTag(const unsigned short tag){
+    // Check if the tag passes the required tag test:
+    // tag masked by tag_mask in in the tags list.
+    if(tags.size() && std::find(tags.begin(),tags.end(),(tag&tag_mask)) == tags.end()){ // Event tag not found in tags list.
+      return(false);
+    }else{
+      return(true);
+    }
+  };
   
   // Add a new leaf type to this bank. COPY the leaf into the array.
   virtual int AddLeaf(string name,unsigned short itag, unsigned char inum,string desc,int type);
@@ -141,12 +151,12 @@ public:
     return(new_leaf);
   }
   
-  virtual Bank *AddBank(string name,unsigned short itags,unsigned char inum, string desc){
+  virtual Bank *AddBank(string name,unsigned short itag,unsigned char inum, string desc){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
     // name=StoreLocation(name,location);
-    Bank *newbank = new Bank(name,itags,inum,desc);
+    Bank *newbank = new Bank(name,itag,inum,desc);
     banks->Add(newbank);
     return(newbank);
   }

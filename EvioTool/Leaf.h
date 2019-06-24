@@ -103,7 +103,7 @@ public:
   
   static int Type(void){
     // Return the type stored in this leaf. Static so can be used as
-    // Leaf<int>::Get_type() etc.
+    // Leaf<int>::Type() etc.
     return(Leaf_None);
   };
   

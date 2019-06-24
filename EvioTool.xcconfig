@@ -21,11 +21,11 @@ EVIO= ${PROJECT_DIR}/evio-5.1
 //EVIO_LIB=${EVIO}/Darwin-x86_64/lib/libevio.a ${EVIO}/Darwin-x86_64/lib/libevioxx.a
 //EVIO_LIB=${EVIO}/build/Release/libevio-4.4.5.a
 
-CODA_ET=${PROJECT_DIR}/et-14.0
+CODA_ET=${PROJECT_DIR}/et-16.1
 
 //CODA_ET_LIB = ${CODA_ET}/Darwin-x86_64/lib/libet.a
 //CODA_ET_LIB[config=Release]=${CODA_ET}/build/Release/libet-14.0.a
 //CODA_ET_LIB[config=Debug]=  ${CODA_ET}/build/Debug/libet-14.0.dylib
 OTHER_LDFLAGS= $(inherited) -lexpat -lz
-HEADER_SEARCH_PATHS= $(inherited) ${PROJECT_DIR}/EvioTool $EVIO/src/libsrc $EVIO/src/libsrc++ ${CODA_ET}/common/include
+HEADER_SEARCH_PATHS= $(inherited) ${PROJECT_DIR}/EvioTool $EVIO/src/libsrc $EVIO/src/libsrc++ ${CODA_ET}/src/libsrc
 //

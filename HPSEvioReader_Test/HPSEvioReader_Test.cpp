@@ -15,12 +15,14 @@
 #include <string>
 using namespace std;
 
-#include "EvioTool.h"
+#include "HPSEvioReader.h"
 #include "SVTbank.h"
 #include "Header.h"
+#include "Headbank.h"
 
 #include "TFile.h"
 #include "TH1D.h"
+#include "TH2F.h"
 
 struct Arguments_t {
   vector<string> filenames;
@@ -46,7 +48,7 @@ int main(int argc, const char * argv[])
   Arguments_t args;
   Parse_Args(&argc,argv,&args);
   
-  EvioTool *etool=new EvioTool();
+  HPSEvioReader *etool=new HPSEvioReader();
   
   if(args.use_et){
     cout << "Error ET system not yet implemented. Exit. \n";
@@ -67,19 +69,11 @@ int main(int argc, const char * argv[])
 
   TFile root_file("EvioTool_out.root","RECREATE");
   TH1D *event_hist = new TH1D("event_hist","Events Histogram",1000,0,100000000);
-  // Setup the Event structure"
-  etool->fAutoAdd=false;
-  etool->fChop_level=1;
-  etool->tags={136,132,130,129};  // Parse HPS physics events only.
-
-  auto head = new Header(etool,49152,0);
-//  Leaf<unsigned int> *Header = etool->Add_Leaf<unsigned int>("Header",49152,0,"Header bank");
-  auto ECAL = etool->AddBank("Ecal",{37,39},0,"Ecal banks");
-  auto FADC = ECAL->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
-  auto SVT  = new SVTbank(etool,"SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
-// auto SVTraw = etool->Add_Bank("SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
-// Leaf<unsigned int> *SVTint = SVTraw->Add_Leaf<unsigned int>("SVTint",3,0,"SVT unparsed");
-
+  int ecal_nx=23;
+  int ecal_ny=5;
+  
+  TH2F *ones_lb =new TH2F(TString(histo->GetName()).Append("_oneslb"),"oneslb",(ecal_nx+1)*2+1,-ecal_nx-1.5,ecal_nx+2-0.5,(ecal_ny+1)*2+1,-ecal_ny-1.5,ecal_ny+1.5);
+  
   etool->fAutoAdd = args.auto_add;
   
   cout << "Debug set to " << etool->fDebug << " Auto add = " << etool->fAutoAdd << endl;
@@ -97,25 +91,27 @@ int main(int argc, const char * argv[])
     etool->Open(file.c_str());
     while(etool->Next() == S_SUCCESS){
       if(args.debug) cout<<"EVIO Event " << evt_count << endl;
+      etool->VtpTop->ParseBank();
+      etool->VtpBot->ParseBank();
       evt_count++;
-      event_hist->Fill((double)head->GetEventNumber());
+      event_hist->Fill((double)etool->head->GetEventNumber());
       if(args.print_evt) {
         etool->PrintBank(10);
   //      if(args.show_head) {};
   //      if(args.show_svt)  {};
   //      if(args.show_ecal) {};
       }
-      if(!args.quiet && evt_count%100000 ==0 ){
+      if(!args.quiet && evt_count%50000 ==0 ){
   //      /* statistics */
-          auto time2 = std::chrono::system_clock::now();
-          std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
-          totalTime += delta_t;
-          double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
-          totalCount += evt_count;
-          double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-          printf("%s: %6.1f kHz,  %6.1f kHz Avg. Event: %9d\n", argv[0], rate/1000., avgRate/1000.,head->GetEventNumber());
-          evt_count = 0;
-          time1 = std::chrono::system_clock::now();
+        auto time2 = std::chrono::system_clock::now();
+        std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
+        totalTime += delta_t;
+        double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
+        totalCount += evt_count;
+        double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
+        printf("%s: %6.1f kHz,  %6.1f kHz Avg. Event: %9d\n", argv[0], rate/1000., avgRate/1000.,etool->head->GetEventNumber());
+        evt_count = 0;
+        time1 = std::chrono::system_clock::now();
       }
     }
     cout << " ------------- \n";
@@ -126,7 +122,7 @@ int main(int argc, const char * argv[])
   totalTime += delta_t;
   totalCount += evt_count;
   double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-  printf("Last event: %6d\n",head->GetEventNumber());
+  printf("Last event: %6d\n",etool->head->GetEventNumber());
   printf("Total events: %6ld \n",totalCount);
   printf("Final: %3.4g kHz \n", avgRate/1000.);
   root_file.Write();

@@ -80,6 +80,7 @@ public:
   
 public:
   EvioTool();
+  virtual ~EvioTool(){};
   int  Open(const char *filename,const char *dictf=NULL);
   void Close();
   void parseDictionary(const char *dictf);

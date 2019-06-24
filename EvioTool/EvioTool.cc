@@ -169,7 +169,7 @@ int EvioTool::ParseEvioBuff(const unsigned int *buf){
       return(-3);
     }
     // Check if the event has the desired tag number. Skip if not.
-    if(tags.size() && std::find(tags.begin(),tags.end(),this_tag) == tags.end()){ // Event tag not found in tags list, so skip it.
+    if(!CheckTag(this_tag)){ // Event tag not found in tags list, so skip it.
       if(fDebug&Debug_Info2) cout << "Event of tag = " << this_tag << " skipped \n";
       return(S_SUCCESS);
     }

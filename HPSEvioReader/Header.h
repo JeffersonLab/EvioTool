@@ -5,7 +5,7 @@
 //  Created by Maurik Holtrop on 1/17/19.
 //  Copyright © 2019 UNH. All rights reserved.
 //
-
+//  Default header bank is 49152 = 0xc000
 #ifndef Header_hpp
 #define Header_hpp
 
@@ -16,7 +16,7 @@ class Header: public Leaf<unsigned int>{
   
 public:
   Header(){};
-  Header(Bank *b,unsigned short itag,unsigned short inum): Leaf("Header",itag,inum,"Event Header data"){
+  Header(Bank *b,unsigned short itag=49152,unsigned short inum=0): Leaf("Header",itag,inum,"Event Header data"){
     b->AddThisLeaf(this);
   };
   unsigned int GetEventNumber(){
