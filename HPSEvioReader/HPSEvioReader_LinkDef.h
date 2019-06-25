@@ -20,5 +20,11 @@
 #pragma link C++ class Headbank+;
 #pragma link C++ class TIData+;
 #pragma link C++ class VTPData+;
+#pragma link C++ class TriggerConfig+;
+
+#pragma link C++ struct FADC250_channel_t+;
+#pragma link C++ struct FADC250_slot_t+;
+#pragma link C++ struct FADC250_crate_t+;
+
 
 #endif

@@ -15,6 +15,7 @@
 #include "Headbank.h"
 #include "TIData.h"
 #include "VTPData.h"
+#include "TriggerConfig.h"
 
 class HPSEvioReader: public EvioTool{
   
@@ -31,11 +32,11 @@ public:
   VTPData  *VtpTop;
   VTPData  *VtpBot;
   
+  TriggerConfig *TrigConf;
+  
 public:
-  HPSEvioReader(string infile="");
+  HPSEvioReader(string infile="",string trigfile="");
   virtual ~HPSEvioReader(){};
-  
-  
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"

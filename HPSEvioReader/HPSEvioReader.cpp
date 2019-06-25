@@ -25,12 +25,11 @@
 //
 #include "HPSEvioReader.h"
 
-HPSEvioReader::HPSEvioReader(string infile){
+HPSEvioReader::HPSEvioReader(string infile,string trigfile): EvioTool(infile){
   fAutoAdd = false;
   fChop_level=1;
-  tags={128};
-  tag_mask = 128;
-  
+  tags={128,17};          // Only check for physics banks, i.e. bit7 = 1, and also 17 = Trigger config.
+  tag_masks = {128,17};
   
   head = new Header(this);
   trig = AddBank("Trig",46,0,"Trigger bank");
@@ -43,6 +42,8 @@ HPSEvioReader::HPSEvioReader(string infile){
   VtpTop   = new VTPData(TrigTop);
   TrigBot  = AddBank("TrigTop",12,0,"Trigger Bank bottom");
   VtpBot   = new VTPData(TrigBot);
+  
+  TrigConf = new TriggerConfig(trigfile);
 };
 
 ClassImp(HPSEvioReader);

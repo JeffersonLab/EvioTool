@@ -36,6 +36,8 @@
 		403E59E222BA6CA70026D8C3 /* HPSEvioReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 403E59E122BA6CA70026D8C3 /* HPSEvioReader.cpp */; };
 		403E59F422BA7AC70026D8C3 /* VTPData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 403E59F222BA7AC70026D8C3 /* VTPData.cpp */; };
 		403E59F522BA7AC70026D8C3 /* VTPData.h in Headers */ = {isa = PBXBuildFile; fileRef = 403E59F322BA7AC70026D8C3 /* VTPData.h */; };
+		406693D022C11AF90056E759 /* TriggerConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406693CE22C11AF90056E759 /* TriggerConfig.cpp */; };
+		406693D122C11AF90056E759 /* TriggerConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 406693CF22C11AF90056E759 /* TriggerConfig.h */; };
 		4070470A21DEA83100053DEE /* HPSEvioReader_LinkDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070470721DEA83100053DEE /* HPSEvioReader_LinkDef.h */; };
 		4070470B21DEA83100053DEE /* SVTbank.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4070470821DEA83100053DEE /* SVTbank.cc */; };
 		4070470C21DEA83100053DEE /* SVTbank.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070470921DEA83100053DEE /* SVTbank.h */; };
@@ -388,6 +390,8 @@
 		403E59E122BA6CA70026D8C3 /* HPSEvioReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HPSEvioReader.cpp; sourceTree = "<group>"; };
 		403E59F222BA7AC70026D8C3 /* VTPData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VTPData.cpp; sourceTree = "<group>"; };
 		403E59F322BA7AC70026D8C3 /* VTPData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTPData.h; sourceTree = "<group>"; };
+		406693CE22C11AF90056E759 /* TriggerConfig.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerConfig.cpp; sourceTree = "<group>"; };
+		406693CF22C11AF90056E759 /* TriggerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TriggerConfig.h; sourceTree = "<group>"; };
 		4070470721DEA83100053DEE /* HPSEvioReader_LinkDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPSEvioReader_LinkDef.h; sourceTree = "<group>"; };
 		4070470821DEA83100053DEE /* SVTbank.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SVTbank.cc; sourceTree = "<group>"; };
 		4070470921DEA83100053DEE /* SVTbank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVTbank.h; sourceTree = "<group>"; };
@@ -564,6 +568,8 @@
 				40BE13BD22B9B1EB00AE16C6 /* Headbank.h */,
 				403E59F222BA7AC70026D8C3 /* VTPData.cpp */,
 				403E59F322BA7AC70026D8C3 /* VTPData.h */,
+				406693CE22C11AF90056E759 /* TriggerConfig.cpp */,
+				406693CF22C11AF90056E759 /* TriggerConfig.h */,
 			);
 			path = HPSEvioReader;
 			sourceTree = "<group>";
@@ -663,6 +669,7 @@
 			files = (
 				40BE13BF22B9B1EB00AE16C6 /* Headbank.h in Headers */,
 				4070470C21DEA83100053DEE /* SVTbank.h in Headers */,
+				406693D122C11AF90056E759 /* TriggerConfig.h in Headers */,
 				400E859321F10998002CA87E /* Header.h in Headers */,
 				403E59F522BA7AC70026D8C3 /* VTPData.h in Headers */,
 				40BE13C222B9B4F200AE16C6 /* TIData.h in Headers */,
@@ -1184,6 +1191,7 @@
 				400E859221F10998002CA87E /* Header.cpp in Sources */,
 				4070470B21DEA83100053DEE /* SVTbank.cc in Sources */,
 				40BE13C322B9B4F200AE16C6 /* TIData.cpp in Sources */,
+				406693D022C11AF90056E759 /* TriggerConfig.cpp in Sources */,
 				40BE13BE22B9B1EB00AE16C6 /* Headbank.cpp in Sources */,
 				403E59F422BA7AC70026D8C3 /* VTPData.cpp in Sources */,
 				403E59E222BA6CA70026D8C3 /* HPSEvioReader.cpp in Sources */,

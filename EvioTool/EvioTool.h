@@ -79,7 +79,7 @@ public:
   unsigned int evio_buflen     = 0;     //!- length of buffer.
   
 public:
-  EvioTool();
+  EvioTool(string infile="");
   virtual ~EvioTool(){};
   int  Open(const char *filename,const char *dictf=NULL);
   void Close();

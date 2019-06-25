@@ -8,7 +8,10 @@
 
 // The "Bank" class contains a list of "Leaf" nodes, each of the Leaf nodes contains a vector of data.
 //
-// Notes:
+//
+//
+//
+// Some Implementation Notes:
 // We must store a vector or TObjArray of pointers, and not objects, because the objects
 // will change size and thus cause trouble with the memory allocation of the vector.
 // We may as well derive everything (i.e. the leafs and sub-banks) from TObject, so we can simply
@@ -52,8 +55,14 @@ using namespace std;
 class Bank : public TNamed {
   // Mimicks a container bank in EVIO, with extra's.
 public:
+  // tags and tag_mask:
+  // Each bank tag is compared to the tags in the following manner:
+  // If there is only one tag_masks, then each bank tag is masked with that tag_mask and then compared to see if
+  // the result is in the list of tags.
+  // If there are as many tag_masks as tags, then each tag_masks element is paired with a tags element.
+  // Each bank tag is masked by the tag_mask element, and then compared to only the collesponding tags element.
   vector< unsigned short>tags;  // Tags to select bank with.
-  unsigned short tag_mask = 0xFFFF;  // If != 0, this mask is applied to a tag before comparing with tags list. 
+  vector<unsigned short> tag_masks = {0xFFFF};  // This mask is applied to a tag before comparing with the tags list.
   unsigned char  num=0;           // num to select bank with. If set to 0, ignore.
   
   unsigned short this_tag=0;      // The actual tag of the parsed bank.
@@ -116,12 +125,22 @@ public:
   
   virtual bool CheckTag(const unsigned short tag){
     // Check if the tag passes the required tag test:
-    // tag masked by tag_mask in in the tags list.
-    if(tags.size() && std::find(tags.begin(),tags.end(),(tag&tag_mask)) == tags.end()){ // Event tag not found in tags list.
-      return(false);
+    // if tag_masks.size()==1 then bank tag, masked by tag_masks[0], is looked for in the tags list. If found then OK.
+    // if tag_masks.size()==tags.size() then for each item the bank tag is masked by tag_masks[i] and compared to tags[i]. If equal, then OK.
+    if(tags.size()>0 && tag_masks.size()==1){
+      return( !(std::find(tags.begin(),tags.end(),(tag&tag_masks[0])) == tags.end())); // If not == end, then found.
+    }else if(tags.size() == tag_masks.size()){
+      for(int i=0;i<tags.size();++i){
+        if( (tag&tag_masks[i]) == tags[i] ) return(true);
+      }
+      return(false); // Not found for any i, so false.
+    }else if(tags.size()==0){
+      return(true);
     }else{
+      std::cerr << "ERROR - Bank::CheckTag -- inconsistend tags and tag_masks definiion.\n";
       return(true);
     }
+    
   };
   
   // Add a new leaf type to this bank. COPY the leaf into the array.

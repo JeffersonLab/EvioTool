@@ -15,14 +15,13 @@
 #include <string>
 using namespace std;
 
-#include "HPSEvioReader.h"
+#include "EvioTool.h"
 #include "SVTbank.h"
 #include "Header.h"
-#include "Headbank.h"
 
 #include "TFile.h"
+#include "TCanvas.h"
 #include "TH1D.h"
-#include "TH2F.h"
 
 struct Arguments_t {
   vector<string> filenames;
@@ -48,7 +47,7 @@ int main(int argc, const char * argv[])
   Arguments_t args;
   Parse_Args(&argc,argv,&args);
   
-  HPSEvioReader *etool=new HPSEvioReader();
+  EvioTool *etool=new EvioTool();
   
   if(args.use_et){
     cout << "Error ET system not yet implemented. Exit. \n";
@@ -67,16 +66,19 @@ int main(int argc, const char * argv[])
     etool->fDebug = 0xFF;
   }
 
-  TFile root_file("EvioTool_out.root","RECREATE");
-  TH1D *event_hist = new TH1D("event_hist","Events Histogram",1000,0,100000000);
-  int ecal_nx=23;
-  int ecal_ny=5;
-  
-  TH2F *ecal_hits =new TH2F("ecal_hits","Ecal Hits",(ecal_nx+1)*2+1,-ecal_nx-1.5,ecal_nx+2-0.5,(ecal_ny+1)*2+1,-ecal_ny-1.5,ecal_ny+1.5);
-  
-  etool->fAutoAdd = args.auto_add;
-  
-  cout << "Debug set to " << etool->fDebug << " Auto add = " << etool->fAutoAdd << endl;
+  TFile root_file("Hodo.root","RECREATE");
+
+  etool->fAutoAdd=false;
+  etool->fChop_level=1;
+  etool->tags={1<<7};  // Parse HPS physics events only.
+  etool->tag_masks = {1<<7};
+
+  // Setup the Event structure"
+  auto head = new Header(etool,49152,0);
+  auto Hodo = etool->AddBank("Ecal",{65},0,"Ecal banks");
+  auto Hodo_FADC = Hodo->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
+
+  std::cout << "Debug set to " << etool->fDebug << std::endl;
   
   etool->PrintBank(5);
 
@@ -87,31 +89,54 @@ int main(int argc, const char * argv[])
   auto start = std::chrono::system_clock::now();
   auto time1 = start;
   
-  for(auto file: args.filenames){
+  vector<TH1F *> hit_histos;
+  for(int i=0;i<48;++i){
+    string name = "h"+to_string(i);
+    string title = "Hodoscope FADC"+to_string(i);
+    TH1F *h = new TH1F(name.c_str(),title.c_str(),150,0,149);
+    hit_histos.push_back(h);
+  }
+  
+  TCanvas *cc = new TCanvas("cc","HodoHits",800,1200);
+  cc->Divide(4,12);
+  cc->Draw();
+  for(auto file: args.filenames){   // Files loop.
     etool->Open(file.c_str());
-    while(etool->Next() == S_SUCCESS){
+    while(etool->Next() == S_SUCCESS){ // Event loop.
       if(args.debug) cout<<"EVIO Event " << evt_count << endl;
-      etool->VtpTop->ParseBank();
-      etool->VtpBot->ParseBank();
       evt_count++;
-      event_hist->Fill((double)etool->head->GetEventNumber());
+      for(int i=0; i<(int)Hodo_FADC->size(); ++i){
+        FADCdata *hit = &Hodo_FADC->data[i];
+        hit_histos[i]->Clear();
+        cc->cd(i);
+        printf("%d - sz= %d \n",i,(int)hit->GetSampleSize());
+        for(int j=0;j<hit->GetSampleSize();++j){
+          printf("%d ",hit->GetSample(j));
+          hit_histos[i]->SetBinContent(j,hit->GetSample(j));
+        }
+        printf("\n");
+        hit_histos[i]->Draw();
+      }
+      cc->Update();
+      cc->Draw();
+      printf("\n");
       if(args.print_evt) {
         etool->PrintBank(10);
   //      if(args.show_head) {};
   //      if(args.show_svt)  {};
   //      if(args.show_ecal) {};
       }
-      if(!args.quiet && evt_count%50000 ==0 ){
+      if(!args.quiet && evt_count%100000 ==0 ){
   //      /* statistics */
-        auto time2 = std::chrono::system_clock::now();
-        std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
-        totalTime += delta_t;
-        double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
-        totalCount += evt_count;
-        double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-        printf("%s: %6.1f kHz,  %6.1f kHz Avg. Event: %9d\n", argv[0], rate/1000., avgRate/1000.,etool->head->GetEventNumber());
-        evt_count = 0;
-        time1 = std::chrono::system_clock::now();
+          auto time2 = std::chrono::system_clock::now();
+          std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
+          totalTime += delta_t;
+          double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
+          totalCount += evt_count;
+          double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
+          printf("%s: %6.1f kHz,  %6.1f kHz Avg. Event: %9d\n", argv[0], rate/1000., avgRate/1000.,head->GetEventNumber());
+          evt_count = 0;
+          time1 = std::chrono::system_clock::now();
       }
     }
     cout << " ------------- \n";
@@ -122,7 +147,7 @@ int main(int argc, const char * argv[])
   totalTime += delta_t;
   totalCount += evt_count;
   double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-  printf("Last event: %6d\n",etool->head->GetEventNumber());
+  printf("Last event: %6d\n",head->GetEventNumber());
   printf("Total events: %6ld \n",totalCount);
   printf("Final: %3.4g kHz \n", avgRate/1000.);
   root_file.Write();
@@ -130,6 +155,12 @@ int main(int argc, const char * argv[])
   return 0;
 }
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    Argument parsing support routine.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Parse_Args(int *argc,const char **argv, Arguments_t *p_arg){
   // Read and parse all the options, leaving only input files in the
   // argv array.
