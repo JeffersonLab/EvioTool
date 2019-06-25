@@ -97,11 +97,26 @@ set(DICTS_EVIOTOOL
 set(SOURCE_FILES_HPSEVIOREADER
   HPSEvioReader/SVTbank.cc
   HPSEvioReader/SVTbank.h
+  HPSEvioReader/HPSEvioReader.cpp
+  HPSEvioReader/HPSEvioReader.h
+  HPSEvioReader/Headbank.cpp
+  HPSEvioReader/Headbank.h
+  HPSEvioReader/Header.cpp
+  HPSEvioReader/Header.h
+  HPSEvioReader/SVTbank.cc
+  HPSEvioReader/SVTbank.h
+  HPSEvioReader/TIData.cpp
+  HPSEvioReader/TIData.h
+  HPSEvioReader/TriggerConfig.cpp
+  HPSEvioReader/TriggerConfig.h
+  HPSEvioReader/TriggerConfig.hpp
+  HPSEvioReader/VTPData.cpp
+  HPSEvioReader/VTPData.h
   )
 
-set(DICTS_HPSEVIOREADER
-  SVTbank_Dict.cxx
-  )
+#set(DICTS_HPSEVIOREADER
+#  SVTbank_Dict.cxx
+#  )
 
 
 ROOT_GENERATE_DICTIONARY(EvioTool_Dict      EvioTool/EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
