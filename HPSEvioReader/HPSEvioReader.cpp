@@ -43,7 +43,11 @@ HPSEvioReader::HPSEvioReader(string infile,string trigfile): EvioTool(infile){
   TrigBot  = AddBank("TrigTop",12,0,"Trigger Bank bottom");
   VtpBot   = new VTPData(TrigBot);
   
-  TrigConf = new TriggerConfig(trigfile);
+  if(trigfile.size()>1){
+    TrigConf = new TriggerConfig(trigfile); // Just load from the file, do not also look for the bank in the data.
+  }else{
+    TrigConf = new TriggerConfig(this);     // Add the Trigger Config to the banks to look for.
+  }
 };
 
 ClassImp(HPSEvioReader);

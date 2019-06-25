@@ -146,6 +146,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
     }
   }
   
+  ll->CallBack();
   return 1;
 };
 

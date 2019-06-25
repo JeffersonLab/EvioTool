@@ -67,6 +67,7 @@ template <> int EvioTool::AddOrFillLeaf<string>(const unsigned int *buf,int len,
       }
       c=n;
     }
+  ((Leaf<string> *)node->leafs->At(loc))->CallBack();
   return 1;
 };
 

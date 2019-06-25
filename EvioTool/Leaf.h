@@ -49,7 +49,11 @@ public:
   Leaf(Leaf *cp): Leaf_base(cp->tag,cp->num),data(cp->data){ SetName(cp->GetName()); SetTitle(cp->GetTitle());};
   Leaf(string n,int ta, int nu,string desc): Leaf_base(ta,nu) {SetName(n.c_str()); SetTitle(desc.c_str());}
   
-  void Clear(Option_t *){
+  virtual void CallBack(void){
+    // Could be implemented in a derived class to futher process the data right after the class is filled from an EVIO bank.
+  }
+  
+  virtual void Clear(Option_t *opt=""){
     // Clear out the contents of the leaf, but do not delete the leaf.
     data.clear();
   }
@@ -107,10 +111,7 @@ public:
     return(Leaf_None);
   };
   
-  
-  
-  
-  void Print(Option_t *op) const{
+  virtual void Print(Option_t *op) const{
     // Print your self, and num of the contents.
     // To be compatible with TObject::Print(), which is needed for virtual use,
     // the num and level are encoded in the opt= "N10L3" is num=10, level=3

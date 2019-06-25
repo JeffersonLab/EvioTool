@@ -111,6 +111,7 @@ public:
     if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " templated for type <" << ((Leaf<T> *)node->leafs->At(loc))->Type() << "> \n";
     node->PushDataArray(loc, (T *)buf, len);
     
+    ((Leaf<T> *)node->leafs->At(loc))->CallBack();
     return 1;
   };
   

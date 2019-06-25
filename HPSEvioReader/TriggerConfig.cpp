@@ -11,8 +11,11 @@
 
 ClassImp(TriggerConfig);
 
-void TriggerConfig::Parse_trigger_file(string filename){      // Put data from hps_vx.cnf file into raw_data and parse.
-  
+void TriggerConfig::Parse_trigger_file(string filename){
+  // Read the file from filename, presumably an trigger.cnf file (e.g. hps_v4.cnf)
+  // Then parse the content of this file, and fill the configuration structures.
+  //
+  Clear("");
   ifstream infile(filename); // Open file as a stream.
   string line;
   while(std::getline(infile,line)){
@@ -22,8 +25,13 @@ void TriggerConfig::Parse_trigger_file(string filename){      // Put data from h
   }
   Parse_raw_data();
 }
-void TriggerConfig::Parse_evio_bank(Leaf<string> *TrigBank){  // Put data from TrigBank into raw_data and parse.
-  for(string line: TrigBank->data){
+void TriggerConfig::Parse_evio_bank(void){
+  // Read the data from the appropriate evio leaf bank. (Should be 0xE10E in event with tag=17)
+  // Then parse the content of this file, and fill the configuration structures.
+  // This method is called automatically by CallBack() when the Leaf is filled from EVIO.
+  //
+  Clear("");
+  for(string line: data){
     line.erase(line.begin(),std::find_if(line.begin(), line.end(), std::bind1st(std::not_equal_to<char>(), ' '))); // Erase any leading spaces.
     if(line.size()<1 || line[0]=='#') continue;  // Comments are either blank or start with a #
     raw_data.push_back(line);
@@ -31,8 +39,12 @@ void TriggerConfig::Parse_evio_bank(Leaf<string> *TrigBank){  // Put data from T
   Parse_raw_data();
 }
 
-void TriggerConfig::Parse_raw_data(void){                     // Internally used to parse data in raw_data;
-  
+void TriggerConfig::Parse_raw_data(void){
+  // Internally used to parse the data in raw_data;
+  //
+  // Most information in VTP_HPS and FADC250 are parsed.
+  // If needed other banks would need to be added.
+  //
   bool vtp_parse_area=false;
   int  fadc_parse_area=0;
   int  fadc_current_slot=0;

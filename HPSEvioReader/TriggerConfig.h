@@ -46,7 +46,7 @@ struct FADC250_crate_t{
   map<int,FADC250_slot_t> slots;
 };
 
-class TriggerConfig: public TObject {
+class TriggerConfig: public Leaf<string> {
 
 public:
   bool               is_initialized;
@@ -62,8 +62,27 @@ public:
   TriggerConfig(string trigfile=""){
     if(trigfile.size()>1) Parse_trigger_file(trigfile);
   };
-  void Parse_trigger_file(string filename);      // Put data from hps_vx.cnf file into raw_data and parse.
-  void Parse_evio_bank(Leaf<string> *TrigBank);  // Put data from TrigBank into raw_data and parse.
+  TriggerConfig(Bank *b,unsigned short itag=0xE10E,unsigned short inum=0): Leaf("TriggerBank",itag,inum,"Trigger configuration data."){
+    b->AddThisLeaf(this);
+  };
+  
+  void CallBack(void){
+    cout << "Trigger Config CallBank \n";
+    Parse_evio_bank();
+  }
+  
+  void Clear(Option_t *opt=""){
+    // If opt[0] is A or a, then clear everything. Else just clear data.
+    Leaf::Clear(opt);
+    if( opt[0]=='A' || opt[0]=='a'){
+      raw_data.clear();
+      vtp_configs.clear();
+      vtp_other.clear();
+      crates.clear();
+      }
+  }
+  void Parse_trigger_file(string filename);      // Parse from a file, eg. hps_vx.cnf file into raw_data and parse.
+  void Parse_evio_bank();
   void Parse_raw_data(void);                     // Internally used to parse data in raw_data;
   void Print(Option_t *option="");               // Printout the content of the TriggerConfig.
 
