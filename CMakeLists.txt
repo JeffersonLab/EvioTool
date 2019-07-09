@@ -95,21 +95,28 @@ set(DICTS_EVIOTOOL
   )
 
 set(SOURCE_FILES_HPSEVIOREADER
-  HPSEvioReader/SVTbank.cc
-  HPSEvioReader/SVTbank.h
+  HPSEvioReader/Cluster.cpp
+  HPSEvioReader/Cluster.h
+  HPSEvioReader/EcalCluster.cpp
+  HPSEvioReader/EcalCluster.h
+  HPSEvioReader/EcalGTPCluster.cpp
+  HPSEvioReader/EcalGTPCluster.h
+  HPSEvioReader/EcalHit.cpp
+  HPSEvioReader/EcalHit.h
+  HPSEvioReader/EcalData.cpp
+  HPSEvioReader/EcalData.h
   HPSEvioReader/HPSEvioReader.cpp
   HPSEvioReader/HPSEvioReader.h
-  HPSEvioReader/Headbank.cpp
-  HPSEvioReader/Headbank.h
   HPSEvioReader/Header.cpp
   HPSEvioReader/Header.h
+  HPSEvioReader/Headbank.cpp
+  HPSEvioReader/Headbank.h
   HPSEvioReader/SVTbank.cc
   HPSEvioReader/SVTbank.h
   HPSEvioReader/TIData.cpp
   HPSEvioReader/TIData.h
   HPSEvioReader/TriggerConfig.cpp
   HPSEvioReader/TriggerConfig.h
-  HPSEvioReader/TriggerConfig.hpp
   HPSEvioReader/VTPData.cpp
   HPSEvioReader/VTPData.h
   )

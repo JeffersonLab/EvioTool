@@ -27,23 +27,32 @@
 
 #include "EvioTool.h"
 
-struct FADC250_slot_t{
+struct FADC250_slot_t{  // Explicit initialization to zero.
   int    slot=0;
   int    NSB=0;
   int    NSA=0;
   int    npeak=0;
   int    w_offset=0;
   int    window=0;
-  vector<float> pedestal={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-  vector<float> gain={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-  vector<float> threshold={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  vector<float> pedestal;
+  vector<float> gain;
+  vector<float> threshold;
+  vector<short> subsystem;  // 0 = not known, 1=RF, 2=ECAL, 3=Hodoscope
+  vector<short> ix;
+  vector<short> iy;
+  // Constructor to initialize the vectors properly.
+  FADC250_slot_t(): pedestal(16,0.),gain(16,0.),threshold(16,0.),subsystem(16,0),ix(16,0),iy(16,0){};
+  // Helper methods.
+  void set_sxy(int chan,short sub,short x,short y){subsystem[chan]=sub,ix[chan]=x;iy[chan]=y;};
 };
+
+typedef map<int,FADC250_slot_t> slotmap;
 
 struct FADC250_crate_t{
   int    crate=0;
   int    mode=0;
   FADC250_slot_t all_slots;
-  map<int,FADC250_slot_t> slots;
+  slotmap slots;
 };
 
 class TriggerConfig: public Leaf<string> {
@@ -61,10 +70,14 @@ public:
 public:
   TriggerConfig(string trigfile=""){
     if(trigfile.size()>1) Parse_trigger_file(trigfile);
+    InitDAQMaps();
   };
   TriggerConfig(Bank *b,unsigned short itag=0xE10E,unsigned short inum=0): Leaf("TriggerBank",itag,inum,"Trigger configuration data."){
     b->AddThisLeaf(this);
+    InitDAQMaps();
   };
+  
+  void InitDAQMaps(void);
   
   void CallBack(void){
     cout << "Trigger Config CallBank \n";
@@ -85,7 +98,22 @@ public:
   void Parse_evio_bank();
   void Parse_raw_data(void);                     // Internally used to parse data in raw_data;
   void Print(Option_t *option="");               // Printout the content of the TriggerConfig.
+  void WriteToFile(string file);                 // Write the trigger config out to a file.
 
+  unsigned char GetCrateNum(unsigned char crate){
+    if(crate == 37) return(1);
+    if(crate == 39) return(2);
+    if(crate>crates.size()){
+      cerr << "BAD Crate number: " << crate << endl;
+      return(0);
+    }
+    return(crate);
+  }
+  FADC250_slot_t *GetSlot(unsigned char crate,unsigned slot){
+    const slotmap::iterator slmap=crates[GetCrateNum(crate)].slots.find(slot);
+    if(slmap == crates[GetCrateNum(crate)].slots.end() ) return nullptr;
+    return(&(slmap->second));
+  };
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"

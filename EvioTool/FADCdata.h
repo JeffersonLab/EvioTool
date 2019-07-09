@@ -22,6 +22,26 @@
 
 #define N_PEDESTAL 4  // Number of initial values to use for the pedestal
 
+class FADC_Hit_t{
+public:
+  float energy=0.0;    // Energy = integral*ga`in. The gain must come from config or DB, so may not be set.
+  float integral=0.0;
+  float time=0.0;
+  float pedestal=0.0;
+  float time_thresh=0.0;
+  int   max_adc=0;
+  int   max_loc=-1;
+public:
+  FADC_Hit_t(){};
+  FADC_Hit_t(float integ,float time, float pedest,float time_thr=0., int max=0, int max_loc=-1,float energ=0.0):
+              integral(integ),time(time),pedestal(pedest), time_thresh(time_thr),max_adc(max),max_loc(max_loc),energy(energ){};
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
+  ClassDef(FADC_Hit_t,1);
+#pragma clang diagnostic pop
+
+};
+
 class FADCdata{
   
 public:
@@ -59,9 +79,11 @@ public:
   unsigned long long GetRefTime(){return(reftime);};
   unsigned short GetTime();
   unsigned short GetAdc();
-  std::tuple<float,float,float,int,int> ComputeMode3(float thres=0); // return integral and time and pedestal as Mode3 computes it.
-  std::tuple<float,float,float,int,int> ComputeMode7(float thres=0, int NSB=5,int NSA=25); // return integral and time and pedestal as Mode7 computes it.
-  std::tuple<float,float,float> PulseFit(float width=0.);  // return integral and time and pedestal using a 3-pole fit.
+  FADC_Hit_t ComputeMode3(float thres=0); // return integral and time and pedestal as Mode3 computes it.
+  FADC_Hit_t ComputeMode7Single(float thres=0,float pedestal=0, int NSB=5,int NSA=25); // return integral and time and pedestal as Mode7 computes it.
+  const vector<FADC_Hit_t> ComputeMode7(float thres=0,float pedestal=0, int NSB=5,int NSA=25, int npeak=3, float gain=1.0);
+  const vector<FADC_Hit_t> &ComputeMode7fast(vector<FADC_Hit_t> &in, float thres=0,float pedestal=0, int NSB=5,int NSA=25, int npeak=3, float gain=1.0);
+  FADC_Hit_t PulseFit(float width=0.);  // return integral and time and pedestal using a 3-pole fit.
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"

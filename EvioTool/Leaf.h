@@ -77,11 +77,12 @@ public:
     data.push_back(dat);
   }
   vector<T> GetDataVector(void){
-    // Get the data vector. Creates a copy of the data.
+    // Get the data vector. Creates a copy of the data. This is safe.
     return data;
   }
   vector<T> *GetDataVectorPtr(void){
-    // Get the pointer to the data vector.
+    // Get the pointer to the data vector. This is not safe, but faster.
+    // The data pointed to may disappear (i.e. at the next event.)
     return &data;
   }
 

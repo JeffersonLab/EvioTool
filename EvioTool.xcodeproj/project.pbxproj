@@ -38,14 +38,18 @@
 		403E59F522BA7AC70026D8C3 /* VTPData.h in Headers */ = {isa = PBXBuildFile; fileRef = 403E59F322BA7AC70026D8C3 /* VTPData.h */; };
 		406693D022C11AF90056E759 /* TriggerConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406693CE22C11AF90056E759 /* TriggerConfig.cpp */; };
 		406693D122C11AF90056E759 /* TriggerConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 406693CF22C11AF90056E759 /* TriggerConfig.h */; };
+		406C45D622C50052006161EB /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
+		406C45D922C5409B006161EB /* EcalGTPCluster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406C45D722C5409B006161EB /* EcalGTPCluster.cpp */; };
+		406C45DA22C5409B006161EB /* EcalGTPCluster.h in Headers */ = {isa = PBXBuildFile; fileRef = 406C45D822C5409B006161EB /* EcalGTPCluster.h */; };
+		406C45DD22C5420D006161EB /* Cluster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406C45DB22C5420D006161EB /* Cluster.cpp */; };
+		406C45DE22C5420D006161EB /* Cluster.h in Headers */ = {isa = PBXBuildFile; fileRef = 406C45DC22C5420D006161EB /* Cluster.h */; };
+		406C45E122C66C13006161EB /* EcalCluster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406C45DF22C66C13006161EB /* EcalCluster.cpp */; };
+		406C45E222C66C13006161EB /* EcalCluster.h in Headers */ = {isa = PBXBuildFile; fileRef = 406C45E022C66C13006161EB /* EcalCluster.h */; };
 		4070470A21DEA83100053DEE /* HPSEvioReader_LinkDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070470721DEA83100053DEE /* HPSEvioReader_LinkDef.h */; };
 		4070470B21DEA83100053DEE /* SVTbank.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4070470821DEA83100053DEE /* SVTbank.cc */; };
 		4070470C21DEA83100053DEE /* SVTbank.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070470921DEA83100053DEE /* SVTbank.h */; };
 		4070470E21DEA89A00053DEE /* HPSEvioReader_Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4070470D21DEA89A00053DEE /* HPSEvioReader_Test.cpp */; };
 		4070471C21DEA98300053DEE /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
-		4070471D21DEA9C900053DEE /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
-		4070474F21DEDB6300053DEE /* libevio-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070473621DEC6F400053DEE /* libevio-5.1.dylib */; };
-		4070483421DEEFE000053DEE /* libevio-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070473621DEC6F400053DEE /* libevio-5.1.dylib */; };
 		407048B321E0526C00053DEE /* EvioTool_LinkDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 407048B221E0526C00053DEE /* EvioTool_LinkDef.h */; };
 		40A1036321D29A590022AD2E /* EvioTool.h in Sources */ = {isa = PBXBuildFile; fileRef = 40C763841ABCECA400410152 /* EvioTool.h */; };
 		40A1038221D2A1EC0022AD2E /* libHPSEvioReader.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */; };
@@ -64,10 +68,14 @@
 		40DAD1C9225FE92A0003C58C /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
 		40DAD1CA225FE92A0003C58C /* libHPSEvioReader.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */; };
 		40DAD1D1225FE94B0003C58C /* EvioReaderApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40DAD1B2225FE90B0003C58C /* EvioReaderApp.cpp */; };
+		40DB0B6722D50A4F004226E1 /* EcalHit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40DB0B6522D50A4F004226E1 /* EcalHit.cpp */; };
+		40DB0B6822D50A4F004226E1 /* EcalHit.h in Headers */ = {isa = PBXBuildFile; fileRef = 40DB0B6622D50A4F004226E1 /* EcalHit.h */; };
 		40E6BFED1917E1F400BF03CA /* et_evio_blaster.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */; };
 		40E6BFEF1917E1F400BF03CA /* et_evio_blaster.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E6BFEE1917E1F400BF03CA /* et_evio_blaster.1 */; };
 		40E74638191DA8F0008E4235 /* et_evio_test_consumer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */; };
 		40E7463A191DA8F0008E4235 /* et_evio_test_consumer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */; };
+		40F78AF622C2C6DE00EF7328 /* EcalData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40F78AF422C2C6DE00EF7328 /* EcalData.cpp */; };
+		40F78AF722C2C6DE00EF7328 /* EcalData.h in Headers */ = {isa = PBXBuildFile; fileRef = 40F78AF522C2C6DE00EF7328 /* EcalData.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -392,6 +400,12 @@
 		403E59F322BA7AC70026D8C3 /* VTPData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTPData.h; sourceTree = "<group>"; };
 		406693CE22C11AF90056E759 /* TriggerConfig.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerConfig.cpp; sourceTree = "<group>"; };
 		406693CF22C11AF90056E759 /* TriggerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TriggerConfig.h; sourceTree = "<group>"; };
+		406C45D722C5409B006161EB /* EcalGTPCluster.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EcalGTPCluster.cpp; sourceTree = "<group>"; };
+		406C45D822C5409B006161EB /* EcalGTPCluster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcalGTPCluster.h; sourceTree = "<group>"; };
+		406C45DB22C5420D006161EB /* Cluster.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Cluster.cpp; sourceTree = "<group>"; };
+		406C45DC22C5420D006161EB /* Cluster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cluster.h; sourceTree = "<group>"; };
+		406C45DF22C66C13006161EB /* EcalCluster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EcalCluster.cpp; sourceTree = "<group>"; };
+		406C45E022C66C13006161EB /* EcalCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EcalCluster.h; sourceTree = "<group>"; };
 		4070470721DEA83100053DEE /* HPSEvioReader_LinkDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPSEvioReader_LinkDef.h; sourceTree = "<group>"; };
 		4070470821DEA83100053DEE /* SVTbank.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SVTbank.cc; sourceTree = "<group>"; };
 		4070470921DEA83100053DEE /* SVTbank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVTbank.h; sourceTree = "<group>"; };
@@ -413,6 +427,8 @@
 		40C763901ABCED8600410152 /* Bank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bank.h; sourceTree = "<group>"; };
 		40DAD1B2225FE90B0003C58C /* EvioReaderApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EvioReaderApp.cpp; sourceTree = "<group>"; };
 		40DAD1D0225FE92A0003C58C /* HodoEvioReader */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HodoEvioReader; sourceTree = BUILT_PRODUCTS_DIR; };
+		40DB0B6522D50A4F004226E1 /* EcalHit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EcalHit.cpp; sourceTree = "<group>"; };
+		40DB0B6622D50A4F004226E1 /* EcalHit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcalHit.h; sourceTree = "<group>"; };
 		40E49CFE19034D3E00390847 /* libEvioTool.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libEvioTool.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E6BFEA1917E1F400BF03CA /* et_evio_blaster */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = et_evio_blaster; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_blaster.cc; sourceTree = "<group>"; };
@@ -424,6 +440,8 @@
 		40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_test_consumer.cc; sourceTree = "<group>"; };
 		40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = et_evio_test_consumer.1; sourceTree = "<group>"; };
 		40EBBBF921D6C3000013747B /* FADCdata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FADCdata.h; sourceTree = "<group>"; };
+		40F78AF422C2C6DE00EF7328 /* EcalData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EcalData.cpp; sourceTree = "<group>"; };
+		40F78AF522C2C6DE00EF7328 /* EcalData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcalData.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,7 +466,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4070483421DEEFE000053DEE /* libevio-5.1.dylib in Frameworks */,
 				4070471C21DEA98300053DEE /* libEvioTool.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,7 +483,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4070474F21DEDB6300053DEE /* libevio-5.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,7 +499,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4070471D21DEA9C900053DEE /* libEvioTool.dylib in Frameworks */,
+				406C45D622C50052006161EB /* libEvioTool.dylib in Frameworks */,
 				40A1038221D2A1EC0022AD2E /* libHPSEvioReader.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -555,21 +571,31 @@
 		40A1036921D29A9B0022AD2E /* HPSEvioReader */ = {
 			isa = PBXGroup;
 			children = (
-				40BE13C122B9B4F200AE16C6 /* TIData.cpp */,
-				40BE13C022B9B4F200AE16C6 /* TIData.h */,
 				4070470721DEA83100053DEE /* HPSEvioReader_LinkDef.h */,
 				400E859421F109EA002CA87E /* HPSEvioReader.h */,
 				403E59E122BA6CA70026D8C3 /* HPSEvioReader.cpp */,
-				4070470821DEA83100053DEE /* SVTbank.cc */,
-				4070470921DEA83100053DEE /* SVTbank.h */,
-				400E859021F10998002CA87E /* Header.cpp */,
+				406C45DC22C5420D006161EB /* Cluster.h */,
+				406C45DB22C5420D006161EB /* Cluster.cpp */,
+				406C45E022C66C13006161EB /* EcalCluster.h */,
+				406C45DF22C66C13006161EB /* EcalCluster.cpp */,
+				406C45D822C5409B006161EB /* EcalGTPCluster.h */,
+				406C45D722C5409B006161EB /* EcalGTPCluster.cpp */,
+				40DB0B6622D50A4F004226E1 /* EcalHit.h */,
+				40DB0B6522D50A4F004226E1 /* EcalHit.cpp */,
+				40F78AF522C2C6DE00EF7328 /* EcalData.h */,
+				40F78AF422C2C6DE00EF7328 /* EcalData.cpp */,
 				400E859121F10998002CA87E /* Header.h */,
-				40BE13BC22B9B1EB00AE16C6 /* Headbank.cpp */,
+				400E859021F10998002CA87E /* Header.cpp */,
 				40BE13BD22B9B1EB00AE16C6 /* Headbank.h */,
-				403E59F222BA7AC70026D8C3 /* VTPData.cpp */,
-				403E59F322BA7AC70026D8C3 /* VTPData.h */,
-				406693CE22C11AF90056E759 /* TriggerConfig.cpp */,
+				40BE13BC22B9B1EB00AE16C6 /* Headbank.cpp */,
+				4070470921DEA83100053DEE /* SVTbank.h */,
+				4070470821DEA83100053DEE /* SVTbank.cc */,
+				40BE13C022B9B4F200AE16C6 /* TIData.h */,
+				40BE13C122B9B4F200AE16C6 /* TIData.cpp */,
 				406693CF22C11AF90056E759 /* TriggerConfig.h */,
+				406693CE22C11AF90056E759 /* TriggerConfig.cpp */,
+				403E59F322BA7AC70026D8C3 /* VTPData.h */,
+				403E59F222BA7AC70026D8C3 /* VTPData.cpp */,
 			);
 			path = HPSEvioReader;
 			sourceTree = "<group>";
@@ -620,14 +646,14 @@
 			isa = PBXGroup;
 			children = (
 				407048B221E0526C00053DEE /* EvioTool_LinkDef.h */,
-				40C7638F1ABCED8600410152 /* Bank.cc */,
 				40C763901ABCED8600410152 /* Bank.h */,
-				40C763831ABCECA400410152 /* EvioTool.cc */,
+				40C7638F1ABCED8600410152 /* Bank.cc */,
 				40C763841ABCECA400410152 /* EvioTool.h */,
-				4011BB0B21D6D21900256470 /* FADCdata.cc */,
+				40C763831ABCECA400410152 /* EvioTool.cc */,
 				40EBBBF921D6C3000013747B /* FADCdata.h */,
-				40C763891ABCED7100410152 /* Leaf.cc */,
+				4011BB0B21D6D21900256470 /* FADCdata.cc */,
 				40C7638A1ABCED7100410152 /* Leaf.h */,
+				40C763891ABCED7100410152 /* Leaf.cc */,
 			);
 			path = EvioTool;
 			sourceTree = "<group>";
@@ -668,11 +694,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				40BE13BF22B9B1EB00AE16C6 /* Headbank.h in Headers */,
+				406C45E222C66C13006161EB /* EcalCluster.h in Headers */,
 				4070470C21DEA83100053DEE /* SVTbank.h in Headers */,
 				406693D122C11AF90056E759 /* TriggerConfig.h in Headers */,
+				406C45DE22C5420D006161EB /* Cluster.h in Headers */,
+				40F78AF722C2C6DE00EF7328 /* EcalData.h in Headers */,
 				400E859321F10998002CA87E /* Header.h in Headers */,
+				40DB0B6822D50A4F004226E1 /* EcalHit.h in Headers */,
 				403E59F522BA7AC70026D8C3 /* VTPData.h in Headers */,
 				40BE13C222B9B4F200AE16C6 /* TIData.h in Headers */,
+				406C45DA22C5409B006161EB /* EcalGTPCluster.h in Headers */,
 				4070470A21DEA83100053DEE /* HPSEvioReader_LinkDef.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1189,12 +1220,17 @@
 			files = (
 				400E859521F10A93002CA87E /* HPSEvioReader.h in Sources */,
 				400E859221F10998002CA87E /* Header.cpp in Sources */,
+				406C45DD22C5420D006161EB /* Cluster.cpp in Sources */,
 				4070470B21DEA83100053DEE /* SVTbank.cc in Sources */,
 				40BE13C322B9B4F200AE16C6 /* TIData.cpp in Sources */,
 				406693D022C11AF90056E759 /* TriggerConfig.cpp in Sources */,
 				40BE13BE22B9B1EB00AE16C6 /* Headbank.cpp in Sources */,
+				40F78AF622C2C6DE00EF7328 /* EcalData.cpp in Sources */,
 				403E59F422BA7AC70026D8C3 /* VTPData.cpp in Sources */,
 				403E59E222BA6CA70026D8C3 /* HPSEvioReader.cpp in Sources */,
+				406C45D922C5409B006161EB /* EcalGTPCluster.cpp in Sources */,
+				40DB0B6722D50A4F004226E1 /* EcalHit.cpp in Sources */,
+				406C45E122C66C13006161EB /* EcalCluster.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
