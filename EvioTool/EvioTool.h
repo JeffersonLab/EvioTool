@@ -84,9 +84,9 @@ public:
   int  Open(const char *filename,const char *dictf=NULL);
   void Close();
   void parseDictionary(const char *dictf);
-  int NextNoParse(void);
-  int Next(void);
-  int ParseEvioBuff(const unsigned int *buf);                                  // Top level buffer parser.
+  virtual int NextNoParse(void);
+  virtual int Next(void);
+  virtual int ParseEvioBuff(const unsigned int *buf);                                  // Top level buffer parser.
   int ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node); // Recursive buffer parser.
   int LeafNodeHandler(const unsigned int *buf,int len, int padding, int contentType,unsigned short tag,unsigned char num,Bank *node);
   Bank *ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag, unsigned char num, Bank *node, int depth);
@@ -144,7 +144,7 @@ public:
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(EvioTool,1);
 #pragma clang diagnostic pop
-
+ 
 };
 
 #endif /* defined(__EvioTool__) */

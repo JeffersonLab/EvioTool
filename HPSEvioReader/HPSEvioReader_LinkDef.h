@@ -22,9 +22,14 @@
 #pragma link C++ class VTPData+;
 #pragma link C++ class TriggerConfig+;
 
-#pragma link C++ struct FADC250_channel_t+;
 #pragma link C++ struct FADC250_slot_t+;
 #pragma link C++ struct FADC250_crate_t+;
+
+#pragma link C++ class EcalData+;
+#pragma link C++ class Cluster+;
+#pragma link C++ class EcalGTPCluster+;
+#pragma link C++ class EcalCluster+;
+#pragma link C++ class EcalHit_t+;
 
 
 #endif

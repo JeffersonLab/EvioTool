@@ -73,7 +73,13 @@ int main(int argc, const char * argv[])
   int ecal_ny=5;
   
   TH2F *ecal_hits =new TH2F("ecal_hits","Ecal Hits",(ecal_nx+1)*2+1,-ecal_nx-1.5,ecal_nx+2-0.5,(ecal_ny+1)*2+1,-ecal_ny-1.5,ecal_ny+1.5);
+  TH1F *ecal_hit_e = new TH1F("ecal_hit_e","Ecal Hits Energy",500,0.,5000.);
+  TH1F *ecal_hit_m = new TH1F("ecal_hit_m","Ecal Hits max adc",500,0.,5000.);
   
+  TH2F *ecal_seeds =new TH2F("ecal_seeds","Ecal Cluster Seed Hits",(ecal_nx+1)*2+1,-ecal_nx-1.5,ecal_nx+2-0.5,(ecal_ny+1)*2+1,-ecal_ny-1.5,ecal_ny+1.5);
+  TH1F *ecal_seed_e = new TH1F("ecal_seed_e","Ecal Seed Energy",500,0.,5000.);
+  TH1F *ecal_cluster_e = new TH1F("ecal_cluster_e","Ecal Cluster Energy",500,0.,5000.);
+
   etool->fAutoAdd = args.auto_add;
   
   cout << "Debug set to " << etool->fDebug << " Auto add = " << etool->fAutoAdd << endl;
@@ -91,9 +97,10 @@ int main(int argc, const char * argv[])
     etool->Open(file.c_str());
     while(etool->Next() == S_SUCCESS){
       if(args.debug) cout<<"EVIO Event " << evt_count << endl;
-      etool->VtpTop->ParseBank();
-      etool->VtpBot->ParseBank();
+//      etool->VtpTop->ParseBank();
+//      etool->VtpBot->ParseBank();
       evt_count++;
+//      cout << "Event:  " << etool->head->GetEventNumber() << "  seq: " << evt_count << endl;
       event_hist->Fill((double)etool->head->GetEventNumber());
       if(args.print_evt) {
         etool->PrintBank(10);
@@ -113,6 +120,27 @@ int main(int argc, const char * argv[])
         evt_count = 0;
         time1 = std::chrono::system_clock::now();
       }
+      
+      for(auto ecal_hit: etool->ECAL->hitmap){
+        for(int i=0;i<ecal_hit.second.hits.size();++i){
+          ecal_hit_e->Fill(ecal_hit.second.hits[i].energy);
+          ecal_hit_m->Fill(ecal_hit.second.hits[i].max_adc);
+          if(ecal_hit.second.hits[i].energy>100.){
+            ecal_hits->Fill(ecal_hit.second.get_ix(),ecal_hit.second.get_iy());
+          }
+        }
+        
+      }
+      
+      for(auto cluster: etool->ECAL->GTPClusters ){
+        ecal_seeds->Fill(cluster.seed_ixy.first,cluster.seed_ixy.second);
+        // find the seed hit.
+        auto seed_hit=etool->ECAL->hitmap.find(cluster.seed_ixy);
+        if(seed_hit == etool->ECAL->hitmap.end() ) cout << "Problem! Seed hit not in map. \n";
+        ecal_seed_e->Fill(etool->ECAL->hitmap[cluster.seed_ixy].hits[cluster.seed_idx].energy);
+        ecal_cluster_e->Fill(cluster.energy);
+      }
+      
     }
     cout << " ------------- \n";
     etool->Close();
