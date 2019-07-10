@@ -49,6 +49,7 @@ int main(int argc, const char * argv[])
   Parse_Args(&argc,argv,&args);
   
   HPSEvioReader *etool=new HPSEvioReader();
+  etool->SVT->fStoreRaw=true;
   
   if(args.use_et){
     cout << "Error ET system not yet implemented. Exit. \n";

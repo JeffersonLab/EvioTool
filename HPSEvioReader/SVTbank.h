@@ -37,15 +37,20 @@
 #define MAX_NUM_SVT_SAMPLES 6
 #define MAX_SVT_DATA   1024
 
+// SVT Bank structure information for 2015/2016 data: https://confluence.slac.stanford.edu/display/hpsg/DPM+Event+Builder+Output
+// SVT Bank structure information for 2019 data: https://confluence.slac.stanford.edu/display/hpsg/2019+DPM+Event+Output
+//
+//
 struct SVT_header_t {
-  unsigned char XXX1    :8;   // bit 0-7   UNKNOWN
-  unsigned char feb_id  :8;   //  bit  8-15   = FEB ID
-  unsigned int  chan    :7;   //   bit  16-22 = Channel ID
-  unsigned int  apv     :3;   //   bit  23-25 = APV number
-  unsigned int  hyb_id  :3;    //   bit  26-28 = Hybrid ID
-  bool          isTail  :1;   //    bit  29  = Is a Tail (seem to never be the case?)
-  bool          isHeader:1;  //   bit  30   = Is a Header (these are useless?)
-  bool          XXX2    :1;    //    bit  31  =  UNKNOWN
+  unsigned char rce_addr    :8;   // bit 0-7  =   RCE Address
+  unsigned char feb_id      :8;   //  bit  8-15   = FEB ID
+  unsigned int  chan        :7;   //   bit  16-22 = Channel ID
+  unsigned int  apv         :3;   //   bit  23-25 = APV number
+  unsigned int  hyb_id      :2;    //   bit  26-27 = Hybrid ID
+  bool          read_err    :1;    //   bit 28 = Read Error
+  bool          isTail      :1;   //    bit  29  = Is a Tail (seem to never be the case?)
+  bool          isHeader    :1;  //   bit  30   = Is a Header (these are useless?)
+  bool          filter_flag :1;    //    bit  31  =  UNKNOWN
 };
 
 struct SVT_chan_t{
@@ -64,7 +69,8 @@ public:
   SVTbank(){
 //    SetName("SVTbank");
 //    SetTitle("Bank specifically for reading SVT data");
-//    tags={51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66};
+//    tags={51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66}; // 2015/16 data
+//    tags={ 2, 3};                                           // 2019 data
 //    num = 0;
 //    Init();
   };

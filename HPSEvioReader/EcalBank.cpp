@@ -5,9 +5,9 @@
 //  Created by Maurik Holtrop on 6/25/19.
 //
 
-#include "EcalData.h"
+#include "EcalBank.h"
 
-void EcalData::Parse(void){
+void EcalBank::Parse(void){
   // Parse the FADC data that belongs to the ECAL.
   // Fit the RAW mode1 data for each channel of the ECAL, and sort the resulting hits into a hitmap, which stores
   // the hits by (x,y) pair.
@@ -28,7 +28,7 @@ void EcalData::Parse(void){
   }
 }
 
-void EcalData::FindGTPClusters(void){
+void EcalBank::FindGTPClusters(void){
   // Scan the hits in the hitmap for GTPClusters, 3x3 clusters with a max hit in the center.
   //
   
@@ -70,4 +70,4 @@ void EcalData::FindGTPClusters(void){
   }
 }
 
-ClassImp(EcalData);
+ClassImp(EcalBank);

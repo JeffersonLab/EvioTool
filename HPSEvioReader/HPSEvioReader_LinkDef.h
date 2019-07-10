@@ -18,14 +18,14 @@
 
 #pragma link C++ class Header+;
 #pragma link C++ class Headbank+;
-#pragma link C++ class TIData+;
-#pragma link C++ class VTPData+;
+#pragma link C++ class TIBank+;
+#pragma link C++ class VTPBank+;
 #pragma link C++ class TriggerConfig+;
 
 #pragma link C++ struct FADC250_slot_t+;
 #pragma link C++ struct FADC250_crate_t+;
 
-#pragma link C++ class EcalData+;
+#pragma link C++ class EcalBank+;
 #pragma link C++ class Cluster+;
 #pragma link C++ class EcalGTPCluster+;
 #pragma link C++ class EcalCluster+;

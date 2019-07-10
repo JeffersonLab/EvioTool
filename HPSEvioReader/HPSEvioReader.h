@@ -20,18 +20,17 @@
 #define __HPSEvioReader__
 
 #include "EvioTool.h"
-#include "EcalData.h"
+#include "EcalBank.h"
 #include "Header.h"
 #include "Headbank.h"
 #include "SVTbank.h"
-#include "TIData.h"
-#include "VTPData.h"
+#include "TIBank.h"
+#include "VTPBank.h"
 #include "TriggerConfig.h"
 #include "EcalHit.h"
 #include "Cluster.h"
 #include "EcalGTPCluster.h"
 #include "EcalCluster.h"
-#include "EcalData.h"
 
 
 class HPSEvioReader: public EvioTool{
@@ -40,15 +39,16 @@ public:
   Header   *head;
   Bank     *trig;
   Headbank *trighead;
-  TIData   *tidata;
-  Bank     *ECALbank;
+  TIBank   *tidata;
+  Bank     *ECALdata;
   Leaf<FADCdata> *FADC;
-  EcalData *ECAL;
+  EcalBank *ECAL;
+  Bank     *SVTdata;
   SVTbank  *SVT;
   Bank     *TrigTop;
   Bank     *TrigBot;
-  VTPData  *VtpTop;
-  VTPData  *VtpBot;
+  VTPBank  *VtpTop;
+  VTPBank  *VtpBot;
   
   TriggerConfig *TrigConf;
   

@@ -6,6 +6,6 @@
 //  Copyright © 2019 UNH. All rights reserved.
 //
 
-#include "TIData.h"
+#include "TIBank.h"
 
-ClassImp(TIData);
+ClassImp(TIBank);

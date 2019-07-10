@@ -103,8 +103,8 @@ set(SOURCE_FILES_HPSEVIOREADER
   HPSEvioReader/EcalGTPCluster.h
   HPSEvioReader/EcalHit.cpp
   HPSEvioReader/EcalHit.h
-  HPSEvioReader/EcalData.cpp
-  HPSEvioReader/EcalData.h
+  HPSEvioReader/EcalBank.cpp
+  HPSEvioReader/EcalBank.h
   HPSEvioReader/HPSEvioReader.cpp
   HPSEvioReader/HPSEvioReader.h
   HPSEvioReader/Header.cpp
@@ -113,12 +113,12 @@ set(SOURCE_FILES_HPSEVIOREADER
   HPSEvioReader/Headbank.h
   HPSEvioReader/SVTbank.cc
   HPSEvioReader/SVTbank.h
-  HPSEvioReader/TIData.cpp
-  HPSEvioReader/TIData.h
+  HPSEvioReader/TIBank.cpp
+  HPSEvioReader/TIBank.h
   HPSEvioReader/TriggerConfig.cpp
   HPSEvioReader/TriggerConfig.h
-  HPSEvioReader/VTPData.cpp
-  HPSEvioReader/VTPData.h
+  HPSEvioReader/VTPBank.cpp
+  HPSEvioReader/VTPBank.h
   )
 
 #set(DICTS_HPSEVIOREADER
@@ -145,6 +145,10 @@ add_executable(HPSEvioReader_Test HPSEvioReader_Test/HPSEvioReader_Test.cpp)
 add_dependencies(HPSEvioReader_Test HPSEvioReader EvioTool)
 target_link_libraries(HPSEvioReader_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
 
+add_executable(HPS_Trigger_Test HPS_Trigger_Test/HPS_Trigger_Test.cpp HPS_Trigger_Test/TriggerHistograms.cpp )
+add_dependencies(HPS_Trigger_Test HPSEvioReader EvioTool)
+target_link_libraries(HPS_Trigger_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
+
 
 
 install(TARGETS EvioTool              DESTINATION lib)
@@ -154,3 +158,4 @@ install(TARGETS EvioTool_Test         DESTINATION bin)
 install(TARGETS HPSEvioReader       DESTINATION lib)
 install(FILES ${PROJECT_BINARY_DIR}/libHPSEvioReader_rdict.pcm  DESTINATION lib)
 install(TARGETS HPSEvioReader_Test  DESTINATION bin)
+install(TARGETS HPS_Trigger_Test  DESTINATION bin)
