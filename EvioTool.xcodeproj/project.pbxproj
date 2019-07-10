@@ -34,8 +34,8 @@
 		4024EB9D21F3F1CB00FE10F0 /* libHPSEvioReader.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */; };
 		4024EBA421F3F24200FE10F0 /* HPSEvioReader_MT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4024EB8621F3F1C100FE10F0 /* HPSEvioReader_MT.cpp */; };
 		403E59E222BA6CA70026D8C3 /* HPSEvioReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 403E59E122BA6CA70026D8C3 /* HPSEvioReader.cpp */; };
-		403E59F422BA7AC70026D8C3 /* VTPData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 403E59F222BA7AC70026D8C3 /* VTPData.cpp */; };
-		403E59F522BA7AC70026D8C3 /* VTPData.h in Headers */ = {isa = PBXBuildFile; fileRef = 403E59F322BA7AC70026D8C3 /* VTPData.h */; };
+		403E59F422BA7AC70026D8C3 /* VTPBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 403E59F222BA7AC70026D8C3 /* VTPBank.cpp */; };
+		403E59F522BA7AC70026D8C3 /* VTPBank.h in Headers */ = {isa = PBXBuildFile; fileRef = 403E59F322BA7AC70026D8C3 /* VTPBank.h */; };
 		406693D022C11AF90056E759 /* TriggerConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406693CE22C11AF90056E759 /* TriggerConfig.cpp */; };
 		406693D122C11AF90056E759 /* TriggerConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 406693CF22C11AF90056E759 /* TriggerConfig.h */; };
 		406C45D622C50052006161EB /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
@@ -57,8 +57,12 @@
 		40BE13BB22B7E97E00AE16C6 /* libevio-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070473621DEC6F400053DEE /* libevio-5.1.dylib */; };
 		40BE13BE22B9B1EB00AE16C6 /* Headbank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40BE13BC22B9B1EB00AE16C6 /* Headbank.cpp */; };
 		40BE13BF22B9B1EB00AE16C6 /* Headbank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BE13BD22B9B1EB00AE16C6 /* Headbank.h */; };
-		40BE13C222B9B4F200AE16C6 /* TIData.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BE13C022B9B4F200AE16C6 /* TIData.h */; };
-		40BE13C322B9B4F200AE16C6 /* TIData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40BE13C122B9B4F200AE16C6 /* TIData.cpp */; };
+		40BE13C222B9B4F200AE16C6 /* TIBank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BE13C022B9B4F200AE16C6 /* TIBank.h */; };
+		40BE13C322B9B4F200AE16C6 /* TIBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40BE13C122B9B4F200AE16C6 /* TIBank.cpp */; };
+		40C50A1C22D53F15002D8AE1 /* HPS_Trigger_Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40C50A1B22D53F15002D8AE1 /* HPS_Trigger_Test.cpp */; };
+		40C50A1D22D53FBA002D8AE1 /* libHPSEvioReader.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */; };
+		40C50A1E22D53FC5002D8AE1 /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
+		40C50A2122D55959002D8AE1 /* TriggerHistograms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40C50A1F22D55959002D8AE1 /* TriggerHistograms.cpp */; };
 		40C763861ABCECA400410152 /* EvioTool.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40C763831ABCECA400410152 /* EvioTool.cc */; };
 		40C763871ABCECA400410152 /* EvioTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C763841ABCECA400410152 /* EvioTool.h */; };
 		40C7638C1ABCED7100410152 /* Leaf.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40C763891ABCED7100410152 /* Leaf.cc */; };
@@ -74,8 +78,8 @@
 		40E6BFEF1917E1F400BF03CA /* et_evio_blaster.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E6BFEE1917E1F400BF03CA /* et_evio_blaster.1 */; };
 		40E74638191DA8F0008E4235 /* et_evio_test_consumer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */; };
 		40E7463A191DA8F0008E4235 /* et_evio_test_consumer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */; };
-		40F78AF622C2C6DE00EF7328 /* EcalData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40F78AF422C2C6DE00EF7328 /* EcalData.cpp */; };
-		40F78AF722C2C6DE00EF7328 /* EcalData.h in Headers */ = {isa = PBXBuildFile; fileRef = 40F78AF522C2C6DE00EF7328 /* EcalData.h */; };
+		40F78AF622C2C6DE00EF7328 /* EcalBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40F78AF422C2C6DE00EF7328 /* EcalBank.cpp */; };
+		40F78AF722C2C6DE00EF7328 /* EcalBank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40F78AF522C2C6DE00EF7328 /* EcalBank.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -288,6 +292,20 @@
 			remoteGlobalIDString = 40E74622191B0BFC008E4235;
 			remoteInfo = EvioTool_Test;
 		};
+		40C509FE22D53E6B002D8AE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40E49CFD19034D3E00390847;
+			remoteInfo = EvioTool;
+		};
+		40C50A0022D53E6B002D8AE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4070472C21DEC6F300053DEE /* evio-5.1.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 40E49D80190494FE00390847;
+			remoteInfo = "evio-5.1";
+		};
 		40DAD1C3225FE92A0003C58C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 40E49CF619034D3E00390847 /* Project object */;
@@ -336,6 +354,15 @@
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 		4024EB9E21F3F1CB00FE10F0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		40C50A0522D53E6B002D8AE1 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -396,8 +423,8 @@
 		4024EB8621F3F1C100FE10F0 /* HPSEvioReader_MT.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HPSEvioReader_MT.cpp; sourceTree = "<group>"; };
 		4024EBA321F3F1CB00FE10F0 /* HPSEvioReader_MT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HPSEvioReader_MT; sourceTree = BUILT_PRODUCTS_DIR; };
 		403E59E122BA6CA70026D8C3 /* HPSEvioReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HPSEvioReader.cpp; sourceTree = "<group>"; };
-		403E59F222BA7AC70026D8C3 /* VTPData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VTPData.cpp; sourceTree = "<group>"; };
-		403E59F322BA7AC70026D8C3 /* VTPData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTPData.h; sourceTree = "<group>"; };
+		403E59F222BA7AC70026D8C3 /* VTPBank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VTPBank.cpp; sourceTree = "<group>"; };
+		403E59F322BA7AC70026D8C3 /* VTPBank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTPBank.h; sourceTree = "<group>"; };
 		406693CE22C11AF90056E759 /* TriggerConfig.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerConfig.cpp; sourceTree = "<group>"; };
 		406693CF22C11AF90056E759 /* TriggerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TriggerConfig.h; sourceTree = "<group>"; };
 		406C45D722C5409B006161EB /* EcalGTPCluster.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EcalGTPCluster.cpp; sourceTree = "<group>"; };
@@ -417,8 +444,13 @@
 		40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libHPSEvioReader.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40BE13BC22B9B1EB00AE16C6 /* Headbank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Headbank.cpp; sourceTree = "<group>"; };
 		40BE13BD22B9B1EB00AE16C6 /* Headbank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Headbank.h; sourceTree = "<group>"; };
-		40BE13C022B9B4F200AE16C6 /* TIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TIData.h; sourceTree = "<group>"; };
-		40BE13C122B9B4F200AE16C6 /* TIData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TIData.cpp; sourceTree = "<group>"; };
+		40BE13C022B9B4F200AE16C6 /* TIBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TIBank.h; sourceTree = "<group>"; };
+		40BE13C122B9B4F200AE16C6 /* TIBank.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TIBank.cpp; sourceTree = "<group>"; };
+		40C50A0A22D53E6B002D8AE1 /* HPS_Trigger_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HPS_Trigger_test; sourceTree = BUILT_PRODUCTS_DIR; };
+		40C50A1B22D53F15002D8AE1 /* HPS_Trigger_Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HPS_Trigger_Test.cpp; sourceTree = "<group>"; };
+		40C50A1F22D55959002D8AE1 /* TriggerHistograms.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerHistograms.cpp; sourceTree = "<group>"; };
+		40C50A2022D55959002D8AE1 /* TriggerHistograms.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TriggerHistograms.h; sourceTree = "<group>"; };
+		40C50A2222D55FDB002D8AE1 /* Arguments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Arguments.h; sourceTree = "<group>"; };
 		40C763831ABCECA400410152 /* EvioTool.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EvioTool.cc; sourceTree = "<group>"; };
 		40C763841ABCECA400410152 /* EvioTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvioTool.h; sourceTree = "<group>"; };
 		40C763891ABCED7100410152 /* Leaf.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Leaf.cc; sourceTree = "<group>"; };
@@ -440,8 +472,8 @@
 		40E74637191DA8F0008E4235 /* et_evio_test_consumer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_test_consumer.cc; sourceTree = "<group>"; };
 		40E74639191DA8F0008E4235 /* et_evio_test_consumer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = et_evio_test_consumer.1; sourceTree = "<group>"; };
 		40EBBBF921D6C3000013747B /* FADCdata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FADCdata.h; sourceTree = "<group>"; };
-		40F78AF422C2C6DE00EF7328 /* EcalData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EcalData.cpp; sourceTree = "<group>"; };
-		40F78AF522C2C6DE00EF7328 /* EcalData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcalData.h; sourceTree = "<group>"; };
+		40F78AF422C2C6DE00EF7328 /* EcalBank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EcalBank.cpp; sourceTree = "<group>"; };
+		40F78AF522C2C6DE00EF7328 /* EcalBank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcalBank.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -467,6 +499,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				4070471C21DEA98300053DEE /* libEvioTool.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40C50A0322D53E6B002D8AE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40C50A1E22D53FC5002D8AE1 /* libEvioTool.dylib in Frameworks */,
+				40C50A1D22D53FBA002D8AE1 /* libHPSEvioReader.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,22 +623,33 @@
 				406C45D722C5409B006161EB /* EcalGTPCluster.cpp */,
 				40DB0B6622D50A4F004226E1 /* EcalHit.h */,
 				40DB0B6522D50A4F004226E1 /* EcalHit.cpp */,
-				40F78AF522C2C6DE00EF7328 /* EcalData.h */,
-				40F78AF422C2C6DE00EF7328 /* EcalData.cpp */,
+				40F78AF522C2C6DE00EF7328 /* EcalBank.h */,
+				40F78AF422C2C6DE00EF7328 /* EcalBank.cpp */,
 				400E859121F10998002CA87E /* Header.h */,
 				400E859021F10998002CA87E /* Header.cpp */,
 				40BE13BD22B9B1EB00AE16C6 /* Headbank.h */,
 				40BE13BC22B9B1EB00AE16C6 /* Headbank.cpp */,
 				4070470921DEA83100053DEE /* SVTbank.h */,
 				4070470821DEA83100053DEE /* SVTbank.cc */,
-				40BE13C022B9B4F200AE16C6 /* TIData.h */,
-				40BE13C122B9B4F200AE16C6 /* TIData.cpp */,
+				40BE13C022B9B4F200AE16C6 /* TIBank.h */,
+				40BE13C122B9B4F200AE16C6 /* TIBank.cpp */,
 				406693CF22C11AF90056E759 /* TriggerConfig.h */,
 				406693CE22C11AF90056E759 /* TriggerConfig.cpp */,
-				403E59F322BA7AC70026D8C3 /* VTPData.h */,
-				403E59F222BA7AC70026D8C3 /* VTPData.cpp */,
+				403E59F322BA7AC70026D8C3 /* VTPBank.h */,
+				403E59F222BA7AC70026D8C3 /* VTPBank.cpp */,
 			);
 			path = HPSEvioReader;
+			sourceTree = "<group>";
+		};
+		40C50A1A22D53ECB002D8AE1 /* HPS_Trigger_Test */ = {
+			isa = PBXGroup;
+			children = (
+				40C50A1B22D53F15002D8AE1 /* HPS_Trigger_Test.cpp */,
+				40C50A1F22D55959002D8AE1 /* TriggerHistograms.cpp */,
+				40C50A2022D55959002D8AE1 /* TriggerHistograms.h */,
+				40C50A2222D55FDB002D8AE1 /* Arguments.h */,
+			);
+			path = HPS_Trigger_Test;
 			sourceTree = "<group>";
 		};
 		40D9689021C85DD10075DF34 /* Frameworks */ = {
@@ -620,6 +672,7 @@
 				4011BB1C21D7C45300256470 /* EvioTool_Test */,
 				40A1036921D29A9B0022AD2E /* HPSEvioReader */,
 				40E74624191B0BFC008E4235 /* HPSEvioReader_Test */,
+				40C50A1A22D53ECB002D8AE1 /* HPS_Trigger_Test */,
 				40E6BFEB1917E1F400BF03CA /* et_evio_blaster */,
 				40E74636191DA8F0008E4235 /* et_evio_test_consumer */,
 				40E49CFF19034D3E00390847 /* Products */,
@@ -638,6 +691,7 @@
 				4011BB1B21D7C45300256470 /* EvioTool_Test */,
 				4024EBA321F3F1CB00FE10F0 /* HPSEvioReader_MT */,
 				40DAD1D0225FE92A0003C58C /* HodoEvioReader */,
+				40C50A0A22D53E6B002D8AE1 /* HPS_Trigger_test */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -698,11 +752,11 @@
 				4070470C21DEA83100053DEE /* SVTbank.h in Headers */,
 				406693D122C11AF90056E759 /* TriggerConfig.h in Headers */,
 				406C45DE22C5420D006161EB /* Cluster.h in Headers */,
-				40F78AF722C2C6DE00EF7328 /* EcalData.h in Headers */,
+				40F78AF722C2C6DE00EF7328 /* EcalBank.h in Headers */,
 				400E859321F10998002CA87E /* Header.h in Headers */,
 				40DB0B6822D50A4F004226E1 /* EcalHit.h in Headers */,
-				403E59F522BA7AC70026D8C3 /* VTPData.h in Headers */,
-				40BE13C222B9B4F200AE16C6 /* TIData.h in Headers */,
+				403E59F522BA7AC70026D8C3 /* VTPBank.h in Headers */,
+				40BE13C222B9B4F200AE16C6 /* TIBank.h in Headers */,
 				406C45DA22C5409B006161EB /* EcalGTPCluster.h in Headers */,
 				4070470A21DEA83100053DEE /* HPSEvioReader_LinkDef.h in Headers */,
 			);
@@ -782,6 +836,26 @@
 			productName = HPSEvioReader;
 			productReference = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
+		};
+		40C509FC22D53E6B002D8AE1 /* HPS_Trigger_test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40C50A0722D53E6B002D8AE1 /* Build configuration list for PBXNativeTarget "HPS_Trigger_test" */;
+			buildPhases = (
+				40C50A0122D53E6B002D8AE1 /* Sources */,
+				40C50A0322D53E6B002D8AE1 /* Frameworks */,
+				40C50A0522D53E6B002D8AE1 /* CopyFiles */,
+				40C50A0622D53E6B002D8AE1 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				40C509FD22D53E6B002D8AE1 /* PBXTargetDependency */,
+				40C509FF22D53E6B002D8AE1 /* PBXTargetDependency */,
+			);
+			name = HPS_Trigger_test;
+			productName = EvioTool_Test;
+			productReference = 40C50A0A22D53E6B002D8AE1 /* HPS_Trigger_test */;
+			productType = "com.apple.product-type.tool";
 		};
 		40DAD1C1225FE92A0003C58C /* HodoEvioReader */ = {
 			isa = PBXNativeTarget;
@@ -935,6 +1009,7 @@
 				40E74634191DA8F0008E4235 /* et_evio_test_consumer */,
 				40C13D2D19704834008307A1 /* AllEvioTool */,
 				40DAD1C1225FE92A0003C58C /* HodoEvioReader */,
+				40C509FC22D53E6B002D8AE1 /* HPS_Trigger_test */,
 			);
 		};
 /* End PBXProject section */
@@ -1109,6 +1184,24 @@
 			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\ncp -v ${BUILT_PRODUCTS_DIR}/*_rdict.pcm ${INSTALL_DIR}\n";
 			showEnvVarsInLog = 0;
 		};
+		40C50A0622D53E6B002D8AE1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy ${FULL_PRODUCT_NAME} to final destination.\"\ncp -v ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${INSTALL_DIR}\n# cp -v ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}Dict_rdict.pcm ${INSTALL_DIR}\n";
+			showEnvVarsInLog = 0;
+		};
 		40C763A71ABCF3DD00410152 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1222,15 +1315,24 @@
 				400E859221F10998002CA87E /* Header.cpp in Sources */,
 				406C45DD22C5420D006161EB /* Cluster.cpp in Sources */,
 				4070470B21DEA83100053DEE /* SVTbank.cc in Sources */,
-				40BE13C322B9B4F200AE16C6 /* TIData.cpp in Sources */,
+				40BE13C322B9B4F200AE16C6 /* TIBank.cpp in Sources */,
 				406693D022C11AF90056E759 /* TriggerConfig.cpp in Sources */,
 				40BE13BE22B9B1EB00AE16C6 /* Headbank.cpp in Sources */,
-				40F78AF622C2C6DE00EF7328 /* EcalData.cpp in Sources */,
-				403E59F422BA7AC70026D8C3 /* VTPData.cpp in Sources */,
+				40F78AF622C2C6DE00EF7328 /* EcalBank.cpp in Sources */,
+				403E59F422BA7AC70026D8C3 /* VTPBank.cpp in Sources */,
 				403E59E222BA6CA70026D8C3 /* HPSEvioReader.cpp in Sources */,
 				406C45D922C5409B006161EB /* EcalGTPCluster.cpp in Sources */,
 				40DB0B6722D50A4F004226E1 /* EcalHit.cpp in Sources */,
 				406C45E122C66C13006161EB /* EcalCluster.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40C50A0122D53E6B002D8AE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40C50A1C22D53F15002D8AE1 /* HPS_Trigger_Test.cpp in Sources */,
+				40C50A2122D55959002D8AE1 /* TriggerHistograms.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1330,6 +1432,16 @@
 			isa = PBXTargetDependency;
 			target = 40E74622191B0BFC008E4235 /* HPSEvioReader_Test */;
 			targetProxy = 40C13D3519704840008307A1 /* PBXContainerItemProxy */;
+		};
+		40C509FD22D53E6B002D8AE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40E49CFD19034D3E00390847 /* EvioTool */;
+			targetProxy = 40C509FE22D53E6B002D8AE1 /* PBXContainerItemProxy */;
+		};
+		40C509FF22D53E6B002D8AE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "evio-5.1";
+			targetProxy = 40C50A0022D53E6B002D8AE1 /* PBXContainerItemProxy */;
 		};
 		40DAD1C2225FE92A0003C58C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1518,6 +1630,123 @@
 			};
 			name = Release;
 		};
+		40C50A0822D53E6B002D8AE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E74618191826EB008E4235 /* programs.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		40C50A0922D53E6B002D8AE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E74618191826EB008E4235 /* programs.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		40DAD1CE225FE92A0003C58C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40E74618191826EB008E4235 /* programs.xcconfig */;
@@ -1652,6 +1881,15 @@
 			buildConfigurations = (
 				40C13D2E19704834008307A1 /* Debug */,
 				40C13D2F19704834008307A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40C50A0722D53E6B002D8AE1 /* Build configuration list for PBXNativeTarget "HPS_Trigger_test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40C50A0822D53E6B002D8AE1 /* Debug */,
+				40C50A0922D53E6B002D8AE1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

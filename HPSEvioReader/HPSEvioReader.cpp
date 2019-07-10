@@ -19,9 +19,16 @@
 //     | -> Headbank  - header info
 //     | -> FADC      - FADC data
 //
+
+// The 2015/2016 SVT Data structure:
 // --> SVT  = container with tags 51 - 65
-//     | -> Headbank(?)
-//     | -> SVT Data   - Special blob of ints.
+//     | -> Headbank   - tag 57610
+//     | -> SVT Data   - tag = 3     Special blob of ints.
+//
+// The 2019 SVT Data structure:
+// --> SVT  = container with tags 2-3
+//     | -> Headbank   - tag = 57610
+//     | -> SVT Data   - tag = 57648
 //
 #include "HPSEvioReader.h"
 
@@ -40,15 +47,17 @@ HPSEvioReader::HPSEvioReader(string infile,string trigfile): EvioTool(infile){
   head = new Header(this);
   trig = AddBank("Trig",46,0,"Trigger bank");
   trighead = new Headbank(trig);
-  tidata   = new TIData(trig);
-  ECALbank = AddBank("ECAL",{37,39},0,"Ecal banks");
-  FADC     = ECALbank->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
-  ECAL     = new EcalData(FADC,TrigConf);
-  SVT      = new SVTbank(this,"SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
+  tidata   = new TIBank(trig);
+  ECALdata = AddBank("ECAL",{37,39},0,"Ecal banks");
+  FADC     = ECALdata->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
+  ECAL     = new EcalBank(FADC,TrigConf);
+  SVTdata  = AddBank("SVT",{2,3,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
+ // SVT      = new SVTbank(this,"SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");  //  2015/2016 data
+  SVT      = new SVTbank(this,"SVT",{ 2, 3},0,"SVT banks");                                           //  2019 data.
   TrigTop  = AddBank("TrigTop",11,0,"Trigger Bank top");
-  VtpTop   = new VTPData(TrigTop);
+  VtpTop   = new VTPBank(TrigTop);
   TrigBot  = AddBank("TrigTop",12,0,"Trigger Bank bottom");
-  VtpBot   = new VTPData(TrigBot);
+  VtpBot   = new VTPBank(TrigBot);
 
 };
 

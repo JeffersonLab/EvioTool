@@ -1,5 +1,5 @@
 //
-//  TIData.hpp
+//  TIBank.hpp
 //  HPSEvioReader
 //
 //  Created by Maurik Holtrop on 6/18/19.
@@ -42,17 +42,17 @@
 
 
 
-#ifndef TIData_h
-#define TIData_h
+#ifndef TIBank_h
+#define TIBank_h
 
 #include "EvioTool.h"
 #include "Leaf.h"
 
-class TIData: public Leaf<unsigned int>{
+class TIBank: public Leaf<unsigned int>{
   
 public:
-  TIData(){};
-  TIData(Bank *b,unsigned short itag=57615,unsigned short inum=0): Leaf("TIData",itag,inum,"TIData data"){
+  TIBank(){};
+  TIBank(Bank *b,unsigned short itag=57615,unsigned short inum=0): Leaf("TIBank",itag,inum,"TIBank data"){
     b->AddThisLeaf(this);
   };
   
@@ -70,8 +70,8 @@ public:
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-  ClassDef(TIData,1);
+  ClassDef(TIBank,1);
 #pragma clang diagnostic pop
 };
 
-#endif /* TIData_h */
+#endif /* TIBank_h */

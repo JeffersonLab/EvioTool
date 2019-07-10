@@ -1,16 +1,16 @@
 //
-//  VTPData.cpp
+//  VTPBank.cpp
 //  HPSEvioReader
 //
 //  Created by Maurik Holtrop on 6/19/19.
 //  Copyright © 2019 UNH. All rights reserved.
 //
 
-#include "VTPData.h"
+#include "VTPBank.h"
 
-ClassImp(VTPData);
+ClassImp(VTPBank);
 
-void VTPData::ParseBank(void){
+void VTPBank::ParseBank(void){
   // First Clear out all the old data.
   Clear();
   for(int i=0; i<data.size(); ++i){

@@ -1,5 +1,5 @@
 //
-//  VTPData.hpp
+//  VTPBank.hpp
 //  HPSEvioReader
 //
 //  Created by Maurik Holtrop on 6/19/19.
@@ -164,13 +164,13 @@
 // 0(31:27)=0x10+0x0E "DNV"
 // 0(31:27)=0x10+0x0F "FILLER"
 
-#ifndef VTPData_h
-#define VTPData_h
+#ifndef VTPBank_h
+#define VTPBank_h
 
 #include "EvioTool.h"
 #include "Leaf.h"
 
-class VTPData: public Leaf<unsigned int>{
+class VTPBank: public Leaf<unsigned int>{
   
 public:
   struct {
@@ -290,13 +290,19 @@ public:
   };
   
   vector<HPSFEETrig_t> feetrigger;  // Cluster multiplicity.
+  
+  bool auto_parse = true;    // Set to true to use a callback to automatically parse the bank if encountered in the data.
 
   
 public:
-  VTPData(){};
-  VTPData(Bank *b,unsigned short itag=0xe122,unsigned short inum=0): Leaf("VTPData",itag,inum,"VTPData data"){
+  VTPBank(){};
+  VTPBank(Bank *b,unsigned short itag=0xe122,unsigned short inum=0): Leaf("VTPBank",itag,inum,"VTPBank data"){
     b->AddThisLeaf(this);
   };
+
+  void CallBack(void){
+    if(auto_parse) ParseBank();
+  }
   
   unsigned int GetData(int i){
     if(data.size()>i) return( data[i]);
@@ -315,9 +321,9 @@ public:
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-  ClassDef(VTPData,1);
+  ClassDef(VTPBank,1);
 #pragma clang diagnostic pop
 };
 
 
-#endif /* VTPData_h */
+#endif /* VTPBank_h */

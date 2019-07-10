@@ -1,5 +1,5 @@
 //
-//  EcalBank.hpp
+//  EcalBank.h
 //  HPSEvioReader
 //
 //  Created by Maurik Holtrop on 6/25/19.
@@ -10,12 +10,12 @@
 //
 // Example:
 // EvioTool *et= new EvioTool(infile);
-// auto ECALbank = et->AddBank("ECAL",{37,39},0,"Ecal banks");
+// auto ECALdata = et->AddBank("ECAL",{37,39},0,"Ecal banks");
 // auto FADC     = ECALbank->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
-// auto ECAL  = new EcalData(FADC);
+// auto ECAL  = new EcalBank(FADC);
 //
-#ifndef EcalData_h
-#define EcalData_h
+#ifndef EcalBank_h
+#define EcalBank_h
 
 #include "EvioTool.h"
 #include "FADCdata.h"
@@ -28,7 +28,7 @@
 
 using EcalHitMap_t=std::map<Ecal_point_t, EcalHit_t >;
 
-class EcalData: public TObject {
+class EcalBank: public TObject {
   
 public:
   Leaf<FADCdata> *FADC_leaf;
@@ -48,8 +48,8 @@ public:
   int cluster_hit_dt = 16;
   
 public:
-  EcalData(){};
-  EcalData(Leaf<FADCdata> *FADC,TriggerConfig *conf):FADC_leaf(FADC),DAQconfig(conf){}; //Cannot call Config at creation, because TriggerConfig is not yet read.
+  EcalBank(){};
+  EcalBank(Leaf<FADCdata> *FADC,TriggerConfig *conf):FADC_leaf(FADC),DAQconfig(conf){}; //Cannot call Config at creation, because TriggerConfig is not yet read.
   
   void Config(void){
     cluster_seed_thresh=(int)DAQconfig->vtp_other["ECAL_CLUSTER_SEED_THR"][0];
@@ -69,7 +69,7 @@ public:
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-  ClassDef(EcalData,1);
+  ClassDef(EcalBank,1);
 #pragma clang diagnostic pop
 };
 
