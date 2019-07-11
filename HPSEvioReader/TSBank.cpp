@@ -1,11 +1,11 @@
 //
-//  TIData.cpp
+//  TSBank.cpp
 //  HPSEvioReader
 //
 //  Created by Maurik Holtrop on 6/18/19.
 //  Copyright © 2019 UNH. All rights reserved.
 //
 
-#include "TIBank.h"
+#include "TSBank.h"
 
-ClassImp(TIBank);
+ClassImp(TSBank);

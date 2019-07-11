@@ -48,8 +48,8 @@ int main(int argc, const char * argv[])
   Arguments_t args;
   Parse_Args(&argc,argv,&args);
   
-  HPSEvioReader *etool=new HPSEvioReader();
-  etool->SVT->fStoreRaw=true;
+  HPSEvioReader *etool=new HPSEvioReader(args.filenames[0].c_str());
+//  etool->SVT->fStoreRaw=true;
   
   if(args.use_et){
     cout << "Error ET system not yet implemented. Exit. \n";
@@ -68,6 +68,30 @@ int main(int argc, const char * argv[])
     etool->fDebug = 0xFF;
   }
 
+  // Determine which data set this data belongs to.
+  // To do so, read events until a normal physics event is encountered and then read the trigger bank (tag=46) which contains a
+  // header bank 57615 that contains the run number.
+  int run_number;
+  {
+    bool found = false;
+    while( !found &&   etool->Next()== S_SUCCESS){
+      if( (etool->this_tag & 128) == 128){
+        found = true;
+        run_number = etool->trighead->GetRunNumber();
+        break;
+      }
+    }
+    if( found == false) std::cout << "WARNING -- Not able to find a bank with a runnumber! \n";
+    etool->Close();
+  }
+
+  if(run_number < 8000){ // This is 2015 or 2016 data.
+    etool->SVT->Set2016Data();
+  }else{
+    etool->SVT->Set2019Data();
+  }
+  
+  
   TFile root_file("EvioTool_out.root","RECREATE");
   TH1D *event_hist = new TH1D("event_hist","Events Histogram",1000,0,100000000);
   int ecal_nx=23;

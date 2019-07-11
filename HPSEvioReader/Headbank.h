@@ -1,9 +1,11 @@
 //
-//  TIData.hpp
+//  Headbank.h
 //  HPSEvioReader
 //
 //  Created by Maurik Holtrop on 6/18/19.
 //  Copyright © 2019 UNH. All rights reserved.
+//
+// For HPS data the Headbank is a Leaf from the tag=46 bank.
 //
 // Headbank   tag = 0xe10f (57615)   unsigned int
 //  0(31:0)  "version number"
@@ -14,8 +16,13 @@
 //  5(31:0)  "roc pattern"
 //  6(31:0)  "event classification (17,18,20 etc)"
 //  7(31:0)  "trigger bits"
-
-
+//
+//  The above list is according to clonbanks.xml.
+//  The actual HPS data varies:
+//  For 2015/2016 - Only the first 5 words are written to data.
+//  For 2019      - Only the first 6 words are written to data.
+//  IF and only if, event_type = 1, the the time is written, otherwise it is 0.
+//
 #ifndef Headbank_h
 #define Headbank_h
 

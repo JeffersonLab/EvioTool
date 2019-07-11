@@ -5,6 +5,6 @@
 //  Created by Maurik Holtrop on 1/2/19.
 //
 
-#include "SVTbank.h"
+#include "SVTBank.h"
 
-ClassImp(SVTbank);
+ClassImp(SVTBank);

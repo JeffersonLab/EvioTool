@@ -23,8 +23,8 @@
 #include "EcalBank.h"
 #include "Header.h"
 #include "Headbank.h"
-#include "SVTbank.h"
-#include "TIBank.h"
+#include "SVTBank.h"
+#include "TSBank.h"
 #include "VTPBank.h"
 #include "TriggerConfig.h"
 #include "EcalHit.h"
@@ -39,12 +39,12 @@ public:
   Header   *head;
   Bank     *trig;
   Headbank *trighead;
-  TIBank   *tidata;
+  TSBank   *tsdata;
   Bank     *ECALdata;
   Leaf<FADCdata> *FADC;
   EcalBank *ECAL;
   Bank     *SVTdata;
-  SVTbank  *SVT;
+  SVTBank  *SVT;
   Bank     *TrigTop;
   Bank     *TrigBot;
   VTPBank  *VtpTop;
@@ -53,7 +53,7 @@ public:
   TriggerConfig *TrigConf;
   
 public:
-  HPSEvioReader(string infile="",string trigfile="");
+  HPSEvioReader(string infile="",string trigfile="",int dataset=2019);
   virtual ~HPSEvioReader(){};
   
   virtual int Next(void);
