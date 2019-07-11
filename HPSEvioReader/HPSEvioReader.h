@@ -43,7 +43,6 @@ public:
   Bank     *ECALdata;
   Leaf<FADCdata> *FADC;
   EcalBank *ECAL;
-  Bank     *SVTdata;
   SVTBank  *SVT;
   Bank     *TrigTop;
   Bank     *TrigBot;
