@@ -12,13 +12,13 @@
 
 #pragma link C++ class HPSEvioReader;
 
-#pragma link C++ class SVTbank+;
+#pragma link C++ class SVTBank+;
 #pragma link C++ struct SVT_chan_t;
 #pragma link C++ struct SVT_header_t;
 
 #pragma link C++ class Header+;
 #pragma link C++ class Headbank+;
-#pragma link C++ class TIBank+;
+#pragma link C++ class TSBank+;
 #pragma link C++ class VTPBank+;
 #pragma link C++ class TriggerConfig+;
 

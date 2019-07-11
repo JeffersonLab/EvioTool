@@ -113,8 +113,8 @@ set(SOURCE_FILES_HPSEVIOREADER
   HPSEvioReader/Headbank.h
   HPSEvioReader/SVTbank.cc
   HPSEvioReader/SVTbank.h
-  HPSEvioReader/TIBank.cpp
-  HPSEvioReader/TIBank.h
+  HPSEvioReader/TSBank.cpp
+  HPSEvioReader/TSBank.h
   HPSEvioReader/TriggerConfig.cpp
   HPSEvioReader/TriggerConfig.h
   HPSEvioReader/VTPBank.cpp

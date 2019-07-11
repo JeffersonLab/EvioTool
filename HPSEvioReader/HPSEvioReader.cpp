@@ -32,7 +32,7 @@
 //
 #include "HPSEvioReader.h"
 
-HPSEvioReader::HPSEvioReader(string infile,string trigfile): EvioTool(infile){
+HPSEvioReader::HPSEvioReader(string infile,string trigfile,int dataset): EvioTool(infile){
  
   if(trigfile.size()>1){
     TrigConf = new TriggerConfig(trigfile); // Just load from the file, do not also look for the bank in the data.
@@ -47,17 +47,23 @@ HPSEvioReader::HPSEvioReader(string infile,string trigfile): EvioTool(infile){
   head = new Header(this);
   trig = AddBank("Trig",46,0,"Trigger bank");
   trighead = new Headbank(trig);
-  tidata   = new TIBank(trig);
+  tsdata   = new TSBank(trig);
   ECALdata = AddBank("ECAL",{37,39},0,"Ecal banks");
   FADC     = ECALdata->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
   ECAL     = new EcalBank(FADC,TrigConf);
-  SVTdata  = AddBank("SVT",{2,3,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
- // SVT      = new SVTbank(this,"SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");  //  2015/2016 data
-  SVT      = new SVTbank(this,"SVT",{ 2, 3},0,"SVT banks");                                           //  2019 data.
-  TrigTop  = AddBank("TrigTop",11,0,"Trigger Bank top");
-  VtpTop   = new VTPBank(TrigTop);
-  TrigBot  = AddBank("TrigTop",12,0,"Trigger Bank bottom");
-  VtpBot   = new VTPBank(TrigBot);
+  if(dataset == 2019 || dataset ==2){
+    SVT      = new SVTBank(this,"SVT",{2,3},0,"SVT banks");                                           //  2019 data.
+    SVT->Set2019Data();
+    TrigTop  = AddBank("TrigTop",11,0,"Trigger Bank top");
+    VtpTop   = new VTPBank(TrigTop);
+    TrigBot  = AddBank("TrigTop",12,0,"Trigger Bank bottom");
+    VtpBot   = new VTPBank(TrigBot);
+  }else if(dataset == 2015 | dataset == 2016 | dataset == 1){
+    SVT      = new SVTBank(this,"SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");  // 2015 or 2016 data set.
+    SVT->Set2016Data();
+  }else{
+    std::cerr << "Please specify a correct data set for SVT Parsing. \n";
+  }
 
 };
 

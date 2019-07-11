@@ -46,8 +46,8 @@
 		406C45E122C66C13006161EB /* EcalCluster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406C45DF22C66C13006161EB /* EcalCluster.cpp */; };
 		406C45E222C66C13006161EB /* EcalCluster.h in Headers */ = {isa = PBXBuildFile; fileRef = 406C45E022C66C13006161EB /* EcalCluster.h */; };
 		4070470A21DEA83100053DEE /* HPSEvioReader_LinkDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070470721DEA83100053DEE /* HPSEvioReader_LinkDef.h */; };
-		4070470B21DEA83100053DEE /* SVTbank.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4070470821DEA83100053DEE /* SVTbank.cc */; };
-		4070470C21DEA83100053DEE /* SVTbank.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070470921DEA83100053DEE /* SVTbank.h */; };
+		4070470B21DEA83100053DEE /* SVTBank.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4070470821DEA83100053DEE /* SVTBank.cc */; };
+		4070470C21DEA83100053DEE /* SVTBank.h in Headers */ = {isa = PBXBuildFile; fileRef = 4070470921DEA83100053DEE /* SVTBank.h */; };
 		4070470E21DEA89A00053DEE /* HPSEvioReader_Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4070470D21DEA89A00053DEE /* HPSEvioReader_Test.cpp */; };
 		4070471C21DEA98300053DEE /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
 		407048B321E0526C00053DEE /* EvioTool_LinkDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 407048B221E0526C00053DEE /* EvioTool_LinkDef.h */; };
@@ -57,8 +57,8 @@
 		40BE13BB22B7E97E00AE16C6 /* libevio-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4070473621DEC6F400053DEE /* libevio-5.1.dylib */; };
 		40BE13BE22B9B1EB00AE16C6 /* Headbank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40BE13BC22B9B1EB00AE16C6 /* Headbank.cpp */; };
 		40BE13BF22B9B1EB00AE16C6 /* Headbank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BE13BD22B9B1EB00AE16C6 /* Headbank.h */; };
-		40BE13C222B9B4F200AE16C6 /* TIBank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BE13C022B9B4F200AE16C6 /* TIBank.h */; };
-		40BE13C322B9B4F200AE16C6 /* TIBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40BE13C122B9B4F200AE16C6 /* TIBank.cpp */; };
+		40BE13C222B9B4F200AE16C6 /* TSBank.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BE13C022B9B4F200AE16C6 /* TSBank.h */; };
+		40BE13C322B9B4F200AE16C6 /* TSBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40BE13C122B9B4F200AE16C6 /* TSBank.cpp */; };
 		40C50A1C22D53F15002D8AE1 /* HPS_Trigger_Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40C50A1B22D53F15002D8AE1 /* HPS_Trigger_Test.cpp */; };
 		40C50A1D22D53FBA002D8AE1 /* libHPSEvioReader.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */; };
 		40C50A1E22D53FC5002D8AE1 /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
@@ -434,8 +434,8 @@
 		406C45DF22C66C13006161EB /* EcalCluster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EcalCluster.cpp; sourceTree = "<group>"; };
 		406C45E022C66C13006161EB /* EcalCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EcalCluster.h; sourceTree = "<group>"; };
 		4070470721DEA83100053DEE /* HPSEvioReader_LinkDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPSEvioReader_LinkDef.h; sourceTree = "<group>"; };
-		4070470821DEA83100053DEE /* SVTbank.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SVTbank.cc; sourceTree = "<group>"; };
-		4070470921DEA83100053DEE /* SVTbank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVTbank.h; sourceTree = "<group>"; };
+		4070470821DEA83100053DEE /* SVTBank.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SVTBank.cc; sourceTree = "<group>"; };
+		4070470921DEA83100053DEE /* SVTBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVTBank.h; sourceTree = "<group>"; };
 		4070470D21DEA89A00053DEE /* HPSEvioReader_Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HPSEvioReader_Test.cpp; sourceTree = "<group>"; };
 		4070472C21DEC6F300053DEE /* evio-5.1.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "evio-5.1.xcodeproj"; path = "evio-5.1/evio-5.1.xcodeproj"; sourceTree = "<group>"; };
 		407047A721DEDFF000053DEE /* evio-4.4.6.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "evio-4.4.6.xcodeproj"; path = "evio-4.4.6/evio-4.4.6.xcodeproj"; sourceTree = "<group>"; };
@@ -444,8 +444,8 @@
 		40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libHPSEvioReader.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40BE13BC22B9B1EB00AE16C6 /* Headbank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Headbank.cpp; sourceTree = "<group>"; };
 		40BE13BD22B9B1EB00AE16C6 /* Headbank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Headbank.h; sourceTree = "<group>"; };
-		40BE13C022B9B4F200AE16C6 /* TIBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TIBank.h; sourceTree = "<group>"; };
-		40BE13C122B9B4F200AE16C6 /* TIBank.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TIBank.cpp; sourceTree = "<group>"; };
+		40BE13C022B9B4F200AE16C6 /* TSBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBank.h; sourceTree = "<group>"; };
+		40BE13C122B9B4F200AE16C6 /* TSBank.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TSBank.cpp; sourceTree = "<group>"; };
 		40C50A0A22D53E6B002D8AE1 /* HPS_Trigger_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HPS_Trigger_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C50A1B22D53F15002D8AE1 /* HPS_Trigger_Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HPS_Trigger_Test.cpp; sourceTree = "<group>"; };
 		40C50A1F22D55959002D8AE1 /* TriggerHistograms.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerHistograms.cpp; sourceTree = "<group>"; };
@@ -629,10 +629,10 @@
 				400E859021F10998002CA87E /* Header.cpp */,
 				40BE13BD22B9B1EB00AE16C6 /* Headbank.h */,
 				40BE13BC22B9B1EB00AE16C6 /* Headbank.cpp */,
-				4070470921DEA83100053DEE /* SVTbank.h */,
-				4070470821DEA83100053DEE /* SVTbank.cc */,
-				40BE13C022B9B4F200AE16C6 /* TIBank.h */,
-				40BE13C122B9B4F200AE16C6 /* TIBank.cpp */,
+				4070470921DEA83100053DEE /* SVTBank.h */,
+				4070470821DEA83100053DEE /* SVTBank.cc */,
+				40BE13C022B9B4F200AE16C6 /* TSBank.h */,
+				40BE13C122B9B4F200AE16C6 /* TSBank.cpp */,
 				406693CF22C11AF90056E759 /* TriggerConfig.h */,
 				406693CE22C11AF90056E759 /* TriggerConfig.cpp */,
 				403E59F322BA7AC70026D8C3 /* VTPBank.h */,
@@ -749,14 +749,14 @@
 			files = (
 				40BE13BF22B9B1EB00AE16C6 /* Headbank.h in Headers */,
 				406C45E222C66C13006161EB /* EcalCluster.h in Headers */,
-				4070470C21DEA83100053DEE /* SVTbank.h in Headers */,
+				4070470C21DEA83100053DEE /* SVTBank.h in Headers */,
 				406693D122C11AF90056E759 /* TriggerConfig.h in Headers */,
 				406C45DE22C5420D006161EB /* Cluster.h in Headers */,
 				40F78AF722C2C6DE00EF7328 /* EcalBank.h in Headers */,
 				400E859321F10998002CA87E /* Header.h in Headers */,
 				40DB0B6822D50A4F004226E1 /* EcalHit.h in Headers */,
 				403E59F522BA7AC70026D8C3 /* VTPBank.h in Headers */,
-				40BE13C222B9B4F200AE16C6 /* TIBank.h in Headers */,
+				40BE13C222B9B4F200AE16C6 /* TSBank.h in Headers */,
 				406C45DA22C5409B006161EB /* EcalGTPCluster.h in Headers */,
 				4070470A21DEA83100053DEE /* HPSEvioReader_LinkDef.h in Headers */,
 			);
@@ -1314,8 +1314,8 @@
 				400E859521F10A93002CA87E /* HPSEvioReader.h in Sources */,
 				400E859221F10998002CA87E /* Header.cpp in Sources */,
 				406C45DD22C5420D006161EB /* Cluster.cpp in Sources */,
-				4070470B21DEA83100053DEE /* SVTbank.cc in Sources */,
-				40BE13C322B9B4F200AE16C6 /* TIBank.cpp in Sources */,
+				4070470B21DEA83100053DEE /* SVTBank.cc in Sources */,
+				40BE13C322B9B4F200AE16C6 /* TSBank.cpp in Sources */,
 				406693D022C11AF90056E759 /* TriggerConfig.cpp in Sources */,
 				40BE13BE22B9B1EB00AE16C6 /* Headbank.cpp in Sources */,
 				40F78AF622C2C6DE00EF7328 /* EcalBank.cpp in Sources */,

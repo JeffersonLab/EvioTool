@@ -1,10 +1,10 @@
 //
-//  SVTbank.h
+//  SVTBank.h
 //  HPSEvioReader
 //
 //  Created by Maurik Holtrop on 1/2/19.
 //
-// The SVTbank is a specialized bank for interpreting the SVT data. The SVT data can be read "raw" as
+// The SVTBank is a specialized bank for interpreting the SVT data. The SVT data can be read "raw" as
 // unsigned int. This class helps to automatically translate that content to meaningful SVT hits.
 //
 // The bank structure for the SVT is:
@@ -58,7 +58,7 @@ struct SVT_chan_t{
   SVT_header_t head;
 };
 
-class SVTbank: public Bank {
+class SVTBank: public Bank {
 
 public:
   vector<SVT_chan_t>    svt_data;  // Pointers to decoded data.
@@ -66,24 +66,29 @@ public:
   bool                  fStoreRaw{false}; //! Determines whether the unparsed ints are stored or not.
   
 public:
-  SVTbank(){
-//    SetName("SVTbank");
-//    SetTitle("Bank specifically for reading SVT data");
-//    tags={51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66}; // 2015/16 data
-//    tags={ 2, 3};                                           // 2019 data
-//    num = 0;
-//    Init();
-  };
+  SVTBank(){};
 
   // Initialize the SVT bank with a pointer to the EvioTool.
-  SVTbank(EvioTool *p, string n,std::initializer_list<unsigned short> tags,unsigned char num,string desc): Bank(n,tags,num,desc){
+  SVTBank(EvioTool *p, string n,std::initializer_list<unsigned short> tags,unsigned char num,string desc): Bank(n,tags,num,desc){
     p->banks->Add(this);
     Init();
   };
 
   void Init(void) override {
     // Initialize the bank substructure.
-    SVTleaf = AddLeaf<unsigned int>("SVTLeaf",3,0,"SVT unsigned int data");
+    SVTleaf = AddLeaf<unsigned int>("SVTLeaf",57648,0,"SVT unsigned int data");  // Tag = 57648 for 2019, or tag = 3 for 2015/16.
+  }
+  
+  void Set2019Data(){
+    // Change the SVT reader to work with 2019 data.
+    tags={ 2, 3};                                           // 2019 data
+    SVTleaf->tag = 57648;
+  }
+  
+  void Set2016Data(){
+    // Change the SVT reader to work with 2016 or 2015 data.
+    tags={51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66}; // 2015/16 data
+    SVTleaf->tag = 3;
   }
   
   void Clear(Option_t* = "") override {
@@ -118,8 +123,8 @@ public:
   
   #pragma clang diagnostic push
   #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-  ClassDef(SVTbank,1);
+  ClassDef(SVTBank,1);
   #pragma clang diagnostic pop
 };
 
-#endif /* __SVTbank__ */
+#endif /* __SVTBank__ */
