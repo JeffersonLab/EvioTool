@@ -10,9 +10,9 @@
 //
 // Example:
 // EvioTool *et= new EvioTool(infile);
-// auto ECALdata = et->AddBank("ECAL",{37,39},0,"Ecal banks");
-// auto FADC     = ECALbank->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
-// auto ECAL  = new EcalBank(FADC);
+// auto ECALCrate = et->AddBank("ECAL",{37,39},0,"Ecal banks");
+// auto FADC      = ECALCrate->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
+// auto ECAL      = new EcalBank(FADC);
 //
 #ifndef EcalBank_h
 #define EcalBank_h

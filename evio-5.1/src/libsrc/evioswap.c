@@ -340,7 +340,7 @@ static void swap_data(uint32_t *data, int type, uint32_t length, int tolocal, ui
     return;
 }
 
-/* Do we need this for backwards compatibility??? *?
+/* Do we need this for backwards compatibility??? *? */
 /**
  * This routine swaps the bytes of a 32 bit integer and
  * returns the swapped value. Rewritten to be a wrapper

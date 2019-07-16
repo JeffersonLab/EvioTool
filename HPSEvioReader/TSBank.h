@@ -104,23 +104,71 @@ public:
     if(data.size()==7 && i<7) return( data[i]);
     else return(0);
   }
+  
+  bool IsPulser(void){
+    // Return true if the current event is a pulser event.
+    // There are 2 ways that a pulser event can be created: Front Panel and VTP.
+    // If Front Panel, then bit-15 is set on data[5].
+    // If VTP        , then bit-15 is set on data[4].
+    if( (data[4] & (1<<15)) || (data[5] & (1<<15))) return(true);
+    return(false);
+  }
 
-  TriggerBits GetTriggerBits(){
+  unsigned int GetTriggerInt(bool prescaled=true){
+    // Return the integer that contains the standard trigger bits.
+    // For 2019 data, that is data[4] ("word 5") which has the post-prescale trigger bits.
+    // If prescaled==false then data[6] is returned, which are the pre-prescale trigger bits.
+    // This is useful for the pulser trigger.
+    // The high 16 bits (bits 31:16 ) contain the front board trigger. 0x8000 is the pulser.
+    // The low  16 bits (bits 15:0  ) contain the first 16 trigger bits, not prescaled.
+    //
+    // For 2015/16 data, that is data[0], which contains the trigger bits in the bits 29:24.
+    
     if(data.size()==7 ){
-      TriggerBits *bits = reinterpret_cast<TriggerBits *>(&data[4]);
+      if(prescaled) return(data[4]);
+      else          return(data[6]);
+    }else if(data.size() == 5){
+      return(data[0]);
+    }
+    return(0);
+  }
+  
+  
+  TriggerBits GetTriggerBits(bool prescaled=true){
+    if(data.size()==7 ){
+      TriggerBits *bits;
+      if(prescaled) bits = reinterpret_cast<TriggerBits *>(&data[4]);
+      else          bits = reinterpret_cast<TriggerBits *>(&data[6]);
       return(*bits);
     }else if(data.size() == 5){
       TriggerBits bits;
-      
+      bits.Single_0_Bot = (data[0] & (1<<24));
+      bits.Single_0_Top = bits.Single_0_Bot;
+      bits.Single_1_Bot = (data[0] & (1<<25));
+      bits.Single_1_Top = bits.Single_1_Bot;
+      bits.Pair_0       = (data[0] & (1<<26));
+      bits.Pair_1       = (data[0] & (1<<27));
+      bits.Cosmic       = (data[0] & (1<<28));
+      bits.Pulser       = (data[0] & (1<<29));
       return(bits);
     }else{
       TriggerBits tmp;
       return(tmp);
       std::cerr << "GetTriggerBits:: Cannot get you those bits.\n";
-      
     }
   }
   
+  unsigned long GetTime(){
+    // Return the Trigger time in units of ns as an integer.
+    unsigned long time = static_cast<unsigned long>(data[2]) + ( (static_cast<unsigned long>(data[3]&0xFFFF)<<32));
+    return(time*4);
+  }
+  
+  unsigned long GetTriggerNumber(){
+    // Return the trigger number ~= event number
+    unsigned long trignum = static_cast<unsigned long>(data[1]) + ( (static_cast<unsigned long>(data[3]&0xFFFF0000)<<16));
+    return(trignum);
+  }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(TSBank,1);

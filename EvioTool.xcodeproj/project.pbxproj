@@ -30,6 +30,7 @@
 		4011BB0C21D6D21900256470 /* FADCdata.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4011BB0B21D6D21900256470 /* FADCdata.cc */; };
 		4011BB1E21D7C45300256470 /* EvioTool_Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4011BB1D21D7C45300256470 /* EvioTool_Test.cpp */; };
 		4011BB2421D7D70E00256470 /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
+		4019AE0222D91B4A0065009D /* TriggerChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4019AE0022D91B4A0065009D /* TriggerChecker.cpp */; };
 		4024EB9C21F3F1CB00FE10F0 /* libEvioTool.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E49CFE19034D3E00390847 /* libEvioTool.dylib */; };
 		4024EB9D21F3F1CB00FE10F0 /* libHPSEvioReader.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A1036821D29A9A0022AD2E /* libHPSEvioReader.dylib */; };
 		4024EBA421F3F24200FE10F0 /* HPSEvioReader_MT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4024EB8621F3F1C100FE10F0 /* HPSEvioReader_MT.cpp */; };
@@ -420,11 +421,14 @@
 		4011BB0B21D6D21900256470 /* FADCdata.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FADCdata.cc; sourceTree = "<group>"; };
 		4011BB1B21D7C45300256470 /* EvioTool_Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = EvioTool_Test; sourceTree = BUILT_PRODUCTS_DIR; };
 		4011BB1D21D7C45300256470 /* EvioTool_Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EvioTool_Test.cpp; sourceTree = "<group>"; };
+		4019AE0022D91B4A0065009D /* TriggerChecker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerChecker.cpp; sourceTree = "<group>"; };
+		4019AE0122D91B4A0065009D /* TriggerChecker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TriggerChecker.h; sourceTree = "<group>"; };
 		4024EB8621F3F1C100FE10F0 /* HPSEvioReader_MT.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HPSEvioReader_MT.cpp; sourceTree = "<group>"; };
 		4024EBA321F3F1CB00FE10F0 /* HPSEvioReader_MT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HPSEvioReader_MT; sourceTree = BUILT_PRODUCTS_DIR; };
 		403E59E122BA6CA70026D8C3 /* HPSEvioReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HPSEvioReader.cpp; sourceTree = "<group>"; };
 		403E59F222BA7AC70026D8C3 /* VTPBank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VTPBank.cpp; sourceTree = "<group>"; };
 		403E59F322BA7AC70026D8C3 /* VTPBank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTPBank.h; sourceTree = "<group>"; };
+		4040A37822DD1CD700F664B0 /* Arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arguments.h; sourceTree = "<group>"; };
 		406693CE22C11AF90056E759 /* TriggerConfig.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerConfig.cpp; sourceTree = "<group>"; };
 		406693CF22C11AF90056E759 /* TriggerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TriggerConfig.h; sourceTree = "<group>"; };
 		406C45D722C5409B006161EB /* EcalGTPCluster.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EcalGTPCluster.cpp; sourceTree = "<group>"; };
@@ -644,10 +648,12 @@
 		40C50A1A22D53ECB002D8AE1 /* HPS_Trigger_Test */ = {
 			isa = PBXGroup;
 			children = (
-				40C50A1B22D53F15002D8AE1 /* HPS_Trigger_Test.cpp */,
-				40C50A1F22D55959002D8AE1 /* TriggerHistograms.cpp */,
-				40C50A2022D55959002D8AE1 /* TriggerHistograms.h */,
 				40C50A2222D55FDB002D8AE1 /* Arguments.h */,
+				40C50A1B22D53F15002D8AE1 /* HPS_Trigger_Test.cpp */,
+				40C50A2022D55959002D8AE1 /* TriggerHistograms.h */,
+				40C50A1F22D55959002D8AE1 /* TriggerHistograms.cpp */,
+				4019AE0122D91B4A0065009D /* TriggerChecker.h */,
+				4019AE0022D91B4A0065009D /* TriggerChecker.cpp */,
 			);
 			path = HPS_Trigger_Test;
 			sourceTree = "<group>";
@@ -724,6 +730,7 @@
 		40E74624191B0BFC008E4235 /* HPSEvioReader_Test */ = {
 			isa = PBXGroup;
 			children = (
+				4040A37822DD1CD700F664B0 /* Arguments.h */,
 				40DAD1B2225FE90B0003C58C /* EvioReaderApp.cpp */,
 				4070470D21DEA89A00053DEE /* HPSEvioReader_Test.cpp */,
 				4024EB8621F3F1C100FE10F0 /* HPSEvioReader_MT.cpp */,
@@ -1331,6 +1338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4019AE0222D91B4A0065009D /* TriggerChecker.cpp in Sources */,
 				40C50A1C22D53F15002D8AE1 /* HPS_Trigger_Test.cpp in Sources */,
 				40C50A2122D55959002D8AE1 /* TriggerHistograms.cpp in Sources */,
 			);

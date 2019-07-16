@@ -15,7 +15,7 @@
 using namespace std;
 
 #include "HPSEvioReader.h"
-#include "SVTbank.h"
+#include "SVTBank.h"
 #include "Header.h"
 #include "Headbank.h"
 
@@ -49,7 +49,7 @@ int main(int argc, const char * argv[])
     etool->fDebug = 0xFF;
   }
   
-  TFile root_file("EvioTool_out.root","RECREATE");
+  TFile root_file(args.output_name.c_str(),"RECREATE");
   
   TriggerHistograms hists(etool);
   
@@ -78,7 +78,7 @@ int main(int argc, const char * argv[])
         double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
         totalCount += evt_count;
         double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-        printf("%s: %6.1f kHz,  %6.1f kHz Avg. Event: %9d\n", argv[0], rate/1000., avgRate/1000.,etool->head->GetEventNumber());
+        printf("%s: %6.1f kHz,  %6.1f kHz Avg. Event: %9d\n", argv[0], rate/1000., avgRate/1000.,etool->Head->GetEventNumber());
         evt_count = 0;
         time1 = std::chrono::system_clock::now();
       }
@@ -94,7 +94,7 @@ int main(int argc, const char * argv[])
   totalTime += delta_t;
   totalCount += evt_count;
   double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-  printf("Last event: %6d\n",etool->head->GetEventNumber());
+  printf("Last event: %6d\n",etool->Head->GetEventNumber());
   printf("Total events: %6ld \n",totalCount);
   printf("Final: %3.4g kHz \n", avgRate/1000.);
   root_file.Write();

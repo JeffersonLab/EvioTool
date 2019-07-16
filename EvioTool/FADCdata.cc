@@ -185,7 +185,7 @@ const vector<FADC_Hit_t> &FADCdata::ComputeMode7fast(vector<FADC_Hit_t> &in, flo
     }
     float time_thr = cross*4.;
     float time_fine=time_thr;
-    float pedsum2 =(stop-start)*pedestal;
+//    float pedsum2 =(stop-start)*pedestal;
     float integral = adc - (stop-start)*pedestal;
     float half_max = (max + pedestal)/2.;
     for(int i=start;i<stop;++i){

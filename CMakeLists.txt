@@ -145,7 +145,7 @@ add_executable(HPSEvioReader_Test HPSEvioReader_Test/HPSEvioReader_Test.cpp)
 add_dependencies(HPSEvioReader_Test HPSEvioReader EvioTool)
 target_link_libraries(HPSEvioReader_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
 
-add_executable(HPS_Trigger_Test HPS_Trigger_Test/HPS_Trigger_Test.cpp HPS_Trigger_Test/TriggerHistograms.cpp )
+add_executable(HPS_Trigger_Test HPS_Trigger_Test/HPS_Trigger_Test.cpp HPS_Trigger_Test/TriggerHistograms.cpp  HPS_Trigger_Test/TriggerChecker.cpp )
 add_dependencies(HPS_Trigger_Test HPSEvioReader EvioTool)
 target_link_libraries(HPS_Trigger_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
 

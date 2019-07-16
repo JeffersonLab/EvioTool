@@ -11,7 +11,6 @@
 
 struct Arguments_t {
   vector<string> filenames;
-  string output_name="trigger_test.root";
   string trigger_config_file;
   string et_name;
   string et_host_name;
@@ -24,13 +23,13 @@ struct Arguments_t {
   bool   show_svt=false;
   bool   show_ecal=false;
   bool   print_evt=false;
-  
+  bool   auto_add=false;
+
   void Print_Usage(string name=""){
     cout << name << " <options>  EVIO_file " << endl;
     cout << endl << " Options: \n";
     cout << "  -q                 Quiet \n";
     cout << "  -d  -debug         Debug \n";
-    cout << "  -o  -output  name  Output file.\n";
     cout << "  -et                Use ET ring \n";
     cout << "  -f  -et_name name  Attach ET to process with file <name>\n";
     cout << "  -H  -host    host  Attach ET to host\n";
@@ -39,6 +38,7 @@ struct Arguments_t {
     cout << "  -c  -cont          Show content of header and bank counts.\n";
     cout << "  -S  -SVT           Show content of SVT banks\n";
     cout << "  -E  -ECAL          Show contents of ECAL banks\n";
+    cout << "  -a  -auto          Auto add any unknown banks. Slows things down.\n";
     cout << "  -P  -print         Print entire event. \n";
   };
   void Parse_Args(int *argc, const char **argv){
@@ -56,13 +56,10 @@ struct Arguments_t {
           quiet=1;
         }else if(strcmp(argv[i],"-debug")==0 || strcmp(argv[i],"-d")==0){
           debug++;
-        }else if(strcmp(argv[i],"-o")==0 || strcmp(argv[i],"-output")==0){
-          I_PLUS_PLUS;
-          output_name=argv[i];
-          //        G_N_Events = ii;
-          REMOVE_ONE;
         }else if(strcmp(argv[i],"-print")==0 || strcmp(argv[i],"-P")==0){
           print_evt=true;
+        }else if(strcmp(argv[i],"-auto")==0 || strcmp(argv[i],"-a")==0){
+          auto_add=true;
         }else if(strcmp(argv[i],"-SVT")==0 || strcmp(argv[i],"-S")==0){
           show_svt=true;
         }else if(strcmp(argv[i],"-ECAL")==0 || strcmp(argv[i],"-E")==0){

@@ -47,6 +47,7 @@ int main (int argc, char **argv)
   unsigned int max_event=25000;
   unsigned int file_num=0;
   unsigned int max_file=1000000;
+  unsigned int skip_num=0;
 
   uint32_t bufsize;
   const uint32_t *buf;
@@ -63,13 +64,14 @@ int main (int argc, char **argv)
       {"outfile",  required_argument, 0, 'o'},
       {"maxevt",   required_argument, 0, 'm'},
       {"maxfile",  required_argument, 0, 'M'},
+      {"skipevt",  required_argument, 0, 's'},
       {"help",    no_argument,       0, 'h'},
       {0, 0, 0, 0}
     };
     /* getopt_long stores the option index here. */
     int option_index = 0;
     
-    c = getopt_long (argc, argv, "o:m:M:h",
+    c = getopt_long (argc, argv, "o:m:M:s:h",
                      long_options, &option_index);
     
     /* Detect the end of the options. */
@@ -102,7 +104,11 @@ int main (int argc, char **argv)
       case 'M':
         max_file = stoi(optarg);
         break;
-        
+
+      case 's':
+        skip_num = stoi(optarg);
+        break;
+
         
       default:
         cout << "eviosplit <options> file1 file2 ... filen \n\n";
@@ -112,6 +118,7 @@ int main (int argc, char **argv)
         cout << "  --outfile name (-o)  : Specify the output file name base. [eviosplit] \n";
         cout << "  --maxevt  num  (-m)  : Maximum number of events in output file. \n";
         cout << "  --maxfile num  (-M)  : Maximum number of files that will be created.\n";
+        cout << "  --skipevt num  (-s)  : Number of events to skip before starting output. \n";
         cout << "  --debug              : Set debug flag to 2\n";
         cout << "  --quiet              : Be really quiet about all this, set debug flag to 0.\n";
         exit (0);
@@ -141,8 +148,8 @@ int main (int argc, char **argv)
       int nevent=0;
       while ((status=evReadNoCopy(input_handle,&buf,&bufsize))==0) {
         nevent++;
-        event_total++;
-        nwrite++;
+        if(nevent < skip_num) continue; // Skip and read next.
+
         if(nwrite>max_event){
           evClose(output_handle);
           file_num++;
@@ -155,11 +162,14 @@ int main (int argc, char **argv)
           if(debug_flag) cout << "Opened " << outfile <<"_"<<file_num<<".evio \n";
           nwrite=0;
         }
+        event_total++;
+        nwrite++;
         status=evWrite(output_handle,buf);
         if(status!=0) {
           cout << "evWrite error output file "<<outfile << " status= " << status;
           exit(EXIT_FAILURE);
         }
+        
         event_total++;
       }
       

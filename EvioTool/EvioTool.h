@@ -32,9 +32,12 @@ using namespace std;
 #endif
 
 #include <iostream>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion" // Not my errors, these are ROOT, so don't warn me.
 #include "TROOT.h"
 #include "TObject.h"
 #include "TNamed.h"
+#pragma clang diagnostic pop
 
 #include "Leaf.h"
 #include "FADCdata.h"

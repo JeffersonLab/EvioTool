@@ -5962,7 +5962,7 @@ int evBufToStrings(char *buffer, int bufLen, char ***pStrArray, int *strCount) {
 
             /* String starts where we started looking from, strStart, and ends at this NULL */
             addStringToArray(&strArray, strStart, &totalCount, &stringCount);
-/*printf("  add %s\n", strStart);*?
+/*printf("  add %s\n", strStart);*? */
 
             /* Start looking for next string right after this NULL */
             strStart = pChar;

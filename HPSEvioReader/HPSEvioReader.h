@@ -36,18 +36,18 @@
 class HPSEvioReader: public EvioTool{
   
 public:
-  Header   *head;
-  Bank     *trig;
-  Headbank *trighead;
-  TSBank   *tsdata;
-  Bank     *ECALdata;
-  Leaf<FADCdata> *FADC;
-  EcalBank *ECAL;
-  SVTBank  *SVT;
-  Bank     *TrigTop;
-  Bank     *TrigBot;
-  VTPBank  *VtpTop;
-  VTPBank  *VtpBot;
+  Header   *Head = nullptr;
+  Bank     *TrigCrate = nullptr;
+  Headbank *TrigHead  = nullptr;
+  TSBank   *Trigger   = nullptr;
+  Bank     *ECALCrate = nullptr;
+  Leaf<FADCdata> *FADC= nullptr;
+  EcalBank *ECAL      = nullptr;
+  SVTBank  *SVT       = nullptr;
+  Bank     *TrigTop   = nullptr;
+  Bank     *TrigBot   = nullptr;
+  VTPBank  *VtpTop    = nullptr;
+  VTPBank  *VtpBot    = nullptr;
   
   TriggerConfig *TrigConf;
   
@@ -56,6 +56,9 @@ public:
   virtual ~HPSEvioReader(){};
   
   virtual int Next(void);
+  
+  void Set2019Data();  // Setup for 2019 data.
+  void Set2016Data();  // Setup for 2015/16 data.
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
