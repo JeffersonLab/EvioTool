@@ -35,6 +35,7 @@ int main(int argc, const char * argv[])
   
   HPSEvioReader *etool=new HPSEvioReader(args.filenames[0].c_str());
 //  etool->SVT->fStoreRaw=true;
+  etool->SVT->fSaveHeaders = true;  // Slows things down, but read the SVT headers into storage as well.
   
   if(args.trigger_config_file.size()>2){
     etool->TrigConf->Parse_trigger_file(args.trigger_config_file); // If requested, parse the Trigger config file supplied.
@@ -62,12 +63,14 @@ int main(int argc, const char * argv[])
   // To do so, read events until a normal physics event is encountered and then read the trigger bank (tag=46) which contains a
   // header bank 57615 that contains the run number.
   int run_number;
+  unsigned long trigtime_start=0;
   {
     bool found = false;
     while( !found &&   etool->Next()== S_SUCCESS){
       if( (etool->this_tag & 128) == 128){
         found = true;
-        run_number = etool->TrigHead->GetRunNumber();
+        run_number = etool->GetRunNumber();
+        trigtime_start = etool->GetTrigTime();
         break;
       }
     }
@@ -75,15 +78,19 @@ int main(int argc, const char * argv[])
     etool->Close();
   }
 
-  if(run_number < 8000){ // This is 2015 or 2016 data.
-    etool->SVT->Set2016Data();
+  if(etool->SVT){
+    if(run_number < 8000){ // This is 2015 or 2016 data.
+      etool->Set2016Data();
+    }else{
+      etool->Set2019Data();
+    }
   }else{
-    etool->SVT->Set2019Data();
+    cout << "NO SVT initialized \n";
   }
   
-  
-  TFile root_file("EvioTool_out.root","RECREATE");
-  TH1D *event_hist = new TH1D("event_hist","Events Histogram",1000,0,100000000);
+  TFile root_file(args.output_name.c_str(),"RECREATE");
+  TH1I *event_hist = new TH1I("event_hist","Events Histogram",1000,0,100000000);
+  TH1D *trigtime_hist = new TH1D("trigtime_hist","Trigger time relative to event 1",10000,0,3.E12); // 3*10^12 ns = 3000 s = 50min.
   int ecal_nx=23;
   int ecal_ny=5;
   
@@ -97,30 +104,53 @@ int main(int argc, const char * argv[])
   
   TH1F *svt_eventsize = new TH1F("svt_eventsize","SVT Number of Hits",5000,-0.5,4999.5);
   TH1F *svt_big_event_dist = new TH1F("svt_big_event_dist","Big SVT Event Distribution;evt num",87501,-0.5,350000.5);
+  TH1F *svt_big_since_dist0 = new TH1F("svt_big_since_dist0","Big SVT Event Distribution since Single_2_Top;evt num",1001,-0.5,1000.5);
+  TH1F *svt_big_since_dist1 = new TH1F("svt_big_since_dist1","Big SVT Event Distribution since Single_2_Bot;evt num",1001,-0.5,1000.5);
+  TH1F *svt_big_since_dist2 = new TH1F("svt_big_since_dist2","Big SVT Event Distribution since Pulser;evt num",1001,-0.5,1000.5);
+  TH1F *evt_since_last_pulser = new TH1F("evt_since_last_pulser","Num events since last pulser;evt num",1001,-0.5,1000.5);
+  TH1F *evt_since_last_monster = new TH1F("evt_since_last_monster","Num events since last monster;evt num",100,0,10000-100);
+  TH1D *monster_time = new TH1D("monster_time","Monster trig time relative to event 1;time (ns)",10000,0,3.E12); // 3*10^12 ns = 3000 s = 50min.
+  TH1D *monster_dt   = new TH1D("monster_dt","Time since last monster;time (ns)",1000,0,1.E9);
+  TH1D *monster_dt2   = new TH1D("monster_dt2","Time since last event for monsters;time (ns)",1000,0,1.E5);
+  TH1D *event_dt   = new TH1D("event_dt","Time since last event;time (ns)",1000,0,1.E5);
+  TH1D *monster_dt3   = new TH1D("monster_dt3","Time to next event for monsters;time (ns)",1000,0,1.E5);
+  TH1I *last_event_type = new TH1I("last_event_type","Last event type before monster",33,-0.5,32.5);
+  
   etool->fAutoAdd = args.auto_add;
   
   cout << "Debug set to " << etool->fDebug << " Auto add = " << etool->fAutoAdd << endl;
   
   etool->PrintBank(5);
 
-  long evt_count=0;
-  long totalCount=0;
+  unsigned long evt_count=0;
+  unsigned long totalCount=0;
+  
   std::chrono::microseconds totalTime(0);
 
   auto start = std::chrono::system_clock::now();
   auto time1 = start;
   
   long big_svt_event=0;
+  int  big_svt_since[3]={0,0,0};
+  int n_events_since_last_pulser=0;
+  int n_events_since_last_monster=0;
+  long time_of_last_monster = etool->GetTrigTime();
+  long time_of_last_event=0;
+  bool last_event_was_monster=false;
+  unsigned int last_event_trigger_bits;
   
   for(auto file: args.filenames){
     etool->Open(file.c_str());
     while(etool->Next() == S_SUCCESS){
+      if( (etool->this_tag & 128) != 128) continue;
       if(args.debug) cout<<"EVIO Event " << evt_count << endl;
 //      etool->VtpTop->ParseBank();
 //      etool->VtpBot->ParseBank();
       evt_count++;
 //      cout << "Event:  " << etool->head->GetEventNumber() << "  seq: " << evt_count << endl;
       event_hist->Fill((double)etool->Head->GetEventNumber());
+      trigtime_hist->Fill((double)(etool->GetTrigTime()-trigtime_start));
+      
       if(args.print_evt) {
         etool->PrintBank(10);
   //      if(args.show_head) {};
@@ -160,11 +190,62 @@ int main(int argc, const char * argv[])
         ecal_cluster_e->Fill(cluster.energy);
       }
       
-      if(etool->SVT ) svt_eventsize->Fill(etool->SVT->size());
-      if(etool->SVT->size()>1500){
-        svt_big_event_dist->Fill(etool->Head->GetEventNumber());
-        big_svt_event++;
+      TSBank::TriggerBits bits=etool->Trigger->GetTriggerBits();
+      if(etool->SVT ){
+        svt_eventsize->Fill(etool->SVT->size());
+
+        if(last_event_was_monster){
+          monster_dt3->Fill((double)(etool->GetTrigTime()-time_of_last_monster));
+          for(int i=0;i<32;++i){
+            if(last_event_trigger_bits & (1<<i)) last_event_type->Fill(i);
+          }
+          last_event_was_monster=false;
+        }
+
+        if(etool->SVT->size()>1500){             // Monster SVT Events.
+          svt_big_event_dist->Fill(etool->Head->GetEventNumber());
+          evt_since_last_monster->Fill(n_events_since_last_monster);
+          n_events_since_last_monster=0;
+          big_svt_event++;
+          svt_big_since_dist0->Fill(big_svt_since[0]);
+          svt_big_since_dist1->Fill(big_svt_since[1]);
+          svt_big_since_dist2->Fill(big_svt_since[2]);
+          for(int i=0;i<3;++i)  big_svt_since[i]=0;
+          
+          monster_time->Fill((double)(etool->GetTrigTime()-trigtime_start));
+          monster_dt->Fill((double)(etool->GetTrigTime()-time_of_last_monster));
+          monster_dt2->Fill((double)(etool->GetTrigTime()-time_of_last_event));
+          time_of_last_monster = etool->GetTrigTime();
+          last_event_was_monster=true;
+        }
+        
+        if(bits.Single_2_Top) big_svt_since[0] = 0;
+        if(bits.Single_2_Bot) big_svt_since[1] = 0;
+        if(bits.Pulser){
+          evt_since_last_pulser->Fill(n_events_since_last_pulser);
+          big_svt_since[2] = 0;
+          n_events_since_last_pulser = 0;
+        }
+        for(int i=0;i<3;++i)  big_svt_since[i]++;
+        n_events_since_last_pulser++;
+        n_events_since_last_monster++;
       }
+      
+ //     printf("Event : %9d  Time: %16ld ----------------------------------- \n",etool->GetEventNumber(),etool->GetTrigTime()-trigtime_start);
+      if(etool->SVT->fSaveHeaders){
+        for(int i=0;i<etool->SVT->svt_tails.size(); ++i){
+          if(etool->SVT->svt_tails[i].apv_sync_error ) cout << "APV Sync ERROR \n";
+          if(etool->SVT->svt_tails[i].fifo_backup_error ) cout << "FIFO Backup ERROR \n";
+          if(etool->SVT->svt_tails[i].skip_count >0 ) cout << "Skip count is set. \n";
+          //          printf("Tail: %2d - Multi: %6d  Skip: %3d \n",i,etool->SVT->svt_tails[i].num_multisamples,etool->SVT->svt_tails[i].skip_count);
+        }
+        for(int i=0;i<etool->SVT->svt_headers.size();++i){
+          cout << "Header " << i << " time: " << etool->SVT->svt_headers[i].GetTimeStamp() << " trig: "<< etool->GetTrigTime()<< "  DT: " << ((long)etool->GetTrigTime() - (long)etool->SVT->svt_headers[i].GetTimeStamp() - (long)trigtime_start) << endl;
+        }
+      }
+      event_dt->Fill((double)(etool->GetTrigTime()-time_of_last_event));
+      time_of_last_event= etool->GetTrigTime();
+      last_event_trigger_bits = etool->Trigger->GetTriggerInt();
     }
     totalCount += evt_count;
     cout << " ------------- \n";

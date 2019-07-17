@@ -12,6 +12,7 @@
 struct Arguments_t {
   vector<string> filenames;
   string trigger_config_file;
+  string output_name="hpsreader_test.root";
   string et_name;
   string et_host_name;
   int    et_port=0;
@@ -30,6 +31,7 @@ struct Arguments_t {
     cout << endl << " Options: \n";
     cout << "  -q                 Quiet \n";
     cout << "  -d  -debug         Debug \n";
+    cout << "  -o  -output  name  Output file.\n";
     cout << "  -et                Use ET ring \n";
     cout << "  -f  -et_name name  Attach ET to process with file <name>\n";
     cout << "  -H  -host    host  Attach ET to host\n";
@@ -56,6 +58,11 @@ struct Arguments_t {
           quiet=1;
         }else if(strcmp(argv[i],"-debug")==0 || strcmp(argv[i],"-d")==0){
           debug++;
+        }else if(strcmp(argv[i],"-o")==0 || strcmp(argv[i],"-output")==0){
+          I_PLUS_PLUS;
+          output_name=argv[i];
+          //        G_N_Events = ii;
+          REMOVE_ONE;
         }else if(strcmp(argv[i],"-print")==0 || strcmp(argv[i],"-P")==0){
           print_evt=true;
         }else if(strcmp(argv[i],"-auto")==0 || strcmp(argv[i],"-a")==0){

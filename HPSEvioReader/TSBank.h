@@ -160,8 +160,12 @@ public:
   
   unsigned long GetTime(){
     // Return the Trigger time in units of ns as an integer.
-    unsigned long time = static_cast<unsigned long>(data[2]) + ( (static_cast<unsigned long>(data[3]&0xFFFF)<<32));
-    return(time*4);
+    if(data.size()>4){
+      unsigned long time = static_cast<unsigned long>(data[2]) + ( (static_cast<unsigned long>(data[3]&0xFFFF)<<32));
+      return(time*4);
+    } else{
+      return(0);
+    }
   }
   
   unsigned long GetTriggerNumber(){

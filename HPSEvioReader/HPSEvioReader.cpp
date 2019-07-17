@@ -65,14 +65,11 @@ void HPSEvioReader::Set2019Data(){
 // Setup for the 2019 data set.
 
 // First clean up.
-  if(SVT)     delete SVT;
-  if(TrigTop) delete TrigTop;
-  if(VtpTop)  delete VtpTop;
-  if(TrigBot) delete TrigBot;
-  if(VtpBot)  delete VtpBot;
+  if(SVT)     RemoveBank(SVT);
+  if(TrigTop) RemoveBank(TrigTop);
+  if(TrigBot) RemoveBank(TrigBot);
   
   SVT      = new SVTBank(this,"SVT",{2,3},0,"SVT banks");                                           //  2019 data.
-  SVT->Set2019Data();
   TrigTop  = AddBank("TrigTop",11,0,"Trigger Bank top");
   VtpTop   = new VTPBank(TrigTop);
   TrigBot  = AddBank("TrigTop",12,0,"Trigger Bank bottom");
@@ -81,9 +78,12 @@ void HPSEvioReader::Set2019Data(){
 
 void HPSEvioReader::Set2016Data(){
   // Setup for the 2015 or 2016 data sets.
-  if(SVT) delete SVT;
-  SVT      = new SVTBank(this,"SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");  // 2015 or 2016 data set.
-  SVT->Set2016Data();
+  if(SVT)     RemoveBank(SVT);
+  if(TrigTop) RemoveBank(TrigTop);
+  if(TrigBot) RemoveBank(TrigBot);
+  
+  SVT      = new SVTBank2016(this,"SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");  // 2015 or 2016 data set.
+  isEngineeringRun = true;
 }
 
 int HPSEvioReader::Next(void){

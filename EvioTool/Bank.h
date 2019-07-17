@@ -76,6 +76,7 @@ public:
   Bank(){
     Init();
   };
+  
   virtual ~Bank(){
     delete leafs;
     delete banks;
@@ -161,13 +162,27 @@ public:
     return;
   }
   
-  // Create a new leaf and store it.
   template<typename T> Leaf<T> *AddLeaf(string name,unsigned short itag,unsigned char inum, string desc){
+    // Create a new leaf and store it.
     int location= leafs->GetEntriesFast();
     name=StoreLocation(name,location);
     Leaf<T> *new_leaf =new Leaf<T>(name,itag,inum,desc);
     leafs->Add(new_leaf);
     return(new_leaf);
+  }
+  
+  template<typename T> void RemoveLeaf(string name){
+    // Remove the leaf with name from the leaf list.
+    //
+    int leaf_loc = FindLeaf(name);
+    if( leaf_loc<0){
+      cout << "Bank::RemoveLead - Trying to remove a leaf I do not own: " << name << endl;
+      return;
+    }
+    Leaf<T> *this_leaf = leafs->At(leaf_loc);
+    delete this_leaf;
+    leafs->RemoveAt(leaf_loc);      // Remove from the leafs.
+    name_index.erase(name);         // Remove from the index
   }
   
   virtual Bank *AddBank(string name,unsigned short itag,unsigned char inum, string desc){
@@ -190,6 +205,26 @@ public:
     return(newbank);
   }
   
+  void RemoveBank(string name){
+    // Remove the bank with name and delete.
+    TObject *o = banks->FindObject(name.c_str());
+    if( o == nullptr){
+      cout << "Bank::RemoveBank - Trying to remove a bank I do not own: " << name << endl;
+      return;
+    }
+    RemoveBank(o);
+  }
+  
+  void RemoveBank(TObject *o){
+    // Remove object o from banklist and delete.
+    TObject *r = banks->Remove(o);
+    if( r == nullptr){
+      cout << "Bank::RemoveBank - Trying to remove a bank by pointer, but I do not own it. \n";
+      return;
+    }
+    delete r;
+    banks->Compress();
+  }
   
   virtual void  Clear(Option_t* = "");
   

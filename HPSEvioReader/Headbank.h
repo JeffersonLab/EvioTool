@@ -44,11 +44,11 @@ public:
   unsigned int GetVersionNumber(){ return(GetData(0));};
   unsigned int GetRunNumber()    { return(GetData(1));};
   unsigned int GetEventNumber()  { return(GetData(2));};
-  unsigned int GetTime()         { return(GetData(3));};
-  unsigned int GetType()         { return(GetData(4));};
-  unsigned int GetRocPattern()   { return(GetData(5));};
-  unsigned int GetEvtClass()     { return(GetData(6));};
-  unsigned int GetTriggerBits()  { return(GetData(7));};
+  unsigned int GetTime()         { return(GetData(3));};  // This is 0 in 2019 data.
+  unsigned int GetType()         { return(GetData(4));};  // This is 0 in 2019 data.
+  unsigned int GetRocPattern()   { return(GetData(5));};  // This is 0 in 2019 data.
+  unsigned int GetEvtClass()     { return(GetData(6));};  // This is 0 in 2019 data.
+  unsigned int GetTriggerBits()  { return(GetData(7));};  // This is 0 in 2019 data.
 
   
 #pragma clang diagnostic push
