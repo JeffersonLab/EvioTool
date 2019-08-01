@@ -124,7 +124,7 @@ void Bank::PrintBank(int print_leaves, int depth, int level){
   if(level<=depth){
     for(int j=0;j< banks->GetEntriesFast(); ++j){
       Bank *b=(Bank *)banks->At(j);
-      b->PrintBank(print_leaves,depth,level);
+      if(b) b->PrintBank(print_leaves,depth,level);
     }
 
   }

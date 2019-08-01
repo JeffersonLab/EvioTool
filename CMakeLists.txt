@@ -111,8 +111,10 @@ set(SOURCE_FILES_HPSEVIOREADER
   HPSEvioReader/Header.h
   HPSEvioReader/Headbank.cpp
   HPSEvioReader/Headbank.h
-  HPSEvioReader/SVTbank.cc
-  HPSEvioReader/SVTbank.h
+  HPSEvioReader/SVTBank.cc
+  HPSEvioReader/SVTBank.h
+  HPSEvioReader/SVTBank2016.cc
+  HPSEvioReader/SVTBank2016.h
   HPSEvioReader/TSBank.cpp
   HPSEvioReader/TSBank.h
   HPSEvioReader/TriggerConfig.cpp
@@ -120,10 +122,6 @@ set(SOURCE_FILES_HPSEVIOREADER
   HPSEvioReader/VTPBank.cpp
   HPSEvioReader/VTPBank.h
   )
-
-#set(DICTS_HPSEVIOREADER
-#  SVTbank_Dict.cxx
-#  )
 
 
 ROOT_GENERATE_DICTIONARY(EvioTool_Dict      EvioTool/EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
@@ -149,6 +147,9 @@ add_executable(HPS_Trigger_Test HPS_Trigger_Test/HPS_Trigger_Test.cpp HPS_Trigge
 add_dependencies(HPS_Trigger_Test HPSEvioReader EvioTool)
 target_link_libraries(HPS_Trigger_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
 
+add_executable(HPS_Trigger_Filter HPS_Trigger_Filter/HPS_Trigger_Filter.cpp )
+add_dependencies(HPS_Trigger_Filter HPSEvioReader EvioTool)
+target_link_libraries(HPS_Trigger_Filter HPSEvioReader EvioTool ${EVIO_LIBRARY})
 
 
 install(TARGETS EvioTool              DESTINATION lib)
@@ -159,3 +160,4 @@ install(TARGETS HPSEvioReader       DESTINATION lib)
 install(FILES ${PROJECT_BINARY_DIR}/libHPSEvioReader_rdict.pcm  DESTINATION lib)
 install(TARGETS HPSEvioReader_Test  DESTINATION bin)
 install(TARGETS HPS_Trigger_Test  DESTINATION bin)
+install(TARGETS HPS_Trigger_Filter  DESTINATION bin)

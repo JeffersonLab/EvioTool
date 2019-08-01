@@ -13,6 +13,7 @@
 #pragma link C++ class HPSEvioReader;
 
 #pragma link C++ class SVTBank+;
+#pragma link C++ class SVTBank2016+;
 #pragma link C++ struct SVT_chan_t;
 #pragma link C++ struct SVT_header_t;
 

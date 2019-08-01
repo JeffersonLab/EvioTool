@@ -86,6 +86,9 @@ public:
   virtual ~EvioTool(){};
   int  Open(const char *filename,const char *dictf=NULL);
   void Close();
+  const uint32_t *GetBufPtr(void){  // Useful if you want to write the evio buffer.
+    return(evio_buf);
+  }
   void parseDictionary(const char *dictf);
   virtual int NextNoParse(void);
   virtual int Next(void);

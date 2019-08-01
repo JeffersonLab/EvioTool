@@ -24,6 +24,7 @@
 #include "Header.h"
 #include "Headbank.h"
 #include "SVTBank.h"
+#include "SVTBank2016.h"
 #include "TSBank.h"
 #include "VTPBank.h"
 #include "TriggerConfig.h"
@@ -51,6 +52,8 @@ public:
   
   TriggerConfig *TrigConf;
   
+  bool isEngineeringRun=false;
+  
 public:
   HPSEvioReader(string infile="",string trigfile="",int dataset=2019);
   virtual ~HPSEvioReader(){};
@@ -59,6 +62,14 @@ public:
   
   void Set2019Data();  // Setup for 2019 data.
   void Set2016Data();  // Setup for 2015/16 data.
+  
+// Conveniences ----
+  unsigned int GetRunNumber(){ return(TrigHead->GetRunNumber());}
+  unsigned int GetEventNumber(){ return(TrigHead->GetEventNumber());}
+  unsigned long GetTrigTime(){
+    if(isEngineeringRun) return(TrigHead->GetTime());
+    else                 return(Trigger->GetTime());
+  }
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"

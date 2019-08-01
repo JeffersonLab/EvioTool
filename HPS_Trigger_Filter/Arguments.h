@@ -9,10 +9,15 @@
 #ifndef Arguments_h
 #define Arguments_h
 
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
 struct Arguments_t {
   vector<string> filenames;
-  string trigger_config_file;
-  string output_name="hpsreader_test.root";
+  string trigger_name="FEE";
+  string output_name="";
   string et_name;
   string et_host_name;
   int    et_port=0;
@@ -27,21 +32,16 @@ struct Arguments_t {
   bool   auto_add=false;
 
   void Print_Usage(string name=""){
-    cout << name << " <options>  EVIO_file " << endl;
-    cout << endl << " Options: \n";
+    cout << name << " <options>  EVIO_file \n";
+    cout << "\n Options: \n";
     cout << "  -q                 Quiet \n";
     cout << "  -d  -debug         Debug \n";
-    cout << "  -o  -output  name  Output file.\n";
+    cout << "  -o  -output  name  Output file. (default: first evio + _FEE.evio)\n";
+    cout << "  -T  -trigger name    Filter on trigger name (default: FEE) \n";
     cout << "  -et                Use ET ring \n";
     cout << "  -f  -et_name name  Attach ET to process with file <name>\n";
     cout << "  -H  -host    host  Attach ET to host\n";
     cout << "  -p  -et_port port  Attach ET to port \n";
-    cout << "  -T  -trigger file  Use file for trigger config file instead of waiting for a '17' event.";
-    cout << "  -c  -cont          Show content of header and bank counts.\n";
-    cout << "  -S  -SVT           Show content of SVT banks\n";
-    cout << "  -E  -ECAL          Show contents of ECAL banks\n";
-    cout << "  -a  -auto          Auto add any unknown banks. Slows things down.\n";
-    cout << "  -P  -print         Print entire event. \n";
   };
   void Parse_Args(int *argc, const char **argv){
     
@@ -63,16 +63,11 @@ struct Arguments_t {
           output_name=argv[i];
           //        G_N_Events = ii;
           REMOVE_ONE;
-        }else if(strcmp(argv[i],"-print")==0 || strcmp(argv[i],"-P")==0){
-          print_evt=true;
-        }else if(strcmp(argv[i],"-auto")==0 || strcmp(argv[i],"-a")==0){
-          auto_add=true;
-        }else if(strcmp(argv[i],"-SVT")==0 || strcmp(argv[i],"-S")==0){
-          show_svt=true;
-        }else if(strcmp(argv[i],"-ECAL")==0 || strcmp(argv[i],"-E")==0){
-          show_ecal=true;
-        }else if(strcmp(argv[i],"-cont")==0 || strcmp(argv[i],"-c")==0){
-          show_head=true;
+        }else if(strcmp(argv[i],"-T")==0 || strcmp(argv[i],"-trigger")==0){
+          I_PLUS_PLUS;
+          trigger_name = argv[i];
+          //        G_N_Events = ii;
+          REMOVE_ONE;
         }else if(strcmp(argv[i],"-block")==0 || strcmp(argv[i],"-b")==0){
           et_block=true;
         }else if(strcmp(argv[i],"-et")==0 || strcmp(argv[i],"-etring")==0){
@@ -99,11 +94,6 @@ struct Arguments_t {
           sscanf(argv[i],"%d",&et_port);
           //        G_N_Events = ii;
           REMOVE_ONE;
-        }else if(strcmp(argv[i],"-T")==0 || strcmp(argv[i],"-trigger")==0){
-          I_PLUS_PLUS;
-          trigger_config_file = argv[i];
-          //        G_N_Events = ii;
-          REMOVE_ONE;
         }else if(strcmp(argv[i],"-help")==0||strcmp(argv[i],"-h")==0)
         {
           Print_Usage(argv[0]);
@@ -121,7 +111,7 @@ struct Arguments_t {
     }
     
     if( (*argc) < 2){
-      std::cout << "Please supply at least one EVIO file to parse.\n";
+      std::cout << "Please supply at least one EVIO file for input.\n";
       exit(1);
     }
     
@@ -132,7 +122,7 @@ struct Arguments_t {
     if(debug){
       cout << "Debug set to: " << debug << endl;
       if(use_et){
-        cout << "Opening a channel to the ET system." << endl;
+        cout << "Opening a channel to the ET system. Won't work. Not yet implemente. Blame Maurik." << endl;
       }else{
         std::cout << "File to open: ";
         for(auto f : filenames){
