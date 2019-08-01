@@ -97,9 +97,10 @@ int HPSEvioReader::Next(void){
   if(ECAL && ECAL->is_configured){
     ECAL->Parse();
     ECAL->FindGTPClusters();
-  }else{
-    cout << "ECAL not yet configured. Provide a trigger file! \n";
   }
+//  else{
+//    cout << "ECAL not yet configured. Provide a trigger file! \n";
+//  }
   return(stat);
 }
 ClassImp(HPSEvioReader);

@@ -20,7 +20,10 @@ int main(int argc, const char * argv[]) {
   
   // To speed up processing, we unlink the SVT and ECAL decoders, since we don't need them here.
   etool->RemoveBank(etool->SVT);
+  etool->ECALCrate->RemoveBank(etool->ECAL);
   etool->RemoveBank(etool->ECALCrate);
+  delete etool->ECAL;
+  etool->ECAL=nullptr;
   
   if(args.use_et){
     cout << "Error ET system not yet implemented. Exit. \n";
@@ -63,9 +66,36 @@ int main(int argc, const char * argv[]) {
   auto time1 = start;
   
   TSBank::TriggerBits trigger_setting;
-  trigger_setting.bits.FEE_Bot=true;
-  trigger_setting.bits.FEE_Top=true;
-  unsigned int filt_int = trigger_setting.intval;
+  if( args.trigger_name == "FEE"){
+    trigger_setting.bits.FEE_Bot=true;
+    trigger_setting.bits.FEE_Top=true;
+  }else if( args.trigger_name == "FEE_Top"){
+    trigger_setting.bits.FEE_Top=true;
+  }else if( args.trigger_name == "FEE_Bot"){
+    trigger_setting.bits.FEE_Bot=true;
+  }else if( args.trigger_name == "muon"){
+    trigger_setting.bits.Pair_3=true;
+  }else if(args.trigger_name == "2gamma" || args.trigger_name == "Mult-0" || args.trigger_name == "Multiplicity-0" ){
+    trigger_setting.bits.Mult_0 = true;
+  }else if(args.trigger_name == "3gamma" || args.trigger_name == "Mult-1" || args.trigger_name == "Multiplicity-1" ){
+    trigger_setting.bits.Mult_1 = true;
+  }else{
+    try{
+      trigger_setting.intval = stoi(args.trigger_name);
+    }catch(std::invalid_argument &e){
+      cout << "Unknown trigger specifier to -T argument. Please specify one of: \n";
+      cout << " 'FEE'       - FEE either top or bottom \n";
+      cout << " 'FEE_Top'  - FEE top only. \n";
+      cout << " 'FEE_Bot'  - FEE bottom only\n";
+      cout << "  'muon'    - Pair3 mu+mu- trigger\n";
+      cout << " '2gamma'   - Multiplicity-0 or 2 photon trigger. \n";
+      cout << " '3gamma'   - Multiplicity-1 or 3 photon trigger. \n";
+      cout << " '######'   - Where ##### is an integer value whole bits represent to trigger you want.\n";
+      return(1);
+    }
+  }
+    
+    unsigned int filt_int = trigger_setting.intval;
   
   cout << "Filter integer is: " << filt_int << endl;
   
