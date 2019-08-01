@@ -49,45 +49,7 @@ public:
     SVTleaf->tag = 3;
   } // All the work is done in SVTBank
   
-  void  PushDataArray(const int idx, const unsigned int *dat,const int len) override{
-    // Add the vector to the back of the data of the leaf at index idx
-    
-    // First and last int in the block are an extra header and tail.
-    // These are added by Sergey, not sure what is in it.
-    //
-    // These could be used for verification purposes.
-    // int header = (*dat)[0];          // HEADER for block.
-    // int tail   = (*dat)[data_end];   // TAIL for the block.
-    //
-    
-    for(unsigned int i=1;i< len-1 ; i+=4){
-      SVT_event_builder_header_t *svt_head = (SVT_event_builder_header_t *)&dat[i]; // First one is always a header.
-      if(svt_head->header_mark != 0x0B) cout << "ERROR ON SVT HEADER MARK \n";
-      if(fSaveHeaders) svt_headers.emplace_back(*svt_head);
-      if(svt_head->total_evt_size<8) cout << "Bad SVT Data: Too small a frame. \n";
-      int frame_end = i + svt_head->total_evt_size/4 - 4;
-      for(i=i+4;i< frame_end; i+=4){
-        unsigned int check = dat[i+3];
-        SVT_chan_t *cn = (SVT_chan_t *)&dat[i]; // Direct data overlay, so there is no copy here. MUCH faster.
-        if(!cn->head.isTail & !cn->head.isHeader){
-          svt_data.emplace_back(*cn);               // The push_back copies the data onto SVT_data. This makes a copy.
-        }else{
-          if(cn->head.isTail) cout << "WE HAVE AN SVT PARSING ERROR - TAIL where expecting head. \n";
-        }
-      }
-      {
-        if( (dat[i+3]&0xFF000000) != 0xa8000000 ) cout << "SVT - we have a funny tail! \n";
-        if( (dat[i]&0x00FFFFFF) != (svt_head->total_evt_size/16 - 2) | dat[i+1] !=0 | dat[i+2] !=0 ) cout << "Extra data in tail: " << (dat[i]&0x00FFFFFF) << "," << dat[i+1] << "," << dat[i+2] << endl;
-      }
-      if( fSaveHeaders){  // Frame Tail
-        SVT_event_builder_tail_t *svt_tail = (SVT_event_builder_tail_t *)&dat[i];
-        svt_tails.emplace_back(*svt_tail);
-      }
-      if( fStoreRaw){
-        SVTleaf->PushDataArray(dat,len);         // This will call the Leaf to store the raw data as well.
-      }// Fill the svt_data vector with the data in the SVTleaf.
-    }
-  }
+  void PushDataArray(const int idx, const unsigned int *dat,const int len) override;
   
   size_t size(int type=0) override{
     return(svt_data.size());

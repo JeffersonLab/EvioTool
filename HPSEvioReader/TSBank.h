@@ -70,7 +70,18 @@ class TSBank: public Leaf<unsigned int>{
   
   
 public:
-  struct TriggerBits {
+  
+  // Note on using a bitwiae structure:
+  // You cannot safely cast between the bitwise structure and an unsigned int.
+  // So:
+  //   TriggerBits_t my_bits;
+  //   unsigned int *my_int = (unsigned_int *)my_bits;
+  //   my_bits.FEE_Top = true;
+  //   cout << my_int << endl;
+  // You number that is printed will be DIFFERENT depending on whether the code was optimized or not!!!
+  // The reason for this is memory alignmment, I think.
+  //
+  struct TriggerBits_t {
     bool Single_0_Top: 1; //  0   ( 150-8191) MeV (-31,31)   Low energy cluster
     bool Single_1_Top: 1; //  1   ( 300-3000) MeV (  5,31)   e+
     bool Single_2_Top: 1; //  2   ( 300-3000) MeV (  5,31)   e+ : Position dependent energy cut
@@ -91,8 +102,13 @@ public:
     bool Mult_1      : 1; // 17    Multiplicity-1 3 Cluster trigger
     bool FEE_Top     : 1; // 18    FEE Top       ( 2600-5200)
     bool FEE_Bot     : 1; // 19    FEE Bot       ( 2600-5200)
-    unsigned int NA  :12; // 20-31 Not used
+    unsigned int NA          :12; // 20-31 Not used
   };
+  
+  typedef union{
+    unsigned int intval;
+    TriggerBits_t  bits;
+  } TriggerBits;
   
 public:
   TSBank(){};
@@ -113,7 +129,14 @@ public:
     if( (data[4] & (1<<15)) || (data[5] & (1<<15))) return(true);
     return(false);
   }
-
+  
+  bool IsTrigger(TriggerBits test){
+    unsigned int trig = GetTriggerInt();
+//    std::cout << "trig: " << trig << " test: " << test.intval << " istrue: " << (trig & test.intval )  <<  endl;
+    return( trig & test.intval);
+  }
+  
+  
   unsigned int GetTriggerInt(bool prescaled=true){
     // Return the integer that contains the standard trigger bits.
     // For 2019 data, that is data[4] ("word 5") which has the post-prescale trigger bits.
@@ -141,16 +164,16 @@ public:
       else          bits = reinterpret_cast<TriggerBits *>(&data[6]);
       return(*bits);
     }else if(data.size() == 5){
-      TriggerBits bits;
-      bits.Single_0_Bot = (data[0] & (1<<24));
-      bits.Single_0_Top = bits.Single_0_Bot;
-      bits.Single_1_Bot = (data[0] & (1<<25));
-      bits.Single_1_Top = bits.Single_1_Bot;
-      bits.Pair_0       = (data[0] & (1<<26));
-      bits.Pair_1       = (data[0] & (1<<27));
-      bits.Cosmic       = (data[0] & (1<<28));
-      bits.Pulser       = (data[0] & (1<<29));
-      return(bits);
+      TriggerBits trigb;
+      trigb.bits.Single_0_Bot = (data[0] & (1<<24));
+      trigb.bits.Single_0_Top = trigb.bits.Single_0_Bot;
+      trigb.bits.Single_1_Bot = (data[0] & (1<<25));
+      trigb.bits.Single_1_Top = trigb.bits.Single_1_Bot;
+      trigb.bits.Pair_0       = (data[0] & (1<<26));
+      trigb.bits.Pair_1       = (data[0] & (1<<27));
+      trigb.bits.Cosmic       = (data[0] & (1<<28));
+      trigb.bits.Pulser       = (data[0] & (1<<29));
+      return(trigb);
     }else{
       TriggerBits tmp;
       return(tmp);

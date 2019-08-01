@@ -49,14 +49,14 @@
 
 struct SVT_event_builder_header_t {
   unsigned int event_count      : 28;   //31:00 = Event Counter (starting from 1)
-  unsigned int header_mark      : 4;    // = 0x0B
+  unsigned int header_mark      : 4;    // = 0x0B (2019)
   unsigned int timestamp_low24  : 24;     //23:00 = Timestamp bits 23:0 //A 48-bit running counter gets reset to 0 at the start of each run
   unsigned int junk1            : 8;                                    //This number will be the same across all DPMs for a given trigger event
   unsigned int timestamp_hi24   : 24;     //55:32 = Timestamp bits 47:24
   unsigned int junk2            : 8;
   unsigned int rce_addr         : 8;      //07:00 = RCE Address
   unsigned int total_evt_size   : 20;     //28:08 = 0x000000 - Event Builder software will overwrite this with the total event size in bytes
-  unsigned int header_mark2     :  4;     //31:29 - 0xa
+  unsigned int header_mark2     :  4;     //31:29 - 0xa (2019)
   unsigned long GetTimeStamp(void){
     unsigned long time = ((unsigned long)timestamp_low24) + (((unsigned long)timestamp_hi24)<<24);
     return(time);
