@@ -147,6 +147,9 @@ add_executable(HPS_Trigger_Test HPS_Trigger_Test/HPS_Trigger_Test.cpp HPS_Trigge
 add_dependencies(HPS_Trigger_Test HPSEvioReader EvioTool)
 target_link_libraries(HPS_Trigger_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
 
+add_executable(HPS_Trigger_Filter HPS_Trigger_Filter/HPS_Trigger_Filter.cpp )
+add_dependencies(HPS_Trigger_Filter HPSEvioReader EvioTool)
+target_link_libraries(HPS_Trigger_Filter HPSEvioReader EvioTool ${EVIO_LIBRARY})
 
 
 install(TARGETS EvioTool              DESTINATION lib)
@@ -157,3 +160,4 @@ install(TARGETS HPSEvioReader       DESTINATION lib)
 install(FILES ${PROJECT_BINARY_DIR}/libHPSEvioReader_rdict.pcm  DESTINATION lib)
 install(TARGETS HPSEvioReader_Test  DESTINATION bin)
 install(TARGETS HPS_Trigger_Test  DESTINATION bin)
+install(TARGETS HPS_Trigger_Filter  DESTINATION bin)

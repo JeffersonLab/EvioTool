@@ -190,7 +190,7 @@ int main(int argc, const char * argv[])
         ecal_cluster_e->Fill(cluster.energy);
       }
       
-      TSBank::TriggerBits bits=etool->Trigger->GetTriggerBits();
+      TSBank::TriggerBits tstrig = etool->Trigger->GetTriggerBits();
       if(etool->SVT ){
         svt_eventsize->Fill(etool->SVT->size());
 
@@ -219,9 +219,9 @@ int main(int argc, const char * argv[])
           last_event_was_monster=true;
         }
         
-        if(bits.Single_2_Top) big_svt_since[0] = 0;
-        if(bits.Single_2_Bot) big_svt_since[1] = 0;
-        if(bits.Pulser){
+        if(tstrig.bits.Single_2_Top) big_svt_since[0] = 0;
+        if(tstrig.bits.Single_2_Bot) big_svt_since[1] = 0;
+        if(tstrig.bits.Pulser){
           evt_since_last_pulser->Fill(n_events_since_last_pulser);
           big_svt_since[2] = 0;
           n_events_since_last_pulser = 0;
