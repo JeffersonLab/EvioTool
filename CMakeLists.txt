@@ -124,8 +124,11 @@ set(SOURCE_FILES_HPSEVIOREADER
   )
 
 
-ROOT_GENERATE_DICTIONARY(EvioTool_Dict      EvioTool/EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
-ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader/HPSEvioReader.h LINKDEF HPSEvioReader/HPSEvioReader_LinkDef.h MODULE HPSEvioReader)
+#ROOT_GENERATE_DICTIONARY(EvioTool_Dict      EvioTool/EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
+#ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader/HPSEvioReader.h LINKDEF HPSEvioReader/HPSEvioReader_LinkDef.h MODULE HPSEvioReader)
+
+ROOT_GENERATE_DICTIONARY(EvioTool_Dict  EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
+ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader.h  LINKDEF HPSEvioReader/HPSEvioReader_LinkDef.h MODULE HPSEvioReader)
 
 #---Create a shared library with geneated dictionary
 #add_library(EvioTool SHARED ${SOURCE_FILES_EVIOTOOL} ${DICTS_EVIOTOOL} )
