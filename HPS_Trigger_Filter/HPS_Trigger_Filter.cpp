@@ -9,7 +9,9 @@
 #include "Arguments.h"
 #include "HPSEvioReader.h"
 #include "TSBank.h"
-#include "evio.h"
+
+#include <cstring>
+#include <chrono>
 
 int main(int argc, const char * argv[]) {
 
