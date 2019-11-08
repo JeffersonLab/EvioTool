@@ -94,6 +94,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.h";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)Dict.cpp",
@@ -106,6 +108,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.h";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)Dict_rdict.pcm",
@@ -481,6 +485,12 @@
 		40DAD1D0225FE92A0003C58C /* HodoEvioReader */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HodoEvioReader; sourceTree = BUILT_PRODUCTS_DIR; };
 		40DB0B6522D50A4F004226E1 /* EcalHit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EcalHit.cpp; sourceTree = "<group>"; };
 		40DB0B6622D50A4F004226E1 /* EcalHit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcalHit.h; sourceTree = "<group>"; };
+		40E04E032375ECF900692B1B /* Time_it.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Time_it.C; sourceTree = "<group>"; };
+		40E04E042375ECF900692B1B /* FADC_scan.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FADC_scan.C; sourceTree = "<group>"; };
+		40E04E052375ECF900692B1B /* FADC_plot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FADC_plot.png; sourceTree = "<group>"; };
+		40E04E062375ECF900692B1B /* Time_it2.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Time_it2.C; sourceTree = "<group>"; };
+		40E04E072375ECF900692B1B /* FADC_plot.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FADC_plot.C; sourceTree = "<group>"; };
+		40E04E082375ECF900692B1B /* Vec_sizes.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Vec_sizes.C; sourceTree = "<group>"; };
 		40E49CFE19034D3E00390847 /* libEvioTool.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libEvioTool.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E6BFEA1917E1F400BF03CA /* et_evio_blaster */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = et_evio_blaster; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_blaster.cc; sourceTree = "<group>"; };
@@ -695,6 +705,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		40E04E022375ECF900692B1B /* macros */ = {
+			isa = PBXGroup;
+			children = (
+				40E04E032375ECF900692B1B /* Time_it.C */,
+				40E04E042375ECF900692B1B /* FADC_scan.C */,
+				40E04E052375ECF900692B1B /* FADC_plot.png */,
+				40E04E062375ECF900692B1B /* Time_it2.C */,
+				40E04E072375ECF900692B1B /* FADC_plot.C */,
+				40E04E082375ECF900692B1B /* Vec_sizes.C */,
+			);
+			path = macros;
+			sourceTree = "<group>";
+		};
 		40E49CF519034D3E00390847 = {
 			isa = PBXGroup;
 			children = (
@@ -712,6 +735,7 @@
 				40F6017922F316EA00125A23 /* HPS_Trigger_Filter */,
 				40E6BFEB1917E1F400BF03CA /* et_evio_blaster */,
 				40E74636191DA8F0008E4235 /* et_evio_test_consumer */,
+				40E04E022375ECF900692B1B /* macros */,
 				40E49CFF19034D3E00390847 /* Products */,
 				40D9689021C85DD10075DF34 /* Frameworks */,
 			);

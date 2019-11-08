@@ -31,7 +31,7 @@ void FADC_plot(){
     
     for(int ii=0;ii<FADC->Size(); ++ii){            // For each bit of FADC data found
       for(int j=0;j<FADC->At(ii).GetSampleSize();++j){    // Run through the size of the Leaf
-	fa->Fill(j,FADC->At(ii).GetSample(j));         // Fill histogram with each pulse sample.
+        fa->Fill(j,FADC->At(ii).GetSample(j));         // Fill histogram with each pulse sample.
       }
     }
   };   
