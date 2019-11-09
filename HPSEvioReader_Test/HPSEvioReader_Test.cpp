@@ -33,7 +33,9 @@ int main(int argc, const char * argv[])
   Arguments_t args;
   args.Parse_Args(&argc,argv);
   
-  HPSEvioReader *etool=new HPSEvioReader(args.filenames[0].c_str());
+  //HPSEvioReader *etool=new HPSEvioReader(args.filenames[0].c_str());
+  HPSEvioReader *etool=new HPSEvioReader();
+  etool->Open(args.filenames[0].c_str());
 //  etool->SVT->fStoreRaw=true;
   etool->SVT->fSaveHeaders = true;  // Slows things down, but read the SVT headers into storage as well.
   

@@ -130,12 +130,83 @@ public:
     return(false);
   }
   
+  bool IsSingle0(void){
+    // Return true if it is a Single0-Top or Bottom.
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Single_0_Top || tbits.bits.Single_0_Bot );
+  }
+
+  bool IsSingle1(void){
+    // Return true if it is a Single1-Top or Bottom.
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Single_1_Top || tbits.bits.Single_1_Bot );
+  }
+
+  bool IsSingle2(void){
+    // Return true if it is a Single2-Top or Bottom.
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Single_2_Top || tbits.bits.Single_2_Bot );
+  }
+
+  bool IsSingle3(void){
+    // Return true if it is a Single3-Top or Bottom.
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Single_3_Top || tbits.bits.Single_3_Bot );
+  }
+
+  bool IsPair0(void){
+    // Return true if it is a Pair0
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Pair_0 );
+  }
+
+  bool IsPair1(void){
+    // Return true if it is a Pair1
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Pair_1 );
+  }
+
+  bool IsPair2(void){
+    // Return true if it is a Pair2
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Pair_2 );
+  }
+  
+  bool IsPair3(void){
+    // Return true if it is a Pair1
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Pair_3 );
+  }
+
+  bool IsHodoscope(void){
+    // Return true if it is a Hodoscope trigger
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Hodoscope );
+  }
+
+  bool IsMult0(void){
+    // Return true if it is a Multi 0 trigger
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Mult_0 );
+  }
+
+ bool IsMult1(void){
+   // Return true if it is a Multi 1 trigger
+   TriggerBits tbits = GetTriggerBits();
+   return( tbits.bits.Mult_1);
+ }
+
+  bool IsFEE(void){
+    // Return true if it is an FEE Top or Bottom trigger
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.FEE_Bot || tbits.bits.FEE_Top );
+  }
+
   bool IsTrigger(TriggerBits test){
     unsigned int trig = GetTriggerInt();
 //    std::cout << "trig: " << trig << " test: " << test.intval << " istrue: " << (trig & test.intval )  <<  endl;
     return( trig & test.intval);
   }
-  
   
   unsigned int GetTriggerInt(bool prescaled=true){
     // Return the integer that contains the standard trigger bits.
@@ -155,7 +226,6 @@ public:
     }
     return(0);
   }
-  
   
   TriggerBits GetTriggerBits(bool prescaled=true){
     if(data.size()==7 ){

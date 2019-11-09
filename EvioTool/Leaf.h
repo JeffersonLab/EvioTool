@@ -101,8 +101,13 @@ public:
     return(data.at(indx));
   }
 
+  size_t Size(void){
+    // Get the size in the data vector. (ROOT has capital first idiom)
+    return(data.size());
+  }
+  
   size_t size(void){
-    // Get the size in the data vector.
+    // Get the size in the data vector. (std:: style size)
     return(data.size());
   }
   

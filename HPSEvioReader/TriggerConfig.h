@@ -80,7 +80,7 @@ public:
   void InitDAQMaps(void);
   
   void CallBack(void){
-    cout << "Trigger Config CallBank \n";
+    // cout << "Trigger Config CallBank \n";
     Parse_evio_bank();
   }
   

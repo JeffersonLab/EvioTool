@@ -92,7 +92,7 @@ int HPSEvioReader::Next(void){
   int stat=EvioTool::Next();
   if(this_tag == 17 && ECAL){
     ECAL->Config();
-    cout << "ECAL Configured.\n";
+    // cout << "ECAL Configured.\n";
   }
   if(ECAL && ECAL->is_configured){
     ECAL->Parse();

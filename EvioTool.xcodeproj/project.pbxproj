@@ -491,6 +491,7 @@
 		40E04E062375ECF900692B1B /* Time_it2.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Time_it2.C; sourceTree = "<group>"; };
 		40E04E072375ECF900692B1B /* FADC_plot.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FADC_plot.C; sourceTree = "<group>"; };
 		40E04E082375ECF900692B1B /* Vec_sizes.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Vec_sizes.C; sourceTree = "<group>"; };
+		40E2731123764FB000691534 /* Trigger_Scan.C */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Trigger_Scan.C; sourceTree = "<group>"; };
 		40E49CFE19034D3E00390847 /* libEvioTool.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libEvioTool.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E6BFEA1917E1F400BF03CA /* et_evio_blaster */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = et_evio_blaster; sourceTree = BUILT_PRODUCTS_DIR; };
 		40E6BFEC1917E1F400BF03CA /* et_evio_blaster.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = et_evio_blaster.cc; sourceTree = "<group>"; };
@@ -714,6 +715,7 @@
 				40E04E062375ECF900692B1B /* Time_it2.C */,
 				40E04E072375ECF900692B1B /* FADC_plot.C */,
 				40E04E082375ECF900692B1B /* Vec_sizes.C */,
+				40E2731123764FB000691534 /* Trigger_Scan.C */,
 			);
 			path = macros;
 			sourceTree = "<group>";

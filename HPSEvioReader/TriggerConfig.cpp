@@ -19,7 +19,8 @@ void TriggerConfig::Parse_trigger_file(string filename){
   ifstream infile(filename); // Open file as a stream.
   string line;
   while(std::getline(infile,line)){
-    line.erase(line.begin(),std::find_if(line.begin(), line.end(), std::bind1st(std::not_equal_to<char>(), ' '))); // Erase any leading spaces.
+    size_t p = line.find_first_not_of(" \t");
+    line.erase(0, p);
     if(line.size()<1 || line[0]=='#') continue;  // Comments are either blank or start with a #
     raw_data.push_back(line);
   }
@@ -32,7 +33,8 @@ void TriggerConfig::Parse_evio_bank(void){
   //
   raw_data.clear();
   for(string line: data){
-    line.erase(line.begin(),std::find_if(line.begin(), line.end(), std::bind1st(std::not_equal_to<char>(), ' '))); // Erase any leading spaces.
+    size_t p = line.find_first_not_of(" \t");
+    line.erase(0,p);
     if(line.size()<1 || line[0]=='#') continue;  // Comments are either blank or start with a #
     raw_data.push_back(line);
   }
@@ -54,8 +56,10 @@ void TriggerConfig::Parse_raw_data(void){
     size_t pos = line.find_first_of(" \t");
     string tok=line.substr(0,pos);
     string dat=line.substr(pos+1,line.size());
-    dat.erase(dat.begin(),std::find_if(dat.begin(), dat.end(), std::bind1st(std::not_equal_to<char>(), ' ')));
-    dat.erase(std::find_if(dat.rbegin(), dat.rend(), std::bind1st(std::not_equal_to<char>(), ' ')).base(), dat.end());
+    size_t p = dat.find_first_not_of(" \t");
+    dat.erase(0,p);
+    p = dat.find_last_not_of(" \t");
+    dat.erase(p+1);
 
     if( tok == "VTP_CRATE" ){
       if( dat == "all") vtp_parse_area=true;

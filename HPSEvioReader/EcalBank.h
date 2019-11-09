@@ -52,9 +52,14 @@ public:
   EcalBank(Leaf<FADCdata> *FADC,TriggerConfig *conf):FADC_leaf(FADC),DAQconfig(conf){}; //Cannot call Config at creation, because TriggerConfig is not yet read.
   
   void Config(void){
-    cluster_seed_thresh=(int)DAQconfig->vtp_other["ECAL_CLUSTER_SEED_THR"][0];
-    cluster_hit_dt=(int)DAQconfig->vtp_other["ECAL_CLUSTER_HIT_DT"][0];
-    is_configured = true;
+    if(DAQconfig){
+      cluster_seed_thresh=(int)DAQconfig->vtp_other["ECAL_CLUSTER_SEED_THR"][0];
+      cluster_hit_dt=(int)DAQconfig->vtp_other["ECAL_CLUSTER_HIT_DT"][0];
+      is_configured = true;
+    }else{
+      cout << "Could not configure ECAL, no DAQconfig \n";
+      is_configured = false;
+    }
   }
   void Parse(void);
   void FindGTPClusters(void);
