@@ -65,6 +65,7 @@
 
 #include "EvioTool.h"
 #include "Leaf.h"
+#include <bitset>
 
 class TSBank: public Leaf<unsigned int>{
   
