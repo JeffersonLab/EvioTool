@@ -23,6 +23,8 @@ struct Arguments_t {
   string et_host_name;
   int    et_port=0;
   int    debug=0;
+  bool   analyze=false;
+  bool   nooutput=false;
   int    quiet=0;
   bool   use_et=0;
   bool   et_block=false;
@@ -36,6 +38,8 @@ struct Arguments_t {
     cout << name << " <options>  EVIO_file \n";
     cout << "\n Options: \n";
     cout << "  -q                 Quiet \n";
+    cout << "  -a  -analyze       Analyze triggers instead of filtering.";
+    cout << "  -x  -nooutput      Do not write an output file, analyze only.\n";
     cout << "  -d  -debug         Debug \n";
     cout << "  -o  -output  name  Output file. (default: first evio + _FEE.evio)\n";
     cout << "  -T  -trigger name    Filter on trigger name (default: FEE) \n";
@@ -43,6 +47,13 @@ struct Arguments_t {
     cout << "  -f  -et_name name  Attach ET to process with file <name>\n";
     cout << "  -H  -host    host  Attach ET to host\n";
     cout << "  -p  -et_port port  Attach ET to port \n";
+    cout << "\n\n";
+    cout << "For the -analyze switch, this code will count the triggers of each type and print\n";
+    cout << "the result to the screen, including the total number of events processed.\n";
+    cout << "This can be used with the -x switch if you want only to analyze. \n";
+    cout << "NOTE: The trigger analyzer will count one event with two trigger bits set once for each bit,\n";
+    cout << "so the number of triggers counted will be larger than the number of events.\n";
+    
   };
   void Parse_Args(int *argc, const char **argv){
     
@@ -57,6 +68,10 @@ struct Arguments_t {
       if(argv[i][0]=='-'){
         if(strcmp(argv[i],"-quiet")==0 || strcmp(argv[i],"-q")==0){
           quiet=1;
+        }else if(strcmp(argv[i],"-analyze")==0 || strcmp(argv[i],"-a")==0){
+          analyze=true;
+        }else if(strcmp(argv[i],"-nooutput")==0 || strcmp(argv[i],"-x")==0){
+          nooutput=true;
         }else if(strcmp(argv[i],"-debug")==0 || strcmp(argv[i],"-d")==0){
           debug++;
         }else if(strcmp(argv[i],"-o")==0 || strcmp(argv[i],"-output")==0){

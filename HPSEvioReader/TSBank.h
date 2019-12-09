@@ -81,6 +81,9 @@ public:
   // You number that is printed will be DIFFERENT depending on whether the code was optimized or not!!!
   // The reason for this is memory alignmment, I think.
   //
+  
+  static map<std::string,unsigned char> TriggerNames;
+  
   struct TriggerBits_t {
     bool Single_0_Top: 1; //  0   ( 150-8191) MeV (-31,31)   Low energy cluster
     bool Single_1_Top: 1; //  1   ( 300-3000) MeV (  5,31)   e+
@@ -117,7 +120,7 @@ public:
   };
   
   unsigned int GetData(int i){
-    if(data.size()==7 && i<7) return( data[i]);
+    if( i < data.size()) return( data[i]);
     else return(0);
   }
   
@@ -126,7 +129,8 @@ public:
     // There are 2 ways that a pulser event can be created: Front Panel and VTP.
     // If Front Panel, then bit-15 is set on data[5].
     // If VTP        , then bit-15 is set on data[4].
-    if( (data[4] & (1<<15)) || (data[5] & (1<<15))) return(true);
+    if( data.size() == 5 ) return(data[0] & (1<<29));
+    if( data.size() == 7 ) if( (data[4] & (1<<15)) || (data[5] & (1<<15))) return(true);
     return(false);
   }
   
@@ -173,11 +177,24 @@ public:
   }
   
   bool IsPair3(void){
-    // Return true if it is a Pair1
+    // Return true if it is a Pair3
     TriggerBits tbits = GetTriggerBits();
     return( tbits.bits.Pair_3 );
   }
 
+  bool IsLED(void){
+    // Return true if it is a LED trigger
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.LED );
+  }
+
+  bool IsCosmic(void){
+    // Return true if it is a LED trigger
+    TriggerBits tbits = GetTriggerBits();
+    return( tbits.bits.Cosmic );
+  }
+
+  
   bool IsHodoscope(void){
     // Return true if it is a Hodoscope trigger
     TriggerBits tbits = GetTriggerBits();
@@ -203,9 +220,17 @@ public:
   }
 
   bool IsTrigger(TriggerBits test){
+    // Return true is the trigger bits in test are set.
     unsigned int trig = GetTriggerInt();
 //    std::cout << "trig: " << trig << " test: " << test.intval << " istrue: " << (trig & test.intval )  <<  endl;
     return( trig & test.intval);
+  }
+  
+  bool IsTrigger(std::string name){
+    // Return true if the named bit in name is set.
+    unsigned int trig = GetTriggerInt();
+    unsigned char bits = TriggerNames[name];
+    return( trig & (1<<bits));
   }
   
   unsigned int GetTriggerInt(bool prescaled=true){
@@ -222,12 +247,21 @@ public:
       if(prescaled) return(data[4]);
       else          return(data[6]);
     }else if(data.size() == 5){
-      return(data[0]);
+      TriggerBits trbits = GetTriggerBits();
+      return(trbits.intval);
     }
     return(0);
   }
   
+  unsigned int GetExtTriggerInt(){
+    if(data.size()==7) return( data[5] );
+    return(0);
+  }
+  
   TriggerBits GetTriggerBits(bool prescaled=true){
+    // This fills the TriggerBits structure with the bits from data[4] (prescaled) or data[6] (not prescaled)
+    // Note that this will only give you the VTP internal trigger status, not the front panel triggers.
+    //
     if(data.size()==7 ){
       TriggerBits *bits;
       if(prescaled) bits = reinterpret_cast<TriggerBits *>(&data[4]);
@@ -246,9 +280,19 @@ public:
       return(trigb);
     }else{
       TriggerBits tmp;
+      tmp.intval = 0;
       return(tmp);
-      std::cerr << "GetTriggerBits:: Cannot get you those bits.\n";
     }
+  }
+  
+  std::string GetTriggerName(unsigned char num){
+    // Return the name of a trigger given the bit number.
+    // I.e. do a reverse lookup on the TriggerNames map.
+    auto it=std::find_if(TriggerNames.begin(),TriggerNames.end(),[&num]( const std::pair<std::string,int> &p ){return(p.second==num);});
+    if(it != TriggerNames.end()){
+      return(it->first);
+    }
+    return("NA");
   }
   
   unsigned long GetTime(){
@@ -263,9 +307,27 @@ public:
   
   unsigned long GetTriggerNumber(){
     // Return the trigger number ~= event number
-    unsigned long trignum = static_cast<unsigned long>(data[1]) + ( (static_cast<unsigned long>(data[3]&0xFFFF0000)<<16));
-    return(trignum);
+    if(data.size()>4){
+      unsigned long trignum = static_cast<unsigned long>(data[1]) + ( (static_cast<unsigned long>(data[3]&0xFFFF0000)<<16));
+      return(trignum);
+    }
+    return(0);
   }
+  
+  void Print(Option_t *opt){
+    // Print some information about the the trigger.
+    int trig=GetTriggerInt();
+    std::bitset<24> trbits = trig;
+    printf("Trigger:  int = %7d  hex=%04x  bits: ",trig,trig);
+    std::cout << trbits << std::endl;
+    for(int i=0;i<24;i++){
+      if( trig & (1<<i) ){
+        cout << GetTriggerName(i) << ", ";
+      }
+    }
+    std::cout << std::endl;
+  }
+  
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(TSBank,1);

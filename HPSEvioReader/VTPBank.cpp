@@ -41,27 +41,27 @@ void VTPBank::ParseBank(void){
               break;
             case 3: // HPS Single Cluster
               HPSSingleTrig_t strig;
-              ((unsigned long *)&strig)[0]=data[i];
+              ((unsigned int *)&strig)[0]=data[i];
               singletrigs.push_back(strig);
               break;
             case 4: // HPS Pair Trigger
               HPSPairTrig_t ptrig;
-              ((unsigned long *)&ptrig)[0]=data[i];
+              ((unsigned int *)&ptrig)[0]=data[i];
               pairtrigs.push_back(ptrig);
               break;
             case 5: // HPS Calibration Trigger
               HPSCalibTrig_t ctrig;
-              ((unsigned long *)&ctrig)[0]=data[i];
+              ((unsigned int *)&ctrig)[0]=data[i];
               calibtrigs.push_back(ctrig);
               break;
             case 6: // HPS Cluster Multiplicity Trigger
               HPSClusterMult_t clmul;
-              ((unsigned long *)&clmul)[0]=data[i];
+              ((unsigned int *)&clmul)[0]=data[i];
               clustermult.push_back(clmul);
               break;
             case 7: // HPS FEE Trigger
               HPSFEETrig_t fee;
-              ((unsigned long *)&fee)[0]=data[i];
+              ((unsigned int *)&fee)[0]=data[i];
               feetrigger.push_back(fee);
               break;
             default:

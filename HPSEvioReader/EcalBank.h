@@ -31,8 +31,8 @@ using EcalHitMap_t=std::map<Ecal_point_t, EcalHit_t >;
 class EcalBank: public TObject {
   
 public:
-  Leaf<FADCdata> *FADC_leaf;
-  TriggerConfig  *DAQconfig;    // Pointer to the configuration setup. Gets DAQMAP.
+  Leaf<FADCdata> *FADC_leaf=nullptr;
+  TriggerConfig  *DAQconfig=nullptr;    // Pointer to the configuration setup. Gets DAQMAP.
   
   bool mode3_amplitude=false;
   bool mode7_amplitude=true;
@@ -53,9 +53,15 @@ public:
   
   void Config(void){
     if(DAQconfig){
-      cluster_seed_thresh=(int)DAQconfig->vtp_other["ECAL_CLUSTER_SEED_THR"][0];
-      cluster_hit_dt=(int)DAQconfig->vtp_other["ECAL_CLUSTER_HIT_DT"][0];
-      is_configured = true;
+      auto p =DAQconfig->vtp_other.find("ECAL_CLUSTER_SEED_THR");
+      if( p ==  DAQconfig->vtp_other.end() ){
+        cout << "No DAQ Configuration read. \n";
+        is_configured=false;
+      }else{
+        cluster_seed_thresh=(int)DAQconfig->vtp_other["ECAL_CLUSTER_SEED_THR"][0];
+        cluster_hit_dt=(int)DAQconfig->vtp_other["ECAL_CLUSTER_HIT_DT"][0];
+        is_configured = true;
+      }
     }else{
       cout << "Could not configure ECAL, no DAQconfig \n";
       is_configured = false;

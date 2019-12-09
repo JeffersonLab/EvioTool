@@ -44,8 +44,9 @@ int main(int argc, const char * argv[]) {
     etool->fDebug = 0xFF;
   }
   /* open evio output file */
-  int status;
-  int output_handle;
+  int status=0;
+  int output_handle=0;
+
   string outfile;
   if(args.output_name.size()>1){
     outfile = args.output_name;
@@ -53,12 +54,20 @@ int main(int argc, const char * argv[]) {
     string inf=args.filenames[0];
     outfile =   inf.substr(0,inf.find(".evio"))+"_FEE.evio";
   }
-    
-  if((status=evOpen(const_cast<char *>(outfile.c_str()),const_cast<char *>("w"),&output_handle))!=0) {
-    cout << "Unable to open output file " << outfile << " status=" << status << endl;
-    exit(EXIT_FAILURE);
-  }
+  
+#define NumTrigBits 21
+  vector<long> Trigger_counts(NumTrigBits,0);   // Vector with NumTrigBits zeros.
+  vector<int>  FEE_zone_counts(7,0);
+  long fb_pulser=0;
+  long no_trig=0;
 
+  if( !args.nooutput){
+    if((status=evOpen(const_cast<char *>(outfile.c_str()),const_cast<char *>("w"),&output_handle))!=0) {
+      cout << "Unable to open output file " << outfile << " status=" << status << endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+  
   long evt_count=0;
   long totalCount=0;
   long totalOut=0;
@@ -81,6 +90,8 @@ int main(int argc, const char * argv[]) {
     trigger_setting.bits.Mult_0 = true;
   }else if(args.trigger_name == "3gamma" || args.trigger_name == "Mult-1" || args.trigger_name == "Multiplicity-1" ){
     trigger_setting.bits.Mult_1 = true;
+  }else if( args.trigger_name == "pulser" ){
+    trigger_setting.bits.Pulser = true;
   }else{
     try{
       trigger_setting.intval = stoi(args.trigger_name);
@@ -92,12 +103,13 @@ int main(int argc, const char * argv[]) {
       cout << "  'muon'    - Pair3 mu+mu- trigger\n";
       cout << " '2gamma'   - Multiplicity-0 or 2 photon trigger. \n";
       cout << " '3gamma'   - Multiplicity-1 or 3 photon trigger. \n";
-      cout << " '######'   - Where ##### is an integer value whole bits represent to trigger you want.\n";
+      cout << " 'pulser'   - Pulser trigger bit. \n";
+      cout << " '######'   - Where ##### is an integer value whose bits represent the trigger you want.\n";
       return(1);
     }
   }
     
-    unsigned int filt_int = trigger_setting.intval;
+  unsigned int filt_int = trigger_setting.intval;
   
   cout << "Filter integer is: " << filt_int << endl;
   
@@ -105,7 +117,7 @@ int main(int argc, const char * argv[]) {
     etool->Open(file.c_str());
     while(etool->Next() == S_SUCCESS){
       evt_count++;
-      if(!args.quiet && evt_count%50000 ==0 ){
+      if(!args.quiet && evt_count>=50000 ){
         //      /* statistics */
         auto time2 = std::chrono::system_clock::now();
         std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
@@ -122,16 +134,35 @@ int main(int argc, const char * argv[]) {
           unsigned int *filt_int = (unsigned int *)(&trigger_setting);
           cout << "Trigger " << etool->Trigger->GetTriggerInt() << " filter " << *filt_int << endl;
         }
-        status=evWrite(output_handle, etool->GetBufPtr());
-        if(status!=0) {
-          cout << "evWrite error output file "<<outfile << " status= " << status;
-          exit(EXIT_FAILURE);
+        if( !args.nooutput){
+          status=evWrite(output_handle, etool->GetBufPtr());
+          if(status!=0) {
+            cout << "evWrite error output file "<<outfile << " status= " << status;
+            exit(EXIT_FAILURE);
+          }
+          totalOut++;
         }
-        totalOut++;
       }
-    }
+      if( args.analyze ){ // Analyze the trigger bits.
+        unsigned int trigbits = etool->Trigger->GetTriggerInt();
+        for(int i=0;i<NumTrigBits;i++){
+          if( trigbits & (1<<i) ) Trigger_counts[i]++;
+        }
+        if( etool->Trigger->GetExtTriggerInt() == 0x8000 ) fb_pulser ++;
+        if(trigbits == 0 && etool->Trigger->GetExtTriggerInt() == 0) no_trig++;
+        if( etool->Trigger->IsFEE()){
+          for( int j=0; j<etool->VtpTop->feetrigger.size(); j++){
+            int region_bits = etool->VtpTop->feetrigger[j].region;
+            for( int k=0 ; k<7; k++){
+              if( region_bits & (1<<k) ) FEE_zone_counts[k]++;
+            }
+          }
+        }
+      }
+    } // event loop.
     etool->Close();
-  }
+  } // file list loop.
+
   auto time2 = std::chrono::system_clock::now();
   std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
   totalTime += delta_t;
@@ -141,6 +172,29 @@ int main(int argc, const char * argv[]) {
   printf("Total events:         %9ld \n",totalCount);
   printf("Total events written: %9ld \n",totalOut);
   printf("Final: %3.4g kHz \n", avgRate/1000.);
+  if(args.analyze){
+    cout << "\n";
+    
+    printf("Bit   Trigger_Name     Number   Fraction\n");
+    unsigned long total_trig=0;
+    for(int i=0;i<NumTrigBits;i++) total_trig += Trigger_counts[i];
+    total_trig += fb_pulser;
+    printf("%2d  %14s %10ld  %5.2f%%\n",-1,"FB Pulser",fb_pulser,(100.*(double)fb_pulser/total_trig));
+    for(int i=0;i<NumTrigBits;i++){
+      if(Trigger_counts[i]>0){
+        string name=etool->Trigger->GetTriggerName(i);
+        printf("%2d  %14s %10ld  %5.2f%%\n",i,name.c_str(),Trigger_counts[i],(100.*(double)Trigger_counts[i]/total_trig));
+      }
+    }
+    printf("Total Triggers     %10ld\n",total_trig);
+    printf("Total no-triggers  %10ld\n",no_trig);
 
+    cout << "\nFEE Zones : \n";
+    unsigned long fee_count = Trigger_counts[TSBank::TriggerNames["FEE_Top"]]+Trigger_counts[TSBank::TriggerNames["FEE_Bot"]];
+    for(int k=0; k<7; k++){
+      printf("region %d   %10d  %5.2f%%\n",k,FEE_zone_counts[k],
+             100.*(double)FEE_zone_counts[k]/fee_count);
+    }
+  }
   return 0;
 }

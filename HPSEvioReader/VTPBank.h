@@ -258,7 +258,7 @@ public:
       bool cosmic:    1;
       bool led:       1;
       bool hodoscope: 1;
-      bool puler:     1;
+      bool pulser:     1;
     } trigtype;
     unsigned int subtype:    4;  // bit 23-26
     unsigned int type:       4;  // bit 27-30
@@ -281,8 +281,8 @@ public:
   vector<HPSClusterMult_t> clustermult;  // Cluster multiplicity.
 
   struct HPSFEETrig_t {
-    unsigned int T:  10;  // bit 0-9  Trigger time in 4ns units referenced from the beginning of the readout window.
-    unsigned int region:   7;
+    unsigned int T:         10;  // bit 0-9  Trigger time in 4ns units referenced from the beginning of the readout window.
+    unsigned int region:     7;
     unsigned int reserved:   6;
     unsigned int subtype:    4;  // bit 23-26
     unsigned int type:       4;  // bit 27-30
