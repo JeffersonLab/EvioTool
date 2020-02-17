@@ -160,8 +160,10 @@ int main(int argc, const char * argv[]) {
         }
       }
     } // event loop.
-    etool->Close();
+    etool->Close();  // Close the INPUT file.
   } // file list loop.
+  
+  evClose(output_handle); // Close the OUTPUT file.
 
   auto time2 = std::chrono::system_clock::now();
   std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);

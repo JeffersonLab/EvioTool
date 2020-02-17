@@ -38,10 +38,10 @@ struct Arguments_t {
     cout << name << " <options>  EVIO_file \n";
     cout << "\n Options: \n";
     cout << "  -q                 Quiet \n";
-    cout << "  -a  -analyze       Analyze triggers instead of filtering.";
+    cout << "  -a  -analyze       Analyze triggers in addition to fileter.\n";
     cout << "  -x  -nooutput      Do not write an output file, analyze only.\n";
     cout << "  -d  -debug         Debug \n";
-    cout << "  -o  -output  name  Output file. (default: first evio + _FEE.evio)\n";
+    cout << "  -o  -output  name  Output file. (If not provided, output is <infile>_FEE.evio)\n";
     cout << "  -T  -trigger name    Filter on trigger name (default: FEE) \n";
     cout << "  -et                Use ET ring \n";
     cout << "  -f  -et_name name  Attach ET to process with file <name>\n";
