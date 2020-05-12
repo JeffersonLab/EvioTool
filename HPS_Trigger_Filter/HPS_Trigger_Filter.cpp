@@ -96,9 +96,9 @@ int main(int argc, const char * argv[]) {
   }else{
     try{
       size_t loc=0;
-      if( (loc = args.trigger_name.find("x")) >=1 ){   // HEX pattern
+      if( (loc = args.trigger_name.find("x")) != -1 ){   // HEX pattern
         trigger_setting.intval = stoi(args.trigger_name.substr(loc+1),0,16);
-      }else if( (loc = args.trigger_name.find("b")) >=1 ){ // Binary pattern
+      }else if( (loc = args.trigger_name.find("b")) != -1 ){ // Binary pattern
         trigger_setting.intval = stoi(args.trigger_name.substr(loc+1),0,2);
       }else{
         trigger_setting.intval = stoi(args.trigger_name);
