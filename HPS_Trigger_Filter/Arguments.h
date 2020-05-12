@@ -18,7 +18,6 @@ using namespace std;
 struct Arguments_t {
   vector<string> filenames;
   string trigger_name="FEE";
-  string trigger_pattern="";
   bool   exclusive=false;
   string output_name="";
   string et_name;
@@ -85,7 +84,8 @@ struct Arguments_t {
           output_name=argv[i];
           //        G_N_Events = ii;
           REMOVE_ONE;
-        }else if(strcmp(argv[i],"-T")==0 || strcmp(argv[i],"-trigger")==0){
+        }else if(strcmp(argv[i],"-T")==0 || strcmp(argv[i],"-trigger")==0 ||
+                 strcmp(argv[i],"-bits")==0){
           I_PLUS_PLUS;
           trigger_name = argv[i];
           //        G_N_Events = ii;
