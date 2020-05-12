@@ -12,6 +12,7 @@
 
 #include <cstring>
 #include <chrono>
+#include <bitset>
 
 int main(int argc, const char * argv[]) {
 
@@ -32,13 +33,13 @@ int main(int argc, const char * argv[]) {
     exit(1);
   }
 
-  if(args.debug==0){
+  if(args.debug<=2){
     etool->fDebug = 0b000000;
-  }else if(args.debug==1){
+  }else if(args.debug==3){
     etool->fDebug = 0b000001;
-  }else if(args.debug==2){
+  }else if(args.debug==4){
     etool->fDebug = 0b000011;
-  } else if(args.debug == 3){
+  } else if(args.debug == 5){
     etool->fDebug = 0b000111;
   } else{
     etool->fDebug = 0xFF;
@@ -94,24 +95,32 @@ int main(int argc, const char * argv[]) {
     trigger_setting.bits.Pulser = true;
   }else{
     try{
-      trigger_setting.intval = stoi(args.trigger_name);
+      size_t loc=0;
+      if( (loc = args.trigger_name.find("x")) >=1 ){   // HEX pattern
+        trigger_setting.intval = stoi(args.trigger_name.substr(loc+1),0,16);
+      }else if( (loc = args.trigger_name.find("b")) >=1 ){ // Binary pattern
+        trigger_setting.intval = stoi(args.trigger_name.substr(loc+1),0,2);
+      }else{
+        trigger_setting.intval = stoi(args.trigger_name);
+      }
     }catch(std::invalid_argument &e){
-      cout << "Unknown trigger specifier to -T argument. Please specify one of: \n";
+      cout << "Unknown trigger specifier to -T argument: " << args.trigger_name << "\n";
+      cout << "Please specify one of: \n";
       cout << " 'FEE'       - FEE either top or bottom \n";
       cout << " 'FEE_Top'  - FEE top only. \n";
       cout << " 'FEE_Bot'  - FEE bottom only\n";
-      cout << "  'muon'    - Pair3 mu+mu- trigger\n";
+      cout << " 'muon'    - Pair3 mu+mu- trigger\n";
       cout << " '2gamma'   - Multiplicity-0 or 2 photon trigger. \n";
       cout << " '3gamma'   - Multiplicity-1 or 3 photon trigger. \n";
       cout << " 'pulser'   - Pulser trigger bit. \n";
-      cout << " '######'   - Where ##### is an integer value whose bits represent the trigger you want.\n";
+      cout << " '######'   - Where ##### is an integer value (int, hex, bin) whose bits represent the trigger you want.\n";
       return(1);
     }
   }
     
   unsigned int filt_int = trigger_setting.intval;
-  
-  cout << "Filter integer is: " << filt_int << endl;
+  bitset<32> bit_pattern(filt_int);
+  if(!args.quiet) printf("Filter integer is: %6d  = 0x%04X = 0b%s\n",filt_int,filt_int,bit_pattern.to_string().c_str());
   
   for(auto file: args.filenames){
     etool->Open(file.c_str());
@@ -129,10 +138,12 @@ int main(int argc, const char * argv[]) {
         evt_count = 0;
         time1 = std::chrono::system_clock::now();
       }
-      if( etool->Trigger->IsTrigger(trigger_setting) ){
-        if(args.debug >2){
-          unsigned int *filt_int = (unsigned int *)(&trigger_setting);
-          cout << "Trigger " << etool->Trigger->GetTriggerInt() << " filter " << *filt_int << endl;
+      if( (!args.exclusive && etool->Trigger->IsTrigger(trigger_setting)) ||
+         ( args.exclusive && etool->Trigger->IsExactTrigger(trigger_setting))
+         ){
+        if(args.debug >=2){
+          bitset<32> trig_pattern(etool->Trigger->GetTriggerInt());
+          cout << "Trigger: " << trig_pattern.to_string() << " Filter: " << bit_pattern.to_string() << endl;
         }
         if( !args.nooutput){
           status=evWrite(output_handle, etool->GetBufPtr());

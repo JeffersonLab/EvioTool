@@ -220,6 +220,13 @@ public:
     return( tbits.bits.FEE_Bot || tbits.bits.FEE_Top );
   }
 
+  bool IsExactTrigger(TriggerBits test){
+    // Return true is the trigger bit pattern is exactly the same as in test.
+    unsigned int trig = GetTriggerInt();
+    //    std::cout << "trig: " << trig << " test: " << test.intval << " istrue: " << (trig & test.intval )  <<  endl;
+    return( trig == test.intval);
+  }
+
   bool IsTrigger(TriggerBits test){
     // Return true is the trigger bits in test are set.
     unsigned int trig = GetTriggerInt();
