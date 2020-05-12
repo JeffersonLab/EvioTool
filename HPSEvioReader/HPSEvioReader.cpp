@@ -69,7 +69,7 @@ void HPSEvioReader::Set2019Data(){
   if(TrigTop) RemoveBank(TrigTop);
   if(TrigBot) RemoveBank(TrigBot);
   
-  SVT      = new SVTBank(this,"SVT",{2,3},0,"SVT banks");                                           //  2019 data.
+  SVT      = new SVTBank(this,"SVT",{2,3},0,"SVT banks");  //  2019 data.
   TrigTop  = AddBank("TrigTop",11,0,"Trigger Bank top");
   VtpTop   = new VTPBank(TrigTop);
   TrigBot  = AddBank("TrigTop",12,0,"Trigger Bank bottom");

@@ -18,6 +18,8 @@ using namespace std;
 struct Arguments_t {
   vector<string> filenames;
   string trigger_name="FEE";
+  string trigger_pattern="";
+  bool   exclusive=false;
   string output_name="";
   string et_name;
   string et_host_name;
@@ -42,12 +44,16 @@ struct Arguments_t {
     cout << "  -x  -nooutput      Do not write an output file, analyze only.\n";
     cout << "  -d  -debug         Debug \n";
     cout << "  -o  -output  name  Output file. (If not provided, output is <infile>_FEE.evio)\n";
-    cout << "  -T  -trigger name    Filter on trigger name (default: FEE) \n";
+    cout << "  -T  -trigger name -bits bitpat  Filter on trigger name (default: FEE) or bit pattern.\n";
+    cout << "                     Bit pattern is an integer ie: 16 or 0x10 or 0b010000000 \n";
+    cout << "  -E  -exclusive     Use exclusive filtering = only the exact bit pattern passes.\n";
     cout << "  -et                Use ET ring \n";
     cout << "  -f  -et_name name  Attach ET to process with file <name>\n";
     cout << "  -H  -host    host  Attach ET to host\n";
     cout << "  -p  -et_port port  Attach ET to port \n";
     cout << "\n\n";
+    cout << "NOTES: \n";
+    cout << "You cannot use both the -T and -B switches to set the bit pattern. -B will override -T.\n";
     cout << "For the -analyze switch, this code will count the triggers of each type and print\n";
     cout << "the result to the screen, including the total number of events processed.\n";
     cout << "This can be used with the -x switch if you want only to analyze. \n";
@@ -84,6 +90,8 @@ struct Arguments_t {
           trigger_name = argv[i];
           //        G_N_Events = ii;
           REMOVE_ONE;
+        }else if(strcmp(argv[i],"-E")==0 || strcmp(argv[i],"-exclusive")==0){
+          exclusive = true;
         }else if(strcmp(argv[i],"-block")==0 || strcmp(argv[i],"-b")==0){
           et_block=true;
         }else if(strcmp(argv[i],"-et")==0 || strcmp(argv[i],"-etring")==0){
