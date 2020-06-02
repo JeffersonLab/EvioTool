@@ -77,6 +77,8 @@ int main(int argc, const char * argv[]) {
   auto start = std::chrono::system_clock::now();
   auto time1 = start;
   
+  bool Filter_FCup = false;
+  
   TSBank::TriggerBits trigger_setting;
   if( args.trigger_name == "FEE"){
     trigger_setting.bits.FEE_Bot=true;
@@ -93,6 +95,8 @@ int main(int argc, const char * argv[]) {
     trigger_setting.bits.Mult_1 = true;
   }else if( args.trigger_name == "pulser" ){
     trigger_setting.bits.Pulser = true;
+  }else if( args.trigger_name == "fcup" ){
+    Filter_FCup = true;
   }else{
     try{
       size_t loc=0;
@@ -139,7 +143,8 @@ int main(int argc, const char * argv[]) {
         time1 = std::chrono::system_clock::now();
       }
       if( (!args.exclusive && etool->Trigger->IsTrigger(trigger_setting)) ||
-         ( args.exclusive && etool->Trigger->IsExactTrigger(trigger_setting))
+         ( args.exclusive && etool->Trigger->IsExactTrigger(trigger_setting)) ||
+         ( Filter_FCup && etool->Trigger->IsPulser() )
          ){
         if(args.debug >=2){
           bitset<32> trig_pattern(etool->Trigger->GetTriggerInt());

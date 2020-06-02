@@ -106,7 +106,7 @@ public:
     bool Mult_1      : 1; // 17    Multiplicity-1 3 Cluster trigger
     bool FEE_Top     : 1; // 18    FEE Top       ( 2600-5200)
     bool FEE_Bot     : 1; // 19    FEE Bot       ( 2600-5200)
-    unsigned int NA          :12; // 20-31 Not used
+    unsigned int NA  :12; // 20-31 Not used
   };
   
   typedef union{
@@ -126,7 +126,7 @@ public:
   }
   
   bool IsPulser(void){
-    // Return true if the current event is a pulser event.
+    // Return true if the current event is a pulser or FCup event.
     // There are 2 ways that a pulser event can be created: Front Panel and VTP.
     // If Front Panel, then bit-15 is set on data[5].
     // If VTP        , then bit-15 is set on data[4].
