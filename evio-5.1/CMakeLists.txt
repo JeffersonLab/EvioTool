@@ -49,9 +49,10 @@ set(SOURCE_FILES_EVIOCXX
   src/libsrc++/evioUtil.cc
   )
 
-add_library(eviocxx-5.1 SHARED ${SOURCE_FILES_EVIOCXX})
-add_dependencies(eviocxx-5.1 evio-5.1)
-target_link_libraries(eviocxx-5.1 evio-5.1 expat z pthread)
+
+# add_library(eviocxx-5.1 SHARED ${SOURCE_FILES_EVIOCXX})
+# add_dependencies(eviocxx-5.1 evio-5.1)
+# target_link_libraries(eviocxx-5.1 evio-5.1 expat z pthread)
 
 add_executable(evio2xml src/execsrc/evio2xml.c)
 add_dependencies(evio2xml evio-5.1static)
@@ -69,5 +70,5 @@ add_executable(eviosplit src/execsrc/eviosplit.cc)
 add_dependencies(eviosplit evio-5.1static)
 target_link_libraries(eviosplit evio-5.1static pthread)
 
-install(TARGETS evio-5.1 eviocxx-5.1      DESTINATION lib)
+# install(TARGETS evio-5.1 eviocxx-5.1      DESTINATION lib)
 install(TARGETS evio2xml eviocopy evioconcat eviosplit    DESTINATION bin)
