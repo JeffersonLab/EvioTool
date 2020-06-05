@@ -144,7 +144,7 @@ public:
       if(svt_head->total_evt_size<8) cout << "Bad SVT Data: Too small a frame. \n";
       int frame_end = i + svt_head->total_evt_size/4 - 4;
       for(i=i+4;i< frame_end; i+=4){
-        unsigned int check = dat[i+3];
+        // unsigned int check = dat[i+3];
         SVT_chan_t *cn = (SVT_chan_t *)&dat[i]; // Direct data overlay, so there is no copy here. MUCH faster.
         if(!cn->head.isTail & !cn->head.isHeader){
           svt_data.emplace_back(*cn);               // The push_back copies the data onto SVT_data. This makes a copy.

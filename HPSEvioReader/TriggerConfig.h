@@ -43,7 +43,12 @@ struct FADC250_slot_t{  // Explicit initialization to zero.
   // Constructor to initialize the vectors properly.
   FADC250_slot_t(): pedestal(16,0.),gain(16,0.),threshold(16,0.),subsystem(16,0),ix(16,0),iy(16,0){};
   // Helper methods.
-  void set_sxy(int chan,short sub,short x,short y){subsystem[chan]=sub,ix[chan]=x;iy[chan]=y;};
+  void set_sxy(int chan,short sub,short x,short y){
+    subsystem[chan]=sub;
+    ix[chan]=x;
+    iy[chan]=y;
+    
+  };
 };
 
 typedef map<int,FADC250_slot_t> slotmap;
