@@ -53,7 +53,7 @@ int main(int argc, const char * argv[]) {
     outfile = args.output_name;
   }else{
     string inf=args.filenames[0];
-    outfile =   inf.substr(0,inf.find(".evio"))+"_FEE.evio";
+    outfile =   inf.substr(0,inf.find(".evio"))+"_"+args.trigger_name+".evio";
   }
   
 #define NumTrigBits 21
@@ -80,6 +80,8 @@ int main(int argc, const char * argv[]) {
   bool Filter_FCup = false;
   
   TSBank::TriggerBits trigger_setting;
+  trigger_setting.intval=0;
+
   if( args.trigger_name == "FEE"){
     trigger_setting.bits.FEE_Bot=true;
     trigger_setting.bits.FEE_Top=true;
@@ -109,15 +111,7 @@ int main(int argc, const char * argv[]) {
       }
     }catch(std::invalid_argument &e){
       cout << "Unknown trigger specifier to -T argument: " << args.trigger_name << "\n";
-      cout << "Please specify one of: \n";
-      cout << " 'FEE'       - FEE either top or bottom \n";
-      cout << " 'FEE_Top'  - FEE top only. \n";
-      cout << " 'FEE_Bot'  - FEE bottom only\n";
-      cout << " 'muon'    - Pair3 mu+mu- trigger\n";
-      cout << " '2gamma'   - Multiplicity-0 or 2 photon trigger. \n";
-      cout << " '3gamma'   - Multiplicity-1 or 3 photon trigger. \n";
-      cout << " 'pulser'   - Pulser trigger bit. \n";
-      cout << " '######'   - Where ##### is an integer value (int, hex, bin) whose bits represent the trigger you want.\n";
+      args.Print_Filter_options();
       return(1);
     }
   }
@@ -148,7 +142,7 @@ int main(int argc, const char * argv[]) {
          ){
         if(args.debug >=2){
           bitset<32> trig_pattern(etool->Trigger->GetTriggerInt());
-          cout << "Trigger: " << trig_pattern.to_string() << " Filter: " << bit_pattern.to_string() << endl;
+          cout << "Trigger: " << trig_pattern.to_string() << "FCup or pulser: " << etool->Trigger->IsPulser() << " Filter: " << bit_pattern.to_string();
         }
         if( !args.nooutput){
           status=evWrite(output_handle, etool->GetBufPtr());
