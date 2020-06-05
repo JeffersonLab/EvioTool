@@ -142,7 +142,7 @@ int main(int argc, const char * argv[]) {
          ){
         if(args.debug >=2){
           bitset<32> trig_pattern(etool->Trigger->GetTriggerInt());
-          cout << "Trigger: " << trig_pattern.to_string() << "FCup or pulser: " << etool->Trigger->IsPulser() << " Filter: " << bit_pattern.to_string();
+          cout << "Trigger: " << trig_pattern.to_string() << "FCup or pulser: " << etool->Trigger->IsPulser() << " Filter: " << bit_pattern.to_string() << endl;
         }
         if( !args.nooutput){
           status=evWrite(output_handle, etool->GetBufPtr());
