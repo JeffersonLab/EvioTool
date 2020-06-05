@@ -442,8 +442,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		400E858121F1078C002CA87E /* HPSEvioReader_obsolete */ = {isa = PBXFileReference; lastKnownFileType = folder; path = HPSEvioReader_obsolete; sourceTree = "<group>"; };
-		400E858F21F107CD002CA87E /* HPSEvioReader_Test_obsolete */ = {isa = PBXFileReference; lastKnownFileType = folder; path = HPSEvioReader_Test_obsolete; sourceTree = "<group>"; };
 		400E859021F10998002CA87E /* Header.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Header.cpp; sourceTree = "<group>"; };
 		400E859121F10998002CA87E /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
 		400E859421F109EA002CA87E /* HPSEvioReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HPSEvioReader.h; sourceTree = "<group>"; };
@@ -752,8 +750,6 @@
 		40E49CF519034D3E00390847 = {
 			isa = PBXGroup;
 			children = (
-				400E858F21F107CD002CA87E /* HPSEvioReader_Test_obsolete */,
-				400E858121F1078C002CA87E /* HPSEvioReader_obsolete */,
 				407047A721DEDFF000053DEE /* evio-4.4.6.xcodeproj */,
 				4070472C21DEC6F300053DEE /* evio-5.1.xcodeproj */,
 				4070485421DEF22C00053DEE /* et-16.1.xcodeproj */,
