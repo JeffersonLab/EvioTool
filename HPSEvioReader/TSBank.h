@@ -85,7 +85,7 @@ public:
   
   static map<std::string,unsigned char> TriggerNames;
   
-  struct TriggerBits_t {
+  struct TriggerBits_t {  // Trigger structure for the 2019 data set.
     bool Single_0_Top: 1; //  0   ( 150-8191) MeV (-31,31)   Low energy cluster
     bool Single_1_Top: 1; //  1   ( 300-3000) MeV (  5,31)   e+
     bool Single_2_Top: 1; //  2   ( 300-3000) MeV (  5,31)   e+ : Position dependent energy cut

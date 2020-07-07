@@ -89,7 +89,11 @@ int main(int argc, const char * argv[]) {
     trigger_setting.bits.FEE_Top=true;
   }else if( args.trigger_name == "FEE_Bot"){
     trigger_setting.bits.FEE_Bot=true;
-  }else if( args.trigger_name == "muon"){
+  }else if( args.trigger_name == "pair0"){
+      trigger_setting.bits.Pair_0=true;
+  }else if( args.trigger_name == "pair1"){
+      trigger_setting.bits.Pair_1=true;
+  }else if( args.trigger_name == "muon" || args.trigger_name == "pair3"){
     trigger_setting.bits.Pair_3=true;
   }else if(args.trigger_name == "2gamma" || args.trigger_name == "Mult-0" || args.trigger_name == "Multiplicity-0" ){
     trigger_setting.bits.Mult_0 = true;
