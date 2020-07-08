@@ -46,6 +46,8 @@ struct Arguments_t {
     cout << " '3gamma'   - Multiplicity-1 or 3 photon trigger. \n";
     cout << " 'pulser'   - Pulser trigger bit. \n";
     cout << " 'fcup'     - Faraday Cup trigger + pulser trigger.\n";
+    cout << " 'pair0'    - select pair0, pair1, pair2 or pair3. \n";
+    cout << " 'single0'  - select single0, single1, single2, or single3. \n";
     cout << " '######'   - Where ##### is an integer value (int, hex, bin) whose bits represent the trigger you want.\n";
   }
 

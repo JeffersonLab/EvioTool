@@ -93,8 +93,22 @@ int main(int argc, const char * argv[]) {
       trigger_setting.bits.Pair_0=true;
   }else if( args.trigger_name == "pair1"){
       trigger_setting.bits.Pair_1=true;
+  }else if( args.trigger_name == "pair2"){
+      trigger_setting.bits.Pair_2=true;
   }else if( args.trigger_name == "muon" || args.trigger_name == "pair3"){
     trigger_setting.bits.Pair_3=true;
+  }else if( args.trigger_name == "single0"){
+      trigger_setting.bits.Single_0_Top=true;
+      trigger_setting.bits.Single_0_Bot=true;
+  }else if( args.trigger_name == "single1"){
+      trigger_setting.bits.Single_1_Top=true;
+      trigger_setting.bits.Single_1_Bot=true;
+  }else if( args.trigger_name == "single2"){
+      trigger_setting.bits.Single_2_Top=true;
+      trigger_setting.bits.Single_2_Bot=true;
+  }else if( args.trigger_name == "single3"){
+      trigger_setting.bits.Single_3_Top=true;
+      trigger_setting.bits.Single_3_Bot=true;
   }else if(args.trigger_name == "2gamma" || args.trigger_name == "Mult-0" || args.trigger_name == "Multiplicity-0" ){
     trigger_setting.bits.Mult_0 = true;
   }else if(args.trigger_name == "3gamma" || args.trigger_name == "Mult-1" || args.trigger_name == "Multiplicity-1" ){
