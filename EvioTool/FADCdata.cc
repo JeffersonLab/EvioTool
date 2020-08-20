@@ -15,12 +15,12 @@
 // Custom streamers so std::cout << MyFADC << std::endl; works.
 //
 std::ostream &operator<<(std::ostream &os, FADCdata const &m) {
-  os << m.Class_Name() << "(" << (int)m.crate << "," << (int)m.slot << "," << (int)m.chan << ") [";
+  os << "\n            " << m.Class_Name() << "(" << (int)m.crate << "," << (int)m.slot << "," << (int)m.chan << ") [";
   for(int i=0; i< m.samples.size(); ++i){
-    os << (int)m.samples[i];
+    os << std::setw(3) << (int)m.samples[i];
     if(i<(m.samples.size()-1)) os << ",";
   }
-  os << "]\n";
+  os << "]";
   return(os);
 }
 

@@ -169,7 +169,9 @@ public:
   size_t size(int type=0) override{
     return(svt_data.size());
   }
-  
+
+  void PrintBank(int print_leaves=0,int depth=10,int level=0) override;
+
   #pragma clang diagnostic push
   #pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(SVTBank,1);

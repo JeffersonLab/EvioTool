@@ -109,7 +109,7 @@ void Bank::PrintBank(int print_leaves, int depth, int level){
   level++;
   char opts[48];
   sprintf(opts,"N%03dL%03d",print_leaves,level);
-  cout << s << "Bank: " << GetName() << "\t tags= [";
+  cout << endl << s << "Bank: " << GetName() << "\t tags= [";
   for(unsigned short t: tags){
     cout<<t << ",";
   }
