@@ -6,10 +6,8 @@
 #
 # Author: Maurik Holtrop
 #
-
-
 cmake_minimum_required(VERSION 3.0)
-project(EvioTool)
+project(EvioTool VERSION 0.9 LANGUAGES CXX)
 
 #---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 find_package(ROOT REQUIRED COMPONENTS Core)
@@ -26,6 +24,26 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
+# Offer the user the choice of overriding the installation directories
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH  "Installation directory for header files")
+set(DEF_INSTALL_CMAKE_DIR lib/cmake/EvioTool)
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH "Installation directory for CMake files")
+
+# Make relative paths absolute (needed later on)
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
+
+
+set(INCLUDE_INSTALL_DIR ${INSTALL_INCLUDE_DIR}/EvioTool)
+set(LIB_INSTALL_DIR ${INSTALL_LIB_DIR})
+set(SYSCONFIG_INSTALL_DIR ${INSTALL_CMAKE_DIR})
+
 #
 # Shortcut to control which version of EVIO or ET is linked against.
 #
@@ -39,7 +57,7 @@ add_subdirectory(${ET_LIBRARY})
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
-message("---------------------------------------------")
+message("------------- EvioTool ---------------------------")
 message("We have CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 message("CMAKE_C_FLAGS_RELEASE    = ${CMAKE_C_FLAGS_RELEASE}")
 message("CMAKE_C_FLAGS_DEBUG      = ${CMAKE_C_FLAGS_DEBUG}")
@@ -47,12 +65,15 @@ message("CMAKE_C_FLAGS            = ${CMAKE_C_FLAGS}")
 message("CMAKE_CXX_FLAGS          = ${CMAKE_CXX_FLAGS}")
 message("CMAKE_CXX_FLAGS_RELEASE  = ${CMAKE_CXX_FLAGS_RELEASE}")
 message("CMAKE_CXX_FLAGS_DEBUG    = ${CMAKE_CXX_FLAGS_DEBUG}")
-message("---------------------------------------------")
+message("INCLUDE_INSTALL_DIR        = ${INCLUDE_INSTALL_DIR}")
+message("LIB_INSTALL_DIR            = ${LIB_INSTALL_DIR}")
+message("INSTALL_CMAKE_DIR          = ${INSTALL_CMAKE_DIR}")
+message("--------------------------------------------------")
 
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 
-include_directories(evio-5.1/src/libsrc EvioTool HPSEvioReader) 
+include_directories(${EVIO_LIBRARY}/src/libsrc EvioTool HPSEvioReader)
 
 if(APPLE)
   # use, i.e. don't skip the full RPATH for the build tree
@@ -80,13 +101,16 @@ endif()
 set(SOURCE_FILES_EVIOTOOL
   EvioTool/Bank.cc
   EvioTool/EvioTool.cc
-  EvioTool/FADCdata.h
   EvioTool/Leaf.cc
-  EvioTool/Bank.h
-  EvioTool/EvioTool.h
   EvioTool/FADCdata.cc
-  EvioTool/Leaf.h  
   )
+
+set(HEADER_FILES_EVIOTOOL
+        EvioTool/EvioTool.h
+        EvioTool/FADCdata.h
+        EvioTool/Bank.h
+        EvioTool/Leaf.h
+        )
 
 set(DICTS_EVIOTOOL
   EvioTool_Dict.cxx
@@ -96,33 +120,35 @@ set(DICTS_EVIOTOOL
 
 set(SOURCE_FILES_HPSEVIOREADER
   HPSEvioReader/Cluster.cpp
-  HPSEvioReader/Cluster.h
   HPSEvioReader/EcalCluster.cpp
-  HPSEvioReader/EcalCluster.h
   HPSEvioReader/EcalGTPCluster.cpp
-  HPSEvioReader/EcalGTPCluster.h
   HPSEvioReader/EcalHit.cpp
-  HPSEvioReader/EcalHit.h
   HPSEvioReader/EcalBank.cpp
-  HPSEvioReader/EcalBank.h
   HPSEvioReader/HPSEvioReader.cpp
-  HPSEvioReader/HPSEvioReader.h
   HPSEvioReader/Header.cpp
-  HPSEvioReader/Header.h
   HPSEvioReader/Headbank.cpp
-  HPSEvioReader/Headbank.h
   HPSEvioReader/SVTBank.cc
-  HPSEvioReader/SVTBank.h
   HPSEvioReader/SVTBank2016.cc
-  HPSEvioReader/SVTBank2016.h
   HPSEvioReader/TSBank.cpp
-  HPSEvioReader/TSBank.h
   HPSEvioReader/TriggerConfig.cpp
-  HPSEvioReader/TriggerConfig.h
   HPSEvioReader/VTPBank.cpp
-  HPSEvioReader/VTPBank.h
   )
 
+set(HEADER_FILES_HPSEVIOREADER
+        HPSEvioReader/Cluster.h
+        HPSEvioReader/EcalCluster.h
+        HPSEvioReader/EcalGTPCluster.h
+        HPSEvioReader/EcalHit.h
+        HPSEvioReader/EcalBank.h
+        HPSEvioReader/HPSEvioReader.h
+        HPSEvioReader/Header.h
+        HPSEvioReader/Headbank.h
+        HPSEvioReader/SVTBank.h
+        HPSEvioReader/SVTBank2016.h
+        HPSEvioReader/TSBank.h
+        HPSEvioReader/TriggerConfig.h
+        HPSEvioReader/VTPBank.h
+        )
 
 #ROOT_GENERATE_DICTIONARY(EvioTool_Dict      EvioTool/EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
 #ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader/HPSEvioReader.h LINKDEF HPSEvioReader/HPSEvioReader_LinkDef.h MODULE HPSEvioReader)
@@ -130,37 +156,117 @@ set(SOURCE_FILES_HPSEVIOREADER
 ROOT_GENERATE_DICTIONARY(EvioTool_Dict  EvioTool.h LINKDEF EvioTool/EvioTool_LinkDef.h MODULE EvioTool)
 ROOT_GENERATE_DICTIONARY(HPSEvioReader_Dict HPSEvioReader.h  LINKDEF HPSEvioReader/HPSEvioReader_LinkDef.h MODULE HPSEvioReader)
 
+#### Build package configuration files, see: https://cmake.org/cmake/help/v3.18/manual/cmake-packages.7.html
+##### https://cmake.org/cmake/help/v3.4/module/CMakePackageConfigHelpers.html
+##### Example/Blog:
+##### https://levelup.gitconnected.com/simple-modern-cmake-tutorial-b0c1c362cd2c
+include(CMakePackageConfigHelpers)
+
+
+############################################################
+#        EvioTool library
+#########################################################3##
 #---Create a shared library with geneated dictionary
 #add_library(EvioTool SHARED ${SOURCE_FILES_EVIOTOOL} ${DICTS_EVIOTOOL} )
 add_library(EvioTool SHARED ${SOURCE_FILES_EVIOTOOL} EvioTool_Dict.cxx )
-target_link_libraries(EvioTool ${ROOT_LIBRARIES} ${EVIO_LIBRARY})
 
+# Prepare the include directory for export.
+target_include_directories(EvioTool
+        PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/EvioTool>
+        )
+
+target_link_libraries(EvioTool PUBLIC ${ROOT_LIBRARIES} evio)
+
+install(TARGETS EvioTool
+        EXPORT EvioTool-export
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
+
+install(EXPORT EvioTool-export
+        FILE EvioToolTargets.cmake
+        DESTINATION ${INSTALL_CMAKE_DIR})
+
+install(FILES ${PROJECT_BINARY_DIR}/libEvioTool_rdict.pcm DESTINATION lib)
+
+install(FILES ${HEADER_FILES_EVIOTOOL}
+        DESTINATION ${INCLUDE_INSTALL_DIR})
+
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/EvioToolConfig.cmake
+        DESTINATION ${INSTALL_CMAKE_DIR})
+
+
+#export(TARGETS EvioTool HPSEvioReader evio
+#        FILE "${PROJECT_BINARY_DIR}/EvioToolTargets.cmake")
+#
+#
+#export(PACKAGE EvioTool)
+
+#configure_package_config_file( cmake/EvioToolConfig.cmake.in
+#        ${CMAKE_CURRENT_BINARY_DIR}/EvioToolConfig.cmake
+#        INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/EvioTool
+#        PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
+
+
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EvioToolConfig.cmake
+#        DESTINATION ${INSTALL_CMAKE_DIR})
+
+
+############################################################
+#        EvioTool Test Executables
+#########################################################3##
 add_executable(EvioTool_Test EvioTool_Test/EvioTool_Test.cpp)
 add_dependencies(EvioTool_Test EvioTool)
-target_link_libraries(EvioTool_Test EvioTool ${EVIO_LIBRARY})
+target_link_libraries(EvioTool_Test EvioTool evio)
+
+############################################################
+#        HPSEvioReader library
+#########################################################3##
 
 add_library(HPSEvioReader SHARED ${SOURCE_FILES_HPSEVIOREADER} HPSEvioReader_Dict.cxx)
-target_link_libraries(HPSEvioReader EvioTool ${ROOT_LIBRARIES} ${EVIO_LIBRARY})
+target_include_directories(HPSEvioReader
+                           PUBLIC
+                           $<INSTALL_INTERFACE:include>
+                           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/HPSEvioReader>
+                           )
+
+target_link_libraries(HPSEvioReader EvioTool ${ROOT_LIBRARIES} evio)
+
+#
+# Note: The HPSEvioReader piggy-backs onto the EvioTool-export. That way
+# you can simply import EvioTool and also get the HPSEvioReader.
+# We may need to separate these two completely at some point.
+#
+install(TARGETS HPSEvioReader
+        EXPORT  EvioTool-export
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
+
+install(FILES ${PROJECT_BINARY_DIR}/libHPSEvioReader_rdict.pcm  DESTINATION lib)
+
+install(FILES ${HEADER_FILES_HPSEVIOREADER}
+        DESTINATION ${INCLUDE_INSTALL_DIR})
+
+############################################################
+#        HPSEvioReader Executables
+#########################################################3##
 
 add_executable(HPSEvioReader_Test HPSEvioReader_Test/HPSEvioReader_Test.cpp)
 add_dependencies(HPSEvioReader_Test HPSEvioReader EvioTool)
-target_link_libraries(HPSEvioReader_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
+target_link_libraries(HPSEvioReader_Test HPSEvioReader EvioTool evio)
 
 add_executable(HPS_Trigger_Test HPS_Trigger_Test/HPS_Trigger_Test.cpp HPS_Trigger_Test/TriggerHistograms.cpp  HPS_Trigger_Test/TriggerChecker.cpp )
 add_dependencies(HPS_Trigger_Test HPSEvioReader EvioTool)
-target_link_libraries(HPS_Trigger_Test HPSEvioReader EvioTool ${EVIO_LIBRARY})
+target_link_libraries(HPS_Trigger_Test HPSEvioReader EvioTool evio)
 
 add_executable(HPS_Trigger_Filter HPS_Trigger_Filter/HPS_Trigger_Filter.cpp )
 add_dependencies(HPS_Trigger_Filter HPSEvioReader EvioTool)
-target_link_libraries(HPS_Trigger_Filter HPSEvioReader EvioTool ${EVIO_LIBRARY})
+target_link_libraries(HPS_Trigger_Filter HPSEvioReader EvioTool evio)
 
-
-install(TARGETS EvioTool              DESTINATION lib)
-install(FILES ${PROJECT_BINARY_DIR}/libEvioTool_rdict.pcm DESTINATION lib)
 install(TARGETS EvioTool_Test         DESTINATION bin)
 
-install(TARGETS HPSEvioReader       DESTINATION lib)
-install(FILES ${PROJECT_BINARY_DIR}/libHPSEvioReader_rdict.pcm  DESTINATION lib)
 install(TARGETS HPSEvioReader_Test  DESTINATION bin)
 install(TARGETS HPS_Trigger_Test  DESTINATION bin)
 install(TARGETS HPS_Trigger_Filter  DESTINATION bin)
+
