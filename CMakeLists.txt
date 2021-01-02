@@ -193,25 +193,19 @@ install(FILES ${PROJECT_BINARY_DIR}/libEvioTool_rdict.pcm DESTINATION lib)
 install(FILES ${HEADER_FILES_EVIOTOOL}
         DESTINATION ${INCLUDE_INSTALL_DIR})
 
+export(TARGETS EvioTool evio
+        FILE "${PROJECT_BINARY_DIR}/EvioToolTargets.cmake")
+#
+#
+export(PACKAGE EvioTool)
+
+configure_package_config_file( cmake/EvioToolConfig.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/EvioToolConfig.cmake
+        INSTALL_DESTINATION ${INSTALL_CMAKE_DIR}
+        PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
+
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/EvioToolConfig.cmake
         DESTINATION ${INSTALL_CMAKE_DIR})
-
-
-#export(TARGETS EvioTool HPSEvioReader evio
-#        FILE "${PROJECT_BINARY_DIR}/EvioToolTargets.cmake")
-#
-#
-#export(PACKAGE EvioTool)
-
-#configure_package_config_file( cmake/EvioToolConfig.cmake.in
-#        ${CMAKE_CURRENT_BINARY_DIR}/EvioToolConfig.cmake
-#        INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/EvioTool
-#        PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
-
-
-#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EvioToolConfig.cmake
-#        DESTINATION ${INSTALL_CMAKE_DIR})
-
 
 ############################################################
 #        EvioTool Test Executables
