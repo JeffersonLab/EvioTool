@@ -2,11 +2,14 @@ EvioTool
 ========
 Author: Maurik Holtrop @ UNH  5/7/14 & 2/15/19
 
-A tool for _fast_ reading of EVIO raw data in C++ from a file or from the ET ring.
+A tool for _fast_ reading of EVIO raw data in C++ from a file or from the ET ring (eventually, 
+this is not fully implemented yet.)
 
-This tool was created to avoid the issues with the libevioxx library, the standard library for reading EVIO with C++. The issues are that that implementation is not easy to use with ROOT, and it is very slow.
+This tool was created to avoid the issues with the libevioxx library, the standard library for reading EVIO with C++. 
+The issues are that that implementation is not easy to use with ROOT, and it is very slow.
 
-The current version, though a work in progress, is functional and has shown read speeds of 100kHz on a laptop, about 10x faster than libevioxx. 
+The current version, though a work in progress, is functional and has shown read speeds of 100kHz on a laptop, 
+about 10x faster than libevioxx. 
 
 For more details on this code, go to the [Wiki](https://github.com/JeffersonLab/EvioTool/wiki)
 
@@ -17,7 +20,7 @@ This tool uses a standard "cmake" build scheme. This includes a build of needed 
 Requirements:
 
 * An installation of [ROOT](http://root.cern.ch) 
-    * Tested with ROOT versions up to 6.20
+    * Tested with ROOT versions up to 6.20 (+latest master)
 
 Steps:
 
@@ -31,7 +34,7 @@ Steps:
 
 The libraries currently created are:
 
-* libevio-5.1
+* libevio
     * The libevioxx is skipped by default.
 * libEvioTool 
 * libHPSEvioReader
@@ -43,6 +46,24 @@ The executatble currently created include:
 * HPS_Trigger_Filter
 * evio2xml
 * eviocopy
+
+## Linking your own code against EvioTool
+
+By default a `cmake install` will put two packages in <install-dir>/lib/cmake, one for evio and
+one for both EvioTool and HPSEvioReader. To link to these pacakges in your own CMakeLists.txt
+file you want to include the following lines:
+```cmake
+find_package(ROOT REQUIRED)
+include(${ROOT_USE_FILE})
+find_package(EvioTool CONFIG REQUIRED)
+```
+
+To make sure that cmake finds the packages when you run it on your own project, add CMAKE_PREFIX_PATH
+to point to your installation of EvioTool:
+
+```bash
+cmake -DCMAKE_PREFIX_PATH=<install-dir>/lib/cmake  ..
+```
 
 ## Using the HPS_Trigger_Filter
 
