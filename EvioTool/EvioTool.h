@@ -18,6 +18,7 @@
 #define __EvioTool__
 
 #include <cstdio>
+#include <iomanip>
 #include <iostream>
 #include <fstream>
 #include <map>
