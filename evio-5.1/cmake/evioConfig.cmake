@@ -1,1 +1,1 @@
-include("${CMAKE_CURRENT_LIST_DIR}/EvioTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/evioTargets.cmake")
