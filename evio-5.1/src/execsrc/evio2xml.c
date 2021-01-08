@@ -125,7 +125,7 @@ static char *xml;
 static char indentStr[3*MAXDEPTH + 1];
 
 static void indent() {
-    xml += sprintf(xml, indentStr);
+    xml += sprintf(xml, "%s",  indentStr);
 }
 
 static int getIndent() {
@@ -236,8 +236,8 @@ int main (int argc, char **argv)
     if((buf==NULL)||(xml==NULL)) {
         int sz=maxbuf*sizeof(unsigned int);
         printf("\n   *** Unable to allocate buffers ***\n\n");
-        printf("\n buf size=%d bytes, addr=0x%x     xml size=%d bytes, addr=0x%x\n\n",sz,buf,
-               sz*EVIO2XML,xml);
+        printf("\n buf size=%d bytes, addr=0x%p     xml size=%d bytes, addr=0x%p\n\n",sz,(void *)buf,
+               sz*EVIO2XML,(void *)xml);
         exit(EXIT_FAILURE);
     }
 

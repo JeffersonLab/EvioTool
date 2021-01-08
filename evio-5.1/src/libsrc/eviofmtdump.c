@@ -40,7 +40,7 @@ static char *xml;
 static char indentStr[3*MAXDEPTH + 1];
 
 static void indent() {
-    xml += sprintf(xml, indentStr);
+    xml += sprintf(xml, "%s", indentStr);
 }
 
 /** Routine to increase the xml indentation by 3 spaces up to the limit. */
@@ -133,8 +133,8 @@ int eviofmtdump(int *iarr, int nwrd, unsigned char *ifmt, int nfmt,
     ncnf  = 0;   /* how many times must repeat a format */
     iterm = 0;
 
-    b8    = (char *)&iarr[0];                  /* beginning of data */
-    b8end = (char *)&iarr[nwrd] - nextrabytes; /* end of data + 1 */
+    b8    = (int8_t *)&iarr[0];                  /* beginning of data */
+    b8end = (int8_t *)&iarr[nwrd] - nextrabytes; /* end of data + 1 */
 
 #ifdef DEBUG
   printf("\n======== eviofmtdump start (xml=0x%08x) ==========\n",xml);
@@ -210,7 +210,7 @@ int eviofmtdump(int *iarr, int nwrd, unsigned char *ifmt, int nfmt,
                 /* left parenthesis - set new lv[] */
                 if (kcnf == 0) {
 
-                    indent(9);
+                    indent();
                     xml += sprintf(xml,"\n%s<repeat ", indentStr);
 
                     if (repeatFromN) {
