@@ -127,7 +127,7 @@ int main(int argc, const char * argv[])
   unsigned long evt_count=0;
   unsigned long totalCount=0;
   
-  std::chrono::microseconds totalTime();
+  std::chrono::microseconds totalTime = std::chrono::microseconds(0s);
 
   auto start = std::chrono::system_clock::now();
   auto time1 = start;
@@ -163,7 +163,7 @@ int main(int argc, const char * argv[])
   //      /* statistics */
         auto time2 = std::chrono::system_clock::now();
         std::chrono::microseconds delta_t = std::chrono::duration_cast<std::chrono::microseconds>(time2-time1);
-        totalTime += delta_t;
+        totalTime = totalTime + delta_t;
         double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
         totalCount += evt_count;
         double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
