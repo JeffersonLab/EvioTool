@@ -4107,7 +4107,7 @@ static int evWriteImpl(int handle, const uint32_t *buffer, int useMutex)
     if (useMutex) mutexLock(a);
 
     if (debug && a->splitting) {
-printf("evWrite: splitting, bytesToFile = %lu (bytes), event bytes = %u, bytesToBuf = %u, split = %lu\n",
+printf("evWrite: splitting, bytesToFile = %llu (bytes), event bytes = %u, bytesToBuf = %u, split = %llu\n",
                a->bytesToFile, bytesToWrite, a->bytesToBuf, a->split);
     }
     
@@ -4165,11 +4165,11 @@ if (debug) printf("evWrite: account for adding empty last block when splitting\n
 /* If dictionary was written, do NOT include that when deciding to split */
 /* totalSize -= a->dictLength; */
 
-if (debug) printf("evWrite: splitting = %s: total size = %lu >? split = %lu\n",
+if (debug) printf("evWrite: splitting = %s: total size = %llu >? split = %llu\n",
                           (totalSize > a->split ? "True" : "False"),
                           totalSize, a->split);
 
-if (debug) printf("evWrite: total size components: bytesToFile = %lu, bytesToBuf = %u, ev bytes = %u, additional headers = %d * 32, dictlen = %u\n",
+if (debug) printf("evWrite: total size components: bytesToFile = %llu, bytesToBuf = %u, ev bytes = %u, additional headers = %d * 32, dictlen = %u\n",
         a->bytesToFile, a->bytesToBuf, bytesToWrite, headerCount, a->dictLength);
 
         /* If we're going to split the file ... */
@@ -4378,7 +4378,7 @@ if (debug) {
         printf("         internal buffer cnt = %u\n", a->eventsToBuf);
         printf("         block cnt = %u\n", a->blkEvCount);
         printf("         bytes-to-buf  = %u\n", a->bytesToBuf);
-        printf("         bytes-to-file = %lu\n", a->bytesToFile);
+        printf("         bytes-to-file = %llu\n", a->bytesToFile);
         printf("         block # = %u\n", a->blknum);
 }
 
@@ -5218,14 +5218,14 @@ printf("DEcreasing internal buffer size to %u words\n", bufferSize);
             /* Smallest possible evio format file = 18 32-bit ints.
              * Must also be bigger than a single buffer? */
             if (splitSize < 4*18) {
-if (debug) printf("evIoctl: split file size is too small! (%lu bytes), must be min %u\n",
+if (debug) printf("evIoctl: split file size is too small! (%llu bytes), must be min %u\n",
                   splitSize, 4*18);
                 handleWriteUnlock(handle);
                 return(S_EVFILE_BADSIZEREQ);
             }
             
             a->split = splitSize;
-if (debug) printf("evIoctl: split file at %lu (0x%lx) bytes\n", splitSize, splitSize);
+if (debug) printf("evIoctl: split file at %llu (0x%llx) bytes\n", splitSize, splitSize);
             break;
 
         /************************************************/

@@ -15,6 +15,7 @@ message(STATUS "ROOT found at: ${ROOT_DIR}")
 
 #
 # Set a default build type if none was specified
+#
 set(default_build_type "RELEASE")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
