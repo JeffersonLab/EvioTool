@@ -31,4 +31,27 @@ map<std::string,unsigned char> TSBank::TriggerNames ={
    {"FEE_Bot",19}
  };
 
+map<std::string,unsigned char> TSBank::TriggerNames2021 ={
+        {"Moller_top",0},
+        {"Moller_PDE_top",1},
+        {"Positron_top",2},
+        {"Positron_hodo_top",3},
+        {"Moller_bot",4},
+        {"Moller_PDE_bot",5},
+        {"Positron_bot",6},
+        {"Positron_hodo_bot",7},
+        {"Aprime_old",8},
+        {"Moller_pair",9},
+        {"Pair_2",10},
+        {"Muon_pair",11},
+        {"LED",12},
+        {"Cosmic",13},
+        {"Hodoscope",14},
+        {"Pulser",15},
+        {"Mult_0",16},
+        {"Mult_1",17},
+        {"FEE_Top",18},
+        {"FEE_Bot",19}
+};
+
 ClassImp(TSBank);

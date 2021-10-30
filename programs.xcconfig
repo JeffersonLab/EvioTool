@@ -1,9 +1,0 @@
-//
-//  programs.xcconfig
-//  EvioTool
-//
-#include "EvioTool.xcconfig"
-
-EXECUTABLE_PREFIX=
-EXECUTABLE_EXTENSION =
-

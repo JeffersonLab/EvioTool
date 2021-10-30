@@ -14,6 +14,7 @@
 using  Ecal_point_t=std::pair<int,int>;
 
 class block_iterator{
+    // This iterator will traverse the ECAL crystals, skipping x=0 or y=0, and the ECal hole
 public:
   using self_type = block_iterator;
   using iterator_category = std::input_iterator_tag;

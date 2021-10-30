@@ -84,6 +84,7 @@ public:
   //
   
   static map<std::string,unsigned char> TriggerNames;
+  static map<std::string,unsigned char> TriggerNames2021;
   
   struct TriggerBits_t {  // Trigger structure for the 2019 data set.
     bool Single_0_Top: 1; //  0   ( 150-8191) MeV (-31,31)   Low energy cluster
@@ -97,7 +98,7 @@ public:
     bool Pair_0      : 1; //  8    A'
     bool Pair_1      : 1; //  9    Moller
     bool Pair_2      : 1; // 10    pi0
-    bool Pair_3      : 1; // 11    -
+    bool Pair_3      : 1; // 11    muon
     bool LED         : 1; // 12    LED
     bool Cosmic      : 1; // 13    Cosmic
     bool Hodoscope   : 1; // 14    Hodoscope
