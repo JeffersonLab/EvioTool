@@ -125,15 +125,35 @@ public:
     if( i < data.size()) return( data[i]);
     else return(0);
   }
-  
+
   bool IsPulser(void){
     // Return true if the current event is a pulser or FCup event.
     // There are 2 ways that a pulser event can be created: Front Panel and VTP.
     // If Front Panel, then bit-15 is set on data[5].
     // If VTP        , then bit-15 is set on data[4].
     if( data.size() == 5 ) return(data[0] & (1<<29));
-    if( data.size() == 7 ) if( (data[4] & (1<<15)) || (data[5] & (1<<15))) return(true);
+    if( data.size() == 7 ) if( data[4] & (1<<15)) return(true);
     return(false);
+    }
+
+  bool IsFCup(void){
+    // Return true if the current event is a pulser or FCup event.
+    // There are 2 ways that a pulser event can be created: Front Panel and VTP.
+    // If Front Panel, then bit-15 is set on data[5].
+    // If VTP        , then bit-15 is set on data[4].
+    if( data.size() == 5 ) return(data[0] & (1<<29));
+    if( data.size() == 7 ) if( data[5] & (1<<15)) return(true);
+    return(false);
+  }
+
+  bool IsRandom(void){
+      // Return true if the current event is a pulser or FCup event.
+      // There are 2 ways that a pulser event can be created: Front Panel and VTP.
+      // If Front Panel, then bit-15 is set on data[5].
+      // If VTP        , then bit-15 is set on data[4].
+      if( data.size() == 5 ) return(data[0] & (1<<29));
+      if( data.size() == 7 ) if( (data[4] & (1<<15)) || (data[5] & (1<<15))) return(true);
+      return(false);
   }
   
   bool IsSingle0(void){

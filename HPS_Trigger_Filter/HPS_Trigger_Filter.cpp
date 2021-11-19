@@ -103,6 +103,12 @@ int main(int argc, const char * argv[]) {
   }else if( args.trigger_name == "single1" || args.trigger_name == "moller_pde"){
       trigger_setting.bits.Single_1_Top=true;
       trigger_setting.bits.Single_1_Bot=true;
+  }else if( args.trigger_name == "moller_all"){
+      trigger_setting.bits.Single_1_Top=true;
+      trigger_setting.bits.Single_1_Bot=true;
+      trigger_setting.bits.Single_0_Top=true;
+      trigger_setting.bits.Single_0_Bot=true;
+      trigger_setting.bits.Pair_1=true;
   }else if( args.trigger_name == "single2" || args.trigger_name == "positron"){
       trigger_setting.bits.Single_2_Top=true;
       trigger_setting.bits.Single_2_Bot=true;
@@ -117,6 +123,9 @@ int main(int argc, const char * argv[]) {
     trigger_setting.bits.Pulser = true;
   }else if( args.trigger_name == "fcup" ){
     Filter_FCup = true;
+  }else if( args.trigger_name == "random" ){
+      Filter_FCup = true;
+      trigger_setting.bits.Pulser = true;
   }else{
     try{
       size_t loc=0;
@@ -156,7 +165,7 @@ int main(int argc, const char * argv[]) {
       }
       if( (!args.exclusive && etool->Trigger->IsTrigger(trigger_setting)) ||
          ( args.exclusive && etool->Trigger->IsExactTrigger(trigger_setting)) ||
-         ( Filter_FCup && etool->Trigger->IsPulser() )
+         ( Filter_FCup && etool->Trigger->IsFCup() )
          ){
         if(args.debug >=2){
           bitset<32> trig_pattern(etool->Trigger->GetTriggerInt());

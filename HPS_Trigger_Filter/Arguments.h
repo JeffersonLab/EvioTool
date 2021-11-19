@@ -42,13 +42,15 @@ struct Arguments_t {
     cout << " 'FEE_Top'    - FEE top only.\n";
     cout << " 'FEE_Bot'    - FEE bottom only\n";
     cout << " 'muon'       - Pair3 mu+mu- trigger\n";
-    cout << " 'moller'     - Standard moller single0 trigger \n";
-    cout << " 'moller_pde' - Moller single0 with pde cut.\n";
+    cout << " 'moller'     - Standard moller single0 trigger, Top+Bottom \n";
+    cout << " 'moller_pde' - Moller with pde cut: single1, Top+Bottom\n";
     cout << " 'moller_pair'- Moller pair trigger.\n";
+    cout << " 'moller_all' - All moller triggers combined.\n";
     cout << " '2gamma'     - Multiplicity-0 or 2 photon trigger.\n";
     cout << " '3gamma'     - Multiplicity-1 or 3 photon trigger.\n";
     cout << " 'pulser'     - Pulser trigger bit. \n";
-    cout << " 'fcup'       - Faraday Cup trigger + pulser trigger.\n";
+    cout << " 'fcup'       - Faraday Cup trigger \n";
+    cout << " 'random'     - Faraday Cup + pulser trigger.\n";
     cout << " 'pair#'      - select pair0, pair1, pair2 or pair3.\n";
     cout << " 'single#'    - select single0, single1, single2, or single3.\n";
     cout << " '######'     - Where ##### is an integer value (int, hex, bin) whose bits represent the trigger you want.\n";
