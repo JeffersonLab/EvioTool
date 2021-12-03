@@ -127,7 +127,7 @@ int main(int argc, const char * argv[])
   unsigned long evt_count=0;
   unsigned long totalCount=0;
   
-  std::chrono::microseconds totalTime = std::chrono::microseconds(0s);
+  std::chrono::microseconds totalTime = std::chrono::microseconds(0);
 
   auto start = std::chrono::system_clock::now();
   auto time1 = start;
