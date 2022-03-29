@@ -6,7 +6,8 @@
 
 include(CMakeFindDependencyMacro)
 
-find_dependency(evio CONFIG REQUIRED)
-find_dependency(ROOT REQUIRED COMPONENTS Core)
+#find_dependency(evio CONFIG REQUIRED)
+#find_dependency(ROOT REQUIRED COMPONENTS Core)
+check_required_components(EvioTool)
 
 include("${CMAKE_CURRENT_LIST_DIR}/EvioToolTargets.cmake")

@@ -6,8 +6,8 @@
 #
 # Author: Maurik Holtrop
 #
-cmake_minimum_required(VERSION 3.0)
-project(EvioTool VERSION 0.9 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.5)
+project(EvioTool VERSION 1.0 LANGUAGES CXX)
 
 #---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 find_package(ROOT REQUIRED COMPONENTS Core)
@@ -174,7 +174,7 @@ add_library(EvioTool SHARED ${SOURCE_FILES_EVIOTOOL} EvioTool_Dict.cxx )
 # Prepare the include directory for export.
 target_include_directories(EvioTool
         PUBLIC
-        $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:include/EvioTool>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/EvioTool>
         )
 
@@ -210,19 +210,19 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/EvioToolConfig.cmake
 
 ############################################################
 #        EvioTool Test Executables
-#########################################################3##
+############################################################
 add_executable(EvioTool_Test EvioTool_Test/EvioTool_Test.cpp)
 add_dependencies(EvioTool_Test EvioTool)
 target_link_libraries(EvioTool_Test EvioTool evio)
 
 ############################################################
 #        HPSEvioReader library
-#########################################################3##
+############################################################
 
 add_library(HPSEvioReader SHARED ${SOURCE_FILES_HPSEVIOREADER} HPSEvioReader_Dict.cxx)
 target_include_directories(HPSEvioReader
                            PUBLIC
-                           $<INSTALL_INTERFACE:include>
+                           $<INSTALL_INTERFACE:include/EvioTool>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/HPSEvioReader>
                            )
 

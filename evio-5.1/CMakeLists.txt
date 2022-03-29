@@ -66,7 +66,7 @@ add_library(eviostatic STATIC ${SOURCE_FILES_EVIO})
 
 target_include_directories(evio
                            PUBLIC
-                           $<INSTALL_INTERFACE:include>
+                           $<INSTALL_INTERFACE:include/evio>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsrc>
                            )
 
