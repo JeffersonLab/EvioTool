@@ -8,6 +8,7 @@
 #
 cmake_minimum_required(VERSION 3.5)
 project(EvioTool VERSION 1.0 LANGUAGES CXX)
+set(CMAKE_EXPORT_NO_PACKAGE_REGISTRY True)
 
 #---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 find_package(ROOT REQUIRED COMPONENTS Core)
