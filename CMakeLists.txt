@@ -58,6 +58,8 @@ add_subdirectory(${ET_LIBRARY})
 
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -DDEBUG")
+set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
 
 message("------------- EvioTool ---------------------------")
 message("We have CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
