@@ -8,6 +8,13 @@
 //
 //  These are specialized data types to store FADC data.
 //
+//
+// !!!!!!WARNING!!!!!!
+// Currently, this only parses FADC banks with the format:  c,i,l,N(c,Ns)
+// In CLAS data, the FADC bank with tag=34 has a format: c,i,l,Ni
+// This will need additional work to pass this type.
+// TODO: Add additional formats for FADC banks.
+//
 #ifndef __FADCdata__
 #define __FADCdata__
 
@@ -52,6 +59,7 @@ public:
   unsigned long long reftime=0;       /* 64 bit unsinged int */
   unsigned short time=0;
   unsigned short adc=0;
+  unsigned int   i_adc=0;
   std::vector<unsigned short> samples;
 
 public:
@@ -59,6 +67,7 @@ public:
   FADCdata(unsigned char cr,unsigned char sl,unsigned int tr,unsigned long long refti, unsigned short ch, unsigned short ti, unsigned short adc_val):
   crate(cr),slot(sl),trig(tr),reftime(refti),chan(ch),time(ti),adc(adc_val){
   };
+  // Tag = 13 :: This is for c,i,l,N(c,Ns). We are creating N leafs with (c,Ns)
   FADCdata(unsigned char cr,unsigned char sl,unsigned int tr,unsigned long long ti, int &indx, unsigned char *cbuf):
   crate(cr),slot(sl),trig(tr),reftime(ti){
     chan = GET_CHAR(cbuf,indx);
@@ -68,7 +77,16 @@ public:
     samples.assign(sdata,sdata+nsamples);  // Fast(ish) copy of sample data. ~ 11ns for 50 samples, ~14ns for 100 samples.
     indx+=nsamples*2;
   };
-  
+  // Tag = 8 :: This if for c,i,l, Ni data. We are reading N leafs with (i)
+  FADCdata(unsigned char cr,unsigned char sl,unsigned int tr,unsigned long long refti, unsigned int adc_val):
+            crate(cr),slot(sl),trig(tr),reftime(refti),i_adc(adc_val){
+  };
+  // Tag = 8 :: This if for c,i,l, Ni data. We are reading N leafs with (i)
+  FADCdata(unsigned char cr,unsigned char sl,unsigned int tr,unsigned long long refti, unsigned char channel, unsigned short val):
+        crate(cr),slot(sl),trig(tr),reftime(refti),chan(channel),adc(val){
+  };
+
+
 public:
   size_t         GetSampleSize(){return samples.size();};
   unsigned short GetSample(int i){return samples[i];};
