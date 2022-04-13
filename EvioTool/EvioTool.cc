@@ -113,10 +113,11 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
   
   unsigned short formatTag  = (buf[0]>>20)&0xfff;
   unsigned short formatLen  = buf[0]&0xffff;
-#ifdef DEBUG
+
   string formatString       = string((const char *) &(((uint32_t*)buf)[1]));
-#endif
+  if(fDebug&Debug_L2) cout << "FADC formatTag " << formatTag << " len: " << formatLen << " String: " << formatString << "\n";
   int dataLen               = buf[1+formatLen]-1;
+
 #ifdef DEBUG
   int dataTag         = (buf[1+formatLen+1]>>16)&0xffff;
   int dataNum         = buf[1+formatLen+1]&0xff;
@@ -136,13 +137,35 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
   ll->data.reserve(16);
   unsigned char crate = node->this_tag;
   while( indx < buflen){
-    unsigned char slot       = GET_CHAR(cbuf,indx);
-    unsigned int  trig       = GET_INT(cbuf,indx);
-    unsigned long long time  = GET_L64(cbuf,indx);
-    int nchan  = GET_INT(cbuf,indx);
-    for(int jj=0; jj<nchan; ++jj){
-      ll->data.emplace_back(crate,slot,trig,time, indx, cbuf);
-      //      ll->data.emplace_back(indx, cbuf);
+    unsigned char slot       = GET_CHAR(cbuf,indx);  // "c"
+    unsigned int  trig       = GET_INT(cbuf,indx);   // "i"
+    unsigned long long time  = GET_L64(cbuf,indx);   // "l"
+    // The following is a cheat. For CLAS12 data, FADCs have either formatTag = 13, 8 or 12.
+    // Much faster to check an integer than to compare format strings and parse the stuff!!!
+    // TODO: This can be made more robust by additional sanity checks.
+    //
+    if(tag == 57601) { // formatTag = 13, with format string (c,i,l,N(c,Ns)) or (c,i,l,n(s,mc))
+        int nchan = GET_INT(cbuf, indx);
+        for (int jj = 0; jj < nchan; ++jj) {
+            ll->data.emplace_back(crate, slot, trig, time, indx, cbuf);
+            //      ll->data.emplace_back(indx, cbuf);
+        }
+    }else if(tag == 57650){  // formatTag = 8,  (for bank tag 57650), with format string (c,i,l,Ni)
+        int nvals = GET_INT(cbuf, indx);
+        for (int jj=0; jj< nvals; ++jj){
+            unsigned int value = GET_INT(cbuf, indx);
+            ll->data.emplace_back(crate, slot, trig, time, value);
+        }
+    }else if(tag == 57622){ // formatTag = 12, (for bank tag 57622), with format string (c,i,l,N(c,s))
+        int nchan = GET_INT(cbuf, indx);
+        for (int jj = 0; jj < nchan; ++jj) {
+            unsigned char chan = GET_CHAR(cbuf, indx);
+            unsigned short val = GET_SHORT(cbuf, indx);
+            ll->data.emplace_back(crate, slot, trig, time, chan, val);
+            //      ll->data.emplace_back(indx, cbuf);
+        }
+    }else{
+        if(fDebug&Debug_L1) std::cout << "Not processing tag = " << tag << std::endl;
     }
   }
   
