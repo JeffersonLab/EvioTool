@@ -50,6 +50,9 @@ int main(int argc, const char * argv[])
     etool= new EvioTool();
     etool->Open(args.filename.c_str());
   }
+
+  etool->tag_masks[0]=0;
+
   if(args.debug==0){
     etool->fDebug = 0b000000;
   }else if(args.debug==1){
@@ -88,9 +91,9 @@ int main(int argc, const char * argv[])
   while(etool->Next() == S_SUCCESS){
     if(args.debug) cout<<"EVIO Event " << evt_count << endl;
     evt_count++;
-    cout << "Header: size= " << Header->Size() << endl;
+    if(args.debug) cout << "Header: size= " << Header->Size() << endl;
     vector<unsigned int> hdat = etool->GetDataVector<unsigned int>(0);
-    cout << "Header: size= " << hdat.size() << endl;
+    if(args.debug) cout << "hdat: size= " << hdat.size() << endl;
     if(args.print_evt) {
       etool->PrintBank(10);
 //      if(args.show_head) {};
@@ -105,7 +108,12 @@ int main(int argc, const char * argv[])
         double rate = 1000000.0 * ((double) evt_count) / delta_t.count();
         totalCount += evt_count;
         double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-        printf("%s: %3.4g kHz,  %3.4g kHz Avg. Event: %6d\n", argv[0], rate/1000., avgRate/1000.,Header->data[0]);
+        if(Header->size()>0) {
+           printf("%s: %3.4g kHz,  %3.4g kHz Avg. Event: %6d\n", argv[0], rate / 1000., avgRate / 1000.,
+                  Header->data[0]);
+        }else{
+           printf("%s: %3.4g kHz,  %3.4g kHz Avg. Event: n/a\n", argv[0], rate / 1000., avgRate / 1000.);
+        }
         evt_count = 0;
         time1 = std::chrono::system_clock::now();
     }
@@ -115,7 +123,8 @@ int main(int argc, const char * argv[])
   totalTime += delta_t;
   totalCount += evt_count;
   double avgRate = 1000000.0 * ((double) totalCount) / totalTime.count();
-  printf("Last event: %6d\n",Header->data[0]);
+  if( Header->data.size()>0)
+      printf("Last event: %6d\n",Header->data[0]);
   printf("Final: %3.4g kHz \n", avgRate/1000.);
   return 0;
 }
