@@ -8,6 +8,8 @@
 
 #include "Bank.h"
 
+#include <utility>
+
 ClassImp(Bank);
 
 int  Bank::AddLeaf(string name,unsigned short itag,unsigned char inum,string desc,int type){
@@ -53,16 +55,16 @@ vector<string> Bank::GetNames(){
 
 
 int Bank::GetDataInt(string name,int idx){
-  return GetData<int>(name,idx);
+  return GetData<int>(std::move(name),idx);
 }
 float Bank::GetDataFloat(string name,int idx){
-  return GetData<float>(name,idx);
+  return GetData<float>(std::move(name),idx);
 }
 double Bank::GetDataDouble(string name,int idx){
-  return GetData<double>(name,idx);
+  return GetData<double>(std::move(name),idx);
 }
 string Bank::GetDataString(string name,int idx){
-  return GetData<string>(name,idx);
+  return GetData<string>(std::move(name),idx);
 }
 
 int Bank::GetDataInt(int ind,int idx){

@@ -33,10 +33,11 @@
 #define __Bank__
 
 #include <cstdio>
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <map>
+#include <utility>
 
 using namespace std;
 
@@ -48,7 +49,6 @@ using namespace std;
 #include "Leaf.h"
 #include "FADCdata.h"
 
-#define MAX_DATA 1000
 // TODO:
 // - Add a fast lookup for tag,num finding.
 
@@ -74,45 +74,40 @@ public:
   
 public:
   Bank(){
-    Init();
+    Bank::Init();
   };
   
-  virtual ~Bank(){
+  ~Bank() override {
     delete leafs;
     delete banks;
   }
 
-  Bank(string n,std::vector<unsigned short> itags,unsigned char inum,string desc):tags(itags),num(inum){
-    SetName(n.c_str());
-    SetTitle(desc.c_str());
-    Init();
+  Bank(const string &n, std::vector<unsigned short> itags, unsigned char inum, const string& desc):
+            TNamed(n.c_str(),desc.c_str() ), tags(std::move(itags)),num(inum){
+    Bank::Init();
   }
   
-  Bank(string n,unsigned short tag,unsigned char num,string desc):num(num){
+  Bank(const string &n,unsigned short tag,unsigned char num,const string &desc):
+            TNamed(n.c_str(),desc.c_str() ), num(num){
     tags.push_back(tag);
-    SetName(n.c_str());
-    SetTitle(desc.c_str());
-    Init();
+    Bank::Init();
   }
   
-  Bank(Bank const &cp) {
+  Bank(Bank const &cp)  : TNamed(cp) {
     tags = cp.tags;
     num = cp.num;
-    SetName(cp.GetName());
-    SetTitle(cp.GetTitle());
     leafs = (TObjArray *)cp.leafs->Clone();
     banks = (TObjArray *)cp.banks->Clone();
   }
-  Bank(Bank *cp){
+
+  explicit Bank(Bank *cp): TNamed(*cp){
     tags = cp->tags;
     num  = cp->num;
-    SetName(cp->GetName());
-    SetTitle(cp->GetTitle());
     leafs = (TObjArray *)cp->leafs->Clone();
     banks = (TObjArray *)cp->banks->Clone();
   }
   
-  virtual void Init(void){
+  virtual void Init(){
     // Initialize the Bank class.
     leafs = new TObjArray();
     leafs->SetOwner(kTRUE);
@@ -120,28 +115,27 @@ public:
     banks->SetOwner(kTRUE);
   }
   
-  unsigned char GetNum(void){ return(this_num);};
-  unsigned short GetTag(void){ return(this_tag);};
-  vector<unsigned short> &GetTags(void){return(tags);}
+  unsigned char GetNum(){ return(this_num);};
+  unsigned short GetTag(){ return(this_tag);};
+  vector<unsigned short> &GetTags(){return(tags);}
   
   virtual bool CheckTag(const unsigned short tag){
     // Check if the tag passes the required tag test:
     // if tag_masks.size()==1 then bank tag, masked by tag_masks[0], is looked for in the tags list. If found then OK.
     // if tag_masks.size()==tags.size() then for each item the bank tag is masked by tag_masks[i] and compared to tags[i]. If equal, then OK.
-    if(tags.size()>0 && tag_masks.size()==1){
+    if(!tags.empty() && tag_masks.size()==1){
       return( !(std::find(tags.begin(),tags.end(),(tag&tag_masks[0])) == tags.end())); // If not == end, then found.
     }else if(tags.size() == tag_masks.size()){
       for(int i=0;i<tags.size();++i){
         if( (tag&tag_masks[i]) == tags[i] ) return(true);
       }
       return(false); // Not found for any i, so false.
-    }else if(tags.size()==0){
+    }else if(tags.empty()){
       return(true);
     }else{
       std::cerr << "ERROR - Bank::CheckTag -- inconsistend tags and tag_masks definiion.\n";
       return(true);
     }
-    
   };
   
   // Add a new leaf type to this bank. COPY the leaf into the array.
@@ -149,7 +143,7 @@ public:
   template<typename T> Leaf<T> * Add_Leaf(Leaf<T> &leaf){
     int location= leafs->GetEntriesFast();
     string name=StoreLocation(leaf.GetName(),location);
-    Leaf<T> *new_leaf = new Leaf<T>(leaf); //// COPY the leaf, don't ref to original.
+    auto *new_leaf = new Leaf<T>(leaf); //// COPY the leaf, don't ref to original.
     leafs->Add(new_leaf);
     return(new_leaf);
   }
@@ -159,19 +153,18 @@ public:
     int location= leafs->GetEntriesFast();
     string name=StoreLocation(new_leaf->GetName(),location);
     leafs->Add(new_leaf);
-    return;
-  }
+ }
   
   template<typename T> Leaf<T> *AddLeaf(string name,unsigned short itag,unsigned char inum, string desc){
     // Create a new leaf and store it.
     int location= leafs->GetEntriesFast();
     name=StoreLocation(name,location);
-    Leaf<T> *new_leaf =new Leaf<T>(name,itag,inum,desc);
+    auto *new_leaf =new Leaf<T>(name,itag,inum,desc);
     leafs->Add(new_leaf);
     return(new_leaf);
   }
   
-  template<typename T> void RemoveLeaf(string name){
+  template<typename T> void RemoveLeaf(const string &name){
     // Remove the leaf with name from the leaf list.
     //
     int leaf_loc = FindLeaf(name);
@@ -185,27 +178,35 @@ public:
     name_index.erase(name);         // Remove from the index
   }
   
-  virtual Bank *AddBank(string name,unsigned short itag,unsigned char inum, string desc){
+  virtual Bank *AddBank(const string &name,unsigned short itag,unsigned char inum, const string &desc){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
     // name=StoreLocation(name,location);
-    Bank *newbank = new Bank(name,itag,inum,desc);
+    Bank *newbank = new Bank(name,itag,inum, desc);
     banks->Add(newbank);
     return(newbank);
   }
 
-  virtual Bank *AddBank(string name,std::vector<unsigned short> itags, unsigned char inum, string desc){
+  virtual Bank *AddBank(const string &name,std::vector<unsigned short> itags, unsigned char inum, const string &desc){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
     // name=StoreLocation(name,location);
-    Bank *newbank = new Bank(name,itags,inum,desc);
+    Bank *newbank = new Bank(name, std::move(itags), inum, desc);
     banks->Add(newbank);
     return(newbank);
   }
+
+  void AddBank(Bank *b){
+      // Add the already created bank b to the list of banks.
+      if(b) banks->Add(b);
+      else{
+          cout << "Cowardly not adding a null pointer to the banks list.\n";
+      }
+  }
   
-  void RemoveBank(string name){
+  void RemoveBank(const string &name){
     // Remove the bank with name and delete.
     TObject *o = banks->FindObject(name.c_str());
     if( o == nullptr){
@@ -225,12 +226,13 @@ public:
     delete r;
     banks->Compress();
   }
-  
-  virtual void  Clear(Option_t* = "");
-  
+
+  void  Clear(Option_t*) override;
+  virtual void  Clear(){this->Clear("");}
+
   string StoreLocation(string name,unsigned short location){
     // Store the location under name, make sure name is unique!
-    map<string,unsigned short>::iterator loc=name_index.find(name);
+    auto loc=name_index.find(name);
     if(loc == name_index.end()){
       name_index[name]=location;
     }else{
@@ -241,10 +243,10 @@ public:
     return(name);
   }
   
-  virtual int FindLeaf(string name){
+  virtual int FindLeaf(const string &name){
     // Find the leaf item with name, return location.
     // If not found, return -1.
-    map<string,unsigned short>::iterator loc=name_index.find(name);
+    auto loc=name_index.find(name);
     if(loc != name_index.end()){
       return loc->second;
     }else return( -1);
@@ -264,7 +266,7 @@ public:
     return(-1);
   }
 
-  virtual int FindBank(string name){
+  virtual int FindBank(const string &name){
     // Find a bank by name.
     TObject *o = banks->FindObject(name.c_str());
     int idx=banks->IndexOf(o);
@@ -289,69 +291,69 @@ public:
   
   virtual void  PushDataArray(const int idx, const unsigned long long *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<unsigned long long> *ll=(Leaf<unsigned long long> *)leafs->At(idx);
+    auto *ll=(Leaf<unsigned long long> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
 
   virtual void  PushDataArray(const int idx, const long long *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<long long> *ll=(Leaf<long long> *)leafs->At(idx);
+    auto *ll=(Leaf<long long> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
 
   virtual void  PushDataArray(const int idx, const unsigned int *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<unsigned int> *ll=(Leaf<unsigned int> *)leafs->At(idx);
+    auto *ll=(Leaf<unsigned int> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
   
   virtual void  PushDataArray(const int idx, const int *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<int> *ll=(Leaf<int> *)leafs->At(idx);
+    auto *ll=(Leaf<int> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
 
   virtual void  PushDataArray(const int idx, const unsigned short *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<unsigned short> *ll=(Leaf<unsigned short> *)leafs->At(idx);
+    auto *ll=(Leaf<unsigned short> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
   
   virtual void  PushDataArray(const int idx, const short *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<short> *ll=(Leaf<short> *)leafs->At(idx);
+    auto *ll=(Leaf<short> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
 
   
   virtual void  PushDataArray(const int idx, const unsigned char *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<unsigned char> *ll=(Leaf<unsigned char> *)leafs->At(idx);
+    auto *ll=(Leaf<unsigned char> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
 
   virtual void PushDataArray(const int idx, const char *dat,const int len){
     // Add the vector to the leaf at index.
     // Put a buffer of char into the string if Leaftype is string
-    Leaf<char> *ll=(Leaf<char> *)leafs->At(idx);
+    auto *ll=(Leaf<char> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
   
   virtual void  PushDataArray(const int idx, const double *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<double> *ll=(Leaf<double> *)leafs->At(idx);
+    auto *ll=(Leaf<double> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
   
   virtual void  PushDataArray(const int idx, const float *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<float> *ll=(Leaf<float> *)leafs->At(idx);
+    auto *ll=(Leaf<float> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
   
   virtual void  PushDataArray(const int idx, const FADCdata *dat,const int len){
     //    // Add the vector to the back of the data of the leaf at index idx
-    Leaf<FADCdata> *ll=(Leaf<FADCdata> *)leafs->At(idx);
+    auto *ll=(Leaf<FADCdata> *)leafs->At(idx);
     ll->PushDataArray(dat,len);
   }
 
@@ -364,7 +366,7 @@ public:
     string s;
     while((c[0]!=0x4)&&((c-start)< len)) {
       char *n=c;
-      while( std::isprint(*n++)){};
+      while( std::isprint(*n++)){;};
       if( (n-c-1)>0){
         s.assign(c,n-c-1); // This chomps off the non-print, usually \n.
         ((Leaf<string> *)leafs->At(index))->PushBack(s);
@@ -389,7 +391,7 @@ public:
     return ((Leaf_base *)leafs->At(loc))->Size();
   }
   
-  size_t GetLeafSize(string leaf_name){
+  size_t GetLeafSize(const string &leaf_name){
     // Return the size of the leaf with name leaf_name
     int loc=GetIndexFromName(leaf_name);
     if(loc<0){
@@ -400,11 +402,11 @@ public:
   
   template<typename T> T GetData(int location, int ind){
     // Return the data for the leaf at location and index ind.
-    Leaf<T> *li= (Leaf<T> *)leafs->At(location);
+    auto *li= (Leaf<T> *)leafs->At(location);
     return li->GetData(ind);
   }
 
-  template<typename T> T GetData(string leaf_name, int ind){
+  template<typename T> T GetData(const string &leaf_name, int ind){
     // Return the data for the leaf with leaf_name at index ind.
     int loc=GetIndexFromName(leaf_name);
     if(loc<0){
@@ -423,7 +425,7 @@ public:
     return( (static_cast<Leaf<T> *>(leafs->At(loc))->data) );
   }
 
-  template<typename T> vector<T> &GetDataVector(string leaf_name){
+  template<typename T> vector<T> &GetDataVector(const string &leaf_name){
   // Return a reference to the data vector for the leaf with leaf_name.
     int loc=GetIndexFromName(leaf_name);
     return GetDataVector<T>(loc);
@@ -438,14 +440,14 @@ public:
     return( &(static_cast<Leaf<T> *>(leafs->At(loc))->data) );
   }
   
-  template<typename T> vector<T> *GetDataVectorPtr(string leaf_name){
+  template<typename T> vector<T> *GetDataVectorPtr(const string &leaf_name){
     // Return a reference to the data vector for the leaf with leaf_name.
     int loc=GetIndexFromName(leaf_name);
     return GetDataVector<T>(loc);
   }
 
   
-  virtual Bank  *GetBankPtr(string name){
+  virtual Bank  *GetBankPtr(const string &name){
     // Return pointer to bank with name.
     return ((Bank *)banks->FindObject(name.c_str()));
   }
@@ -465,7 +467,7 @@ public:
   virtual double GetDataDouble(int ind,int idx);
   virtual string GetDataString(int ind,int idx);
 
-  virtual inline int GetIndexFromName(string leaf_name){
+  virtual inline int GetIndexFromName(const string &leaf_name){
     // Gets the *location*, i.e type*MAX_DATA + index
     // map<string,unsigned short>::iterator found;
     auto found = name_index.find(leaf_name);
@@ -476,12 +478,14 @@ public:
     return(found->second);
   }
   
-  virtual size_t size(int type=0){
+  virtual size_t size(){
     return( leafs->GetEntriesFast());
   }
-  
-  virtual void PrintBank(int print_leaves=0,int depth=10,int level=0);
-  
+
+  virtual void PrintBank(int print_leaves,int depth,int level);
+  virtual void PrintBank(){this->PrintBank(10,10,0);}
+  virtual void PrintBank(int print_leaves){this->PrintBank(print_leaves,10,0);}
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(Bank,1);
