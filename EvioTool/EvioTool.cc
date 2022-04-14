@@ -110,12 +110,17 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
   }
   
   if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " with specified AddOrFillLeaf<FADCdata> \n";
-  
+
+#ifdef DEBUG
   unsigned short formatTag  = (buf[0]>>20)&0xfff;
+#endif
   unsigned short formatLen  = buf[0]&0xffff;
 
+#ifdef DEBUG
   string formatString       = string((const char *) &(((uint32_t*)buf)[1]));
   if(fDebug&Debug_L2) cout << "FADC formatTag " << formatTag << " len: " << formatLen << " String: " << formatString << "\n";
+#endif
+
   int dataLen               = buf[1+formatLen]-1;
 
 #ifdef DEBUG
