@@ -166,7 +166,7 @@ public:
     }
   }
   
-  size_t size(int type=0) override{
+  size_t size() override{
     return(svt_data.size());
   }
 
