@@ -51,7 +51,7 @@ public:
   
   void PushDataArray(const int idx, const unsigned int *dat,const int len) override;
   
-  size_t size(int type=0) override{
+  size_t size() override{
     return(svt_data.size());
   }
   
