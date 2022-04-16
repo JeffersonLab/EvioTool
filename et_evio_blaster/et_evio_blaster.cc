@@ -96,22 +96,19 @@ myptr[6] = 0; /* Reserved */ \
 myptr[7] = 0xc0da0100; /* EV_MAGIC */
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <signal.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <csignal>
 #include <sys/types.h>
 #include <unistd.h>
-#include <limits.h>
+#include <climits>
 #include <getopt.h>
-#include <time.h>
+#include <ctime>
 #include <sys/time.h>
-#include <math.h>
-#ifdef sun
-#include <thread.h>
-#endif
-#include "et.h"
+#include <cmath>
 
+#include "et.h"
 #include "evio.h"
 
 #include <iostream>
@@ -138,8 +135,6 @@ static void * signal_thread (void *arg);
 
 void Print_Usage(const char *name);
 void Parse_Args(int *argc, char **argv, Arguments_t *p_arg);
-
-
 
 int main(int argc,char **argv)
 {
@@ -178,7 +173,7 @@ int main(int argc,char **argv)
   
   /* allocate some memory */
   p_et_event = (et_event **) calloc(args.chunk, sizeof(et_event *));
-  if (p_et_event == NULL) {
+  if (p_et_event == nullptr) {
     printf("%s: out of memory\n", argv[0]);
     exit(1);
   }
@@ -188,19 +183,14 @@ int main(int argc,char **argv)
   /*************************/
   /* block all signals */
   sigfillset(&sigblock);
-  status = pthread_sigmask(SIG_BLOCK, &sigblock, NULL);
+  status = pthread_sigmask(SIG_BLOCK, &sigblock, nullptr);
   if (status != 0) {
     printf("%s: pthread_sigmask failure\n", argv[0]);
     exit(1);
   }
-  
-#ifdef sun
-  /* prepare to run signal handling thread concurrently */
-  thr_setconcurrency(thr_getconcurrency() + 1);
-#endif
-  
+
   /* spawn signal handling thread */
-  pthread_create(&tid, NULL, signal_thread, (void *)NULL);
+  pthread_create(&tid, nullptr, signal_thread, (void *)nullptr);
   
   /******************/
   /* open ET system */
@@ -277,20 +267,15 @@ int main(int argc,char **argv)
     
     while (evio_has_events) {
       
-//#if defined __APPLE__
-//      //    et_system_setgroup(id, group); // Setting the group does not work on a Mac.
-//      status = et_event_new(id, attach1, p_et_event, ET_SLEEP, NULL, args.et_event_size_max*sizeof(uint32_t));
-//      numRead=1;
-//      //    status = et_events_new(id, attach1, p_et_event, ET_SLEEP, NULL, args.et_event_size_max, chunk, &numRead); // Neither does sending more than one event request.
-//#else
       if(args.chunk>1){
-        status = et_events_new(et_system_id, attach1, p_et_event, ET_SLEEP, NULL, args.et_event_size_max*sizeof(uint32_t), args.chunk, &numRead);
+        status = et_events_new(et_system_id, attach1, p_et_event, ET_SLEEP, nullptr,
+                               args.et_event_size_max*sizeof(uint32_t), args.chunk, &numRead);
       }else{
-        status = et_event_new(et_system_id, attach1, p_et_event, ET_SLEEP, NULL, args.et_event_size_max*sizeof(uint32_t));
+        status = et_event_new(et_system_id, attach1, p_et_event, ET_SLEEP, nullptr,
+                              args.et_event_size_max*sizeof(uint32_t));
         numRead=1;
       }
-//#endif
-      
+
       if (status == ET_OK) {
         ;
       }
@@ -318,7 +303,7 @@ int main(int argc,char **argv)
         printf("%s: socket communication error\n", argv[0]);
         goto error;
       }
-      else if (status != ET_OK) {
+      else  {  // status != ET_OK
         printf("%s: request error\n", argv[0]);
         goto error;
       }
@@ -328,7 +313,7 @@ int main(int argc,char **argv)
       unsigned int *pdata;
       uint32_t evio_buflen=0;
       const uint32_t *evio_ptr;
-      
+
       for (int i=0; i < numRead; i++) {
         et_event_getdata(p_et_event[i], (void **) &pdata);
         et_event_getlength(p_et_event[i],&et_data_buflen);
@@ -468,7 +453,7 @@ void Parse_Args(int *argc,char **argv, Arguments_t *p_arg){
   p_arg->et_block=false;
   p_arg->chunk = 1;
   p_arg->delay = 0;
-  p_arg->et_event_size_max=2048;
+  p_arg->et_event_size_max=32768;
   p_arg->remote = false;
   
   
@@ -568,7 +553,7 @@ void Print_Usage(const char *name){
   cout << "  -f  -et_name name  Attach ET to process with file <name>\n";
   cout << "  -h  -host    host  Attach ET to host\n";
   cout << "  -p  -et_port port  Attach ET to port \n";
-  cout << "  -c  -cunk chunk    Get chunk events in one go. [1]\n";
+  cout << "  -c  -chunk chunk    Get chunk events in one go. [1]\n";
   cout << "  -s  -size evtsize  Set max event size to evtsize in words. [2048]\n";
   cout << "  -r  -remote        Force a remote (network) connection \n";
   
