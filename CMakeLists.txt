@@ -10,6 +10,8 @@ cmake_minimum_required(VERSION 3.5)
 project(EvioTool VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_EXPORT_NO_PACKAGE_REGISTRY True)
 
+set(CMAKE_CXX_STANDARD 17)
+
 #---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 find_package(ROOT REQUIRED COMPONENTS Core)
 message(STATUS "ROOT found at: ${ROOT_DIR}")
@@ -56,7 +58,6 @@ add_subdirectory(${EVIO_LIBRARY})
 set(ET_LIBRARY   et-16.1)
 add_subdirectory(${ET_LIBRARY})
 
-
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -DDEBUG")
 set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
@@ -77,7 +78,7 @@ message("--------------------------------------------------")
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 
-include_directories(${EVIO_LIBRARY}/src/libsrc EvioTool HPSEvioReader)
+include_directories(${EVIO_LIBRARY}/src/libsrc ${ET_LIBRARY}/src/libsrc EvioTool HPSEvioReader)
 
 if(APPLE)
   # use, i.e. don't skip the full RPATH for the build tree
@@ -263,8 +264,18 @@ add_dependencies(HPS_Trigger_Filter HPSEvioReader EvioTool)
 target_link_libraries(HPS_Trigger_Filter HPSEvioReader EvioTool evio)
 
 install(TARGETS EvioTool_Test         DESTINATION bin)
-
 install(TARGETS HPSEvioReader_Test  DESTINATION bin)
 install(TARGETS HPS_Trigger_Test  DESTINATION bin)
 install(TARGETS HPS_Trigger_Filter  DESTINATION bin)
 
+############################################################
+#        ET Testing Code.
+#########################################################3##
+
+add_executable(et_evio_blaster et_evio_blaster/et_evio_blaster.cc )
+target_link_libraries(et_evio_blaster evio et-16.1)
+install(TARGETS et_evio_blaster     DESTINATION bin)
+
+add_executable(et_evio_test_consumer et_evio_test_consumer/et_evio_test_consumer.cc )
+target_link_libraries(et_evio_test_consumer evio et-16.1)
+install(TARGETS et_evio_test_consumer     DESTINATION bin)
