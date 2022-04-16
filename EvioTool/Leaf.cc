@@ -42,7 +42,7 @@ template <> int EvioTool::AddOrFillLeaf<string>(const unsigned int *buf,int len,
     if(fAutoAdd){
       char str[100];
       sprintf(str,"String-%u-%u",tag,num);
-      if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
       node->AddLeaf<string>(str,tag,num,"Auto added string leaf");
       loc= node->leafs->GetEntriesFast()-1;
     }else{
@@ -50,7 +50,7 @@ template <> int EvioTool::AddOrFillLeaf<string>(const unsigned int *buf,int len,
     }
   }
   
-  if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " template specification version for <string> " << endl;
+  if(fDebug & EvioTool_Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " template specification version for <string> " << endl;
 
   // Specialized version for an array of character strings.
   // Add the vector to the leaf at index.

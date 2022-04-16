@@ -36,9 +36,6 @@
 #include <time.h>
 #include <sys/time.h>
 
-#ifdef sun
-#include <thread.h>
-#endif
 #include "et.h"
 
 /* prototype */
@@ -272,12 +269,7 @@ int main(int argc,char **argv) {
     printf("%s: pthread_sigmask failure\n", argv[0]);
     exit(1);
   }
-  
-#ifdef sun
-  /* prepare to run signal handling thread concurrently */
-  thr_setconcurrency(thr_getconcurrency() + 1);
-#endif
-  
+
   /* spawn signal handling thread */
   pthread_create(&tid, NULL, signal_thread, (void *)NULL);
   

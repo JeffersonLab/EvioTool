@@ -6,11 +6,6 @@
 //  Copyright (c) 2014 University of New Hampshire. All rights reserved.
 //
 
-// TODO:
-// - Add a type for 0x0f - FADC format banks = Mode 7
-// - Add types for uint32_t = unsigned int
-// - A
-
 #include "EvioTool.h"
 
 //----------------------------------------------------------------------------------
@@ -26,24 +21,47 @@ EvioTool::EvioTool(string infile): Bank("EvioTool",{},0,"The top node of the EVI
 int EvioTool::Open(const char *filename,const char *dictf){
   // Open an EVIO file for parsing.
   int stat;
-  string title="Evio tree for ";
-  title.append(filename);
+//  string title="Evio tree for ";
+//  title.append(filename);
   if((stat=evOpen((char *)filename,(char *)"r",&evio_handle))!=S_SUCCESS){
     cerr << "EvioTool::Open -- ERROR -- Could not open file " << filename << endl;
+    fIsOpen = false;
     return(1);
   }
-  
-  char *d;
-  uint32_t len;
-  stat=evGetDictionary(evio_handle,&d,&len);
-  if((stat==S_SUCCESS)&&(d!=NULL)&&(len>0)){
-    cout << "The Evio file has a dictionary, but I don't have a parser yet.\n";
-  }
+  fIsOpen = true;
+//  char *d;
+//  uint32_t len;
+//  stat=evGetDictionary(evio_handle,&d,&len);
+//  if((stat==S_SUCCESS)&&(d!=NULL)&&(len>0)){
+//    cout << "The Evio file has a dictionary, but I don't have a parser yet.\n";
+//  }
   return(0);
+}
+
+int EvioTool::OpenEt(string station_name, string et_name, string host,
+                     unsigned short port, int pos, int ppos, bool no_block){
+   // Open an ET system channel to read the events from.
+   // Arguments:
+   // station_name  - Arbitrary station name
+   // et_name       - File name of the ET buffer, see -f for et_start.
+   // host          - host name the ET system is running on.
+   // port          - port number the ET system is listening on, default 11111
+   // pos           - requested relative position in the ET system ring.
+   // ppos          - requested parallel position in the ET system.
+
+   read_from_et = true;
+   et_openconfig   openconfig;
+
+   // Open the ET system
+   et_open_config_init(&openconfig);
+   et_open_config_sethost(openconfig, host.c_str());
+   et_open_config_setcast(openconfig, ET_DIRECT);
+   et_open_config_setserverport(openconfig, port);
 }
 
 void EvioTool::Close(){
   evClose(evio_handle);
+  fIsOpen = false;
 }
 
 void EvioTool::parseDictionary(const char *dictf){
@@ -57,10 +75,10 @@ int EvioTool::NextNoParse(){
   // Read an event from the EVIO file, but don't parse it.
   
   int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
-  if(stat==EOF) return(0);
+  if(stat==EOF) return(EvioTool_Status_EOF);
   if(stat!=S_SUCCESS){
-    cerr << "EvioTool::Next() -- ERROR -- problem reading file. \n";
-    return(-1);
+    cerr << "EvioTool::NextNoParse() -- ERROR -- problem reading file. -- evio status = " << stat << "\n";
+    return(EvioTool_Status_ERROR);
   }
   
   return 1;
@@ -71,10 +89,10 @@ int EvioTool::Next(){
   // Returns 0 on success, or an error code if not.
   
   int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
-  if(stat==EOF) return(-1);
+  if(stat==EOF) return(EvioTool_Status_EOF);
   if(stat!=S_SUCCESS){
-    cerr << "EvioTool::Next() -- ERROR -- problem reading file. \n";
-    return(-2);
+    cerr << "EvioTool::Next() -- ERROR -- problem reading file. -- evio status = " << stat << "\n";
+    return(EvioTool_Status_ERROR);
   }
   if(fFullErase) Clear("Full"); // Clear out old data.
   else Clear();
@@ -101,7 +119,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
     if(fAutoAdd){
       char str[100];
       sprintf(str,"FADC-%u-%u",tag,num);
-      if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
       node->AddLeaf<FADCdata>(str,tag,num,"Auto added string leaf");
       loc= node->leafs->GetEntriesFast()-1;
     }else{
@@ -109,7 +127,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
     }
   }
   
-  if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " with specified AddOrFillLeaf<FADCdata> \n";
+  if(fDebug & EvioTool_Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " with specified AddOrFillLeaf<FADCdata> \n";
 
 #ifdef DEBUG
   unsigned short formatTag  = (buf[0]>>20)&0xfff;
@@ -118,7 +136,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
 
 #ifdef DEBUG
   string formatString       = string((const char *) &(((uint32_t*)buf)[1]));
-  if(fDebug&Debug_L2) cout << "FADC formatTag " << formatTag << " len: " << formatLen << " String: " << formatString << "\n";
+  if(fDebug&EvioTool_Debug_L2) cout << "FADC formatTag " << formatTag << " len: " << formatLen << " String: " << formatString << "\n";
 #endif
 
   int dataLen               = buf[1+formatLen]-1;
@@ -170,7 +188,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
             //      ll->data.emplace_back(indx, cbuf);
         }
     }else{
-        if(fDebug&Debug_L1) std::cout << "Not processing tag = " << tag << std::endl;
+        if(fDebug & EvioTool_Debug_L1) std::cout << "Not processing tag = " << tag << std::endl;
     }
   }
   
@@ -203,7 +221,7 @@ int EvioTool::ParseEvioBuff(const unsigned int *buf){
     }
     // Check if the event has the desired tag number. Skip if not.
     if(!CheckTag(this_tag)){ // Event tag not found in tags list, so skip it.
-      if(fDebug&Debug_Info2) cout << "Event of tag = " << this_tag << " skipped \n";
+      if(fDebug & EvioTool_Debug_Info2) cout << "Event of tag = " << this_tag << " skipped \n";
       return(S_SUCCESS);
     }
     
@@ -281,7 +299,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
   buf += dataOffset;
   int len = length-dataOffset;
   
-  if( (fDebug & Debug_Info2) && contentType < 0x10){
+  if((fDebug & EvioTool_Debug_Info2) && contentType < 0x10){
     for(i=0;i<depth;i++) cout << "    ";
     cout<< "L["<<depth<<"] parent= "<<node->GetName() <<" type = "<< contentType << " tag= " << tag << " num= " << (int)num<< endl;
   }
@@ -352,7 +370,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
       data    = buf;
       mask    = ((contentType==0xe)||(contentType==0x10))?0xffffffff:0xffff;
       
-      if(fDebug & Debug_Info2){
+      if(fDebug & EvioTool_Debug_Info2){
         for(i=0;i<depth;i++) cout << "    ";
         if(new_node)  cout<< "C["<<depth<<"] parent= "<<node->GetName() << " node= " << new_node->GetName() << "  tag= " << tag << " num= " << (int)num<<  endl;
         else          cout<< "C["<<depth<<"] parent= "<<node->GetName() << " node=  skipped   tag= " << tag << " num= " << (int)num<<  endl;
@@ -363,7 +381,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
         p+=(data[p]&mask)+1;
       }
       depth--;
-      if(fDebug & Debug_Info2){
+      if(fDebug & EvioTool_Debug_Info2){
         for(i=0;i<depth;i++) cout << "    ";
         cout<< "C["<<depth<<"] parent= "<<node->GetName() <<  endl;
       }
@@ -380,7 +398,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
 Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType, unsigned short tag,unsigned char num, Bank *node,int depth){
   
   if(depth<fChop_level || depth > fMax_level){  // We are pruning the tree.
-    if(fDebug & Debug_L2) cout << "EvioTool::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
+    if(fDebug & EvioTool_Debug_L2) cout << "EvioTool::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
     node->this_tag = tag; // TODO: VERIFY that this is correct and needed here.
     node->this_num = num;
     return node;
@@ -391,11 +409,11 @@ Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int paddi
     if(fAutoAdd){
       char str[100];
       sprintf(str,"Bank-%d-%d",tag,num);
-      if(fDebug&Debug_L2) cout << "Adding a new Bank to " << node->GetName() << " with name: " << str << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Adding a new Bank to " << node->GetName() << " with name: " << str << endl;
       loc=node->banks->GetEntriesFast();
       node->AddBank(str,tag,num,"Auto added Bank");
     }else{
-      if(fDebug&Debug_L2) cout << "Not adding a new bank for tag= " << tag<< " num= " << num << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Not adding a new bank for tag= " << tag << " num= " << num << endl;
       return NULL;
     }
   }
