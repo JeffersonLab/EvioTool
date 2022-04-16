@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(evio VERSION 5.1 LANGUAGES C CXX)
+set(CMAKE_EXPORT_NO_PACKAGE_REGISTRY True)
+set(CMAKE_CXX_STANDARD 11)
 
 # Set a default build type if none was specified
 set(default_build_type "RELEASE")
@@ -31,8 +33,6 @@ set(LIB_INSTALL_DIR ${INSTALL_LIB_DIR})
 
 #include_directories($ENV{CODA}/common/include)
 include_directories(src/libsrc src/libsrc++)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 message("--------------- ${EVIO_LIBRARY} -------------------------")
 message("We have CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
