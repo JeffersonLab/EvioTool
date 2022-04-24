@@ -908,7 +908,7 @@ static void et_command_loop(et_threadinfo *info)
 #ifdef _LP64
           pe  = (et_event *) (ET_64BIT_P(incoming[1],incoming[2]));
 #else
-          pe  = (et_event *) incoming[2];
+          fPEventBuffer  = (et_event *) incoming[2];
 #endif
           
           err = et_event_put(id, att, pe);
@@ -1263,7 +1263,7 @@ static void et_command_loop(et_threadinfo *info)
 #ifdef _LP64
           pe  = (et_event *) (ET_64BIT_P(incoming[1],incoming[2]));
 #else
-          pe  = (et_event *) incoming[2];
+          fPEventBuffer  = (et_event *) incoming[2];
 #endif
 
           err = et_event_dump(id, att, pe);
@@ -1655,9 +1655,9 @@ ET_HIGHINT((uintptr_t)events[i]), ET_LOWINT((uintptr_t)events[i]));
            * The following ifdef avoids compiler warnings.
            */
 /*#ifdef _LP64
-          pe  = (et_event *) ET_64BIT_P(ntohl(incoming[1]),ntohl(incoming[2]));
+          fPEventBuffer  = (et_event *) ET_64BIT_P(ntohl(incoming[1]),ntohl(incoming[2]));
 #else
-          pe  = (et_event *) ntohl(incoming[2]);
+          fPEventBuffer  = (et_event *) ntohl(incoming[2]);
 #endif*/
           pe               = ET_P2EVENT(etid, ntohl(incoming[1])); /* incoming[2] is NOT used */
           pe->length       = ET_64BIT_UINT(ntohl(incoming[3]),ntohl(incoming[4]));

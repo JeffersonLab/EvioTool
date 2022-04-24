@@ -30,7 +30,7 @@
 
 /* prototypes */
 #if 0
-static int et_llist_put(et_id *id, et_list *pl, et_event **pe, int num);
+static int et_llist_put(et_id *id, et_list *pl, et_event **fPEventBuffer, int num);
 #endif
 static int et_repair_outputlist(et_id *id, et_stat_id stat_id);
 static int et_repair_inputlist(et_id *id, et_stat_id stat_id);
@@ -483,14 +483,14 @@ static int et_repair_outputlist(et_id *id, et_stat_id stat_id)
    * right, and record the number of high priority events.
    */
   for (i=0; i < cnt+num ; i++) {
-/*printf("et_repair_outputlist: pe = %p, owner = %d, pri = %d, i = %d\n", pe, pe->owner, pe->priority, i);*/
+/*printf("et_repair_outputlist: fPEventBuffer = %p, owner = %d, pri = %d, i = %d\n", fPEventBuffer, fPEventBuffer->owner, fPEventBuffer->priority, i);*/
     pe->owner = -1;
     count++;
     if (pe->priority == ET_HIGH) {
       lasthigh++;
     }
     if (pe == pe_last_USR) {
-/*printf("et_repair_outputlist: last pe = %p\n", pe);*/
+/*printf("et_repair_outputlist: last fPEventBuffer = %p\n", fPEventBuffer);*/
       error = ET_OK;
       break;
     }
@@ -741,7 +741,7 @@ int et_station_write(et_id *id, et_stat_id stat_id, et_event *pe)
   
   pe->owner = ET_SYS;
   pl->cnt++;
-/* printf("stw, pe=%p, pl=%p, cnt=%d\n", pe, pl, pl->cnt);*/
+/* printf("stw, fPEventBuffer=%p, pl=%p, cnt=%d\n", fPEventBuffer, pl, pl->cnt);*/
   ps->fix.out.start--;
   et_llist_unlock(pl);
 
@@ -869,7 +869,7 @@ int et_station_read(et_id *id, et_stat_id stat_id, et_event **pe, int mode, et_a
   ps->fix.in.first = pl->firstevent;
   
   *pe = ET_PEVENT2USR(pl->firstevent, id->offset);
-/*printf("et_station_read: pe = %p, pl->firstevent = %p\n", *pe,  pl->firstevent);*/
+/*printf("et_station_read: fPEventBuffer = %p, pl->firstevent = %p\n", *fPEventBuffer,  pl->firstevent);*/
   pl->firstevent = (*pe)->next;
   (*pe)->owner = att;
   pl->cnt--;
@@ -914,7 +914,7 @@ int et_station_nwrite(et_id *id, et_stat_id stat_id, et_event *pe[], int num)
     pe_ET = ET_PEVENT2ET(pe[0], id->offset);
     pl->firstevent = pe_ET;
     pl->lastevent  = pe_ET;
-/*printf("et_station_nwrite: pe[0] = %p, pe[0]_ET = %p\n", pe[0], pe_ET);*/
+/*printf("et_station_nwrite: fPEventBuffer[0] = %p, fPEventBuffer[0]_ET = %p\n", fPEventBuffer[0], pe_ET);*/
     pe[0]->owner   = ET_SYS;
     if (pe[0]->priority == ET_HIGH) {
       /* pl->lasthigh was set to 0 by conductor read */
@@ -941,7 +941,7 @@ int et_station_nwrite(et_id *id, et_stat_id stat_id, et_event *pe[], int num)
       pe_last_USR->next = pe_ET;
       pl->lastevent = pe_ET;
       pe_last_USR = pe[i];
-/*printf("et_station_nwrite: pe[i] = %p, pe[i]_ET = %p\n", pe[i], pe_ET);*/
+/*printf("et_station_nwrite: fPEventBuffer[i] = %p, fPEventBuffer[i]_ET = %p\n", fPEventBuffer[i], pe_ET);*/
     }
     /* if ET_HIGH pri event ... */
     else {
@@ -1016,7 +1016,7 @@ int et_station_nwriteNoPri(et_id *id, et_stat_id stat_id, et_event *pe[], int nu
     pe_ET = ET_PEVENT2ET(pe[0], id->offset);
     pl->firstevent = pe_ET;
     pl->lastevent  = pe_ET;
-/*printf("et_station_nwrite: pe[0] = %p, pe[0]_ET = %p\n", pe[0], pe_ET);*/
+/*printf("et_station_nwrite: fPEventBuffer[0] = %p, fPEventBuffer[0]_ET = %p\n", fPEventBuffer[0], pe_ET);*/
     pe[0]->owner   = ET_SYS;
     pl->cnt++;
     num_in++;
@@ -1031,7 +1031,7 @@ int et_station_nwriteNoPri(et_id *id, et_stat_id stat_id, et_event *pe[], int nu
     pe_last_USR->next = pe_ET;
     pl->lastevent = pe_ET;
     pe_last_USR = pe[i];
-/*printf("et_station_nwrite: pe[i] = %p, pe[i]_ET = %p\n", pe[i], pe_ET);*/
+/*printf("et_station_nwrite: fPEventBuffer[i] = %p, fPEventBuffer[i]_ET = %p\n", fPEventBuffer[i], pe_ET);*/
     pe[i]->owner = ET_SYS;
     pl->cnt++;
   }
@@ -1504,11 +1504,11 @@ int et_llist_read(et_list *pl, et_event **pe)
   }
       
   pe[0] = pl->firstevent;
-/*printf("et_llist_read: pe[0] = %p, ->next = %p\n", pe[0], pe[0]->next);*/
+/*printf("et_llist_read: fPEventBuffer[0] = %p, ->next = %p\n", fPEventBuffer[0], fPEventBuffer[0]->next);*/
   
   for (i=1; i < cnt ; i++) {
     pe[i] = pe[i-1]->next;
-/*printf("et_llist_read: pe[%d] = %p, ->next = %p\n", i, pe[i], pe[i]->next); */
+/*printf("et_llist_read: fPEventBuffer[%d] = %p, ->next = %p\n", i, fPEventBuffer[i], fPEventBuffer[i]->next); */
   } 
   pl->firstevent = NULL;
   pl->cnt = 0;
@@ -1643,11 +1643,11 @@ int et_llist_write(et_id *id, et_list *pl, et_event **pe, int num)
 /*****************************************************
  * These are routines for writing to in/output lists from a
  * user's process - takes care of pointer translations.
- * The array of event pointers, pe, must be in the user's
+ * The array of event pointers, fPEventBuffer, must be in the user's
  * process space (as must be pl).
  *****************************************************/
 #if 0
-static int et_llist_put(et_id *id, et_list *pl, et_event **pe, int num)
+static int et_llist_put(et_id *id, et_list *pl, et_event **fPEventBuffer, int num)
 {
   int i, nevents_max = id->sys->config.nevents;
   et_event *plast;
@@ -1662,17 +1662,17 @@ static int et_llist_put(et_id *id, et_list *pl, et_event **pe, int num)
   plast = ET_PEVENT2USR(pl->lastevent, id->offset);
 
   if (pl->cnt == 0) {
-    pl->firstevent = ET_PEVENT2ET(pe[0], id->offset);
+    pl->firstevent = ET_PEVENT2ET(fPEventBuffer[0], id->offset);
   }
   else {
-    plast->next = ET_PEVENT2ET(pe[0], id->offset);
+    plast->next = ET_PEVENT2ET(fPEventBuffer[0], id->offset);
   }
 
   for (i=1; i < num ; i++) {
-    pe[i-1]->next = ET_PEVENT2ET(pe[i], id->offset);
+    fPEventBuffer[i-1]->next = ET_PEVENT2ET(fPEventBuffer[i], id->offset);
   }
   
-  pl->lastevent = ET_PEVENT2ET(pe[num-1], id->offset);
+  pl->lastevent = ET_PEVENT2ET(fPEventBuffer[num-1], id->offset);
   /* pl->events_in = pl->events_in + num; */
   pl->cnt += num;
 
