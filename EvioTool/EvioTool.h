@@ -71,7 +71,6 @@ public:
    bool fAutoAdd = false;   //!-  If true, add any bank encountered. If false add only banks already known, i.e. from the dictionary.
    int fChop_level = 1;     //!-  Chop, or collapse, the top N bank levels. Usually you want to collapse the top level (event structure) bank.
    int fMax_level = 9999;      //!-  Prune, or collapse, the bottom (deepest) N bank levels.
-   bool fIsOpen = false;    //!- True when a file or ET connection has been opened.
    // Setting fChop_level = 1 will mean the top most bank, usually a container bank tag=1 num=0,
    // is not copied but instead treated as if it wasn't there.
    // Setting fMax_level = fChop_level means you get only one deep banks. All banks of
@@ -80,26 +79,49 @@ public:
    bool fFullErase = false; //!- Useful with fAutoAdd=true and no dictionary, erase fully at new event, so bank structure is gone completely. Otherwise the bank structure is kept.
 
 private:
-   bool read_from_et = false;
-   int evio_handle = 0;  //!- Handle to the evio system
-   const unsigned int *evio_buf = nullptr; //!- Buf ptr to read event into.
-   unsigned int evio_buflen     = 0;     //!- length of buffer.
+public:
+   bool fIsOpen = false;    //!- True when a file or ET connection has been opened.
+   bool fReadFromEt = false;           //!- True of reading from ET.
+   unsigned int fEtReadChunkSize = 1; //!- Number of chunks (events) to grab at once from ET.
+   int fNumRead = 1;                  //!- Number of chunks actually read from ET
+   int fCurrentChunk=0;               //!- Current chunk being processed.
+   bool fEventValid = false;            //!- Set to true in Next() when the event buffer becomes valid, and false in EndEvent();
+   et_event    **fPEventBuffer = nullptr;   //!- ET event header buffer
+   et_sys_id   fEventId;
+   et_att_id   fEtAttach; //!- Attach handle to ET
+
+   int fEvioHandle = 0;    //!- Handle to the evio system
+   const unsigned int *fEvioBuf = nullptr; //!- Buf ptr to read event into.
+   unsigned int fEvioBufLen     = 0;     //!- length of buffer.
+
+   bool fMultiThread=false;      //!- Set to true if you are multi-threading Next().
+   // Notes:
+   // For multi-threading, you either need to have the Next() be in the master, or if Next is in multiple
+   // threads reading from the same source, we need to orchestrate the reads so another read does not overwrite the
+   // memory of the current one.
+   // So for
 
 public:
    EvioTool(string infile="");
-   virtual ~EvioTool(){};
+   virtual ~EvioTool(){
+      Close();             // Make sure the file or ET connection are closed properly.
+      if(fPEventBuffer) free(fPEventBuffer); // Clean up memory explicitly allocated by ET.
+   };
    int Open(const char *filename,const char *dictf=NULL);
-   int OpenEt(string station_name = "EvioTool", string et_name = "/tmp/ETBuffer", string host = "localhost",
+   int OpenEt(string station_name = "EvioTool", string et_name = "/tmp/clasprod", string host = "localhost",
               unsigned short port = 11111, int pos = 1, int ppos = 1, bool no_block = true);
 
    bool IsOpen(){ return fIsOpen;}
+   bool IsReadingFromEt(){return fReadFromEt;}
+   bool IsValid(){return fEventValid;}
    void Close();
    const uint32_t *GetBufPtr(void){  // Useful if you want to write the evio buffer.
-      return(evio_buf);
+      return(fEvioBuf);
    }
    void parseDictionary(const char *dictf);
    virtual int NextNoParse(void);
    virtual int Next(void);
+   virtual int EndEvent(void);
    virtual int ParseEvioBuff(const unsigned int *buf);                                  // Top level buffer parser.
    int ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node); // Recursive buffer parser.
    int LeafNodeHandler(const unsigned int *buf,int len, int padding, int contentType,unsigned short tag,unsigned char num,Bank *node);

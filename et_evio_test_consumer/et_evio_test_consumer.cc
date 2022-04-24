@@ -339,14 +339,14 @@ int main(int argc,char **argv) {
     /**************/
     
     /* example of single, timeout read */
-    /*status = et_events_get(id, attach1, pe, ET_TIMED, &timeout, chunk, &numRead);*/
+    /*status = et_events_get(id, attach1, fPEventBuffer, ET_TIMED, &timeout, chunk, &numRead);*/
     
     /* example of reading array of up to "chunk" events -- This DOES NOT WORK on MACs */
 #ifdef __APPLE__
     status = et_event_get(id, attach1, pe, ET_SLEEP, NULL);
     numRead=1;
 #else
-    status = et_events_get(id, attach1, pe, ET_SLEEP, NULL, chunk, &numRead);
+    status = et_events_get(id, attach1, fPEventBuffer, ET_SLEEP, NULL, chunk, &numRead);
 #endif
     if (status == ET_OK) {
       ;
@@ -437,10 +437,11 @@ int main(int argc,char **argv) {
     /**************/
     
     /* example of putting single event */
-    /* status = et_event_put(id, attach1, pe[0]);*/
+    /* status = et_event_put(id, attach1, fPEventBuffer[0]);*/
     
     /* example of putting array of events */
-    status = et_events_dump(id, attach1, pe, numRead);
+    //status = et_events_dump(id, attach1, pe, numRead);
+     status = et_events_put(id, attach1, pe, numRead);
     if (status == ET_ERROR_DEAD) {
       printf("%s: ET is dead\n", argv[0]);
       goto error;
