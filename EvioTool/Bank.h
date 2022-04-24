@@ -457,7 +457,7 @@ public:
     return (Bank *)banks->At(idx);
   }
 
-  // Full acknowledgement that these are redudant with GetData template version!
+  // Full acknowledgement that these are redundant with GetData template version!
   virtual int    GetDataInt(string name,int idx);
   virtual float  GetDataFloat(string name,int idx);
   virtual double GetDataDouble(string name,int idx);

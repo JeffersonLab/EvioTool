@@ -29,10 +29,15 @@ public:
 public:
   Leaf_base(): tag(0),num(0){;};
   Leaf_base(int itag, int inum): tag(itag),num(inum){;};
-  virtual void Clear(Option_t *){;};
-  virtual size_t Size(void){cerr<<"ERROR-Must have override!\n";return(-99);};  // Pure virtual; Must have an override, but =0 does not work with rootcling.
-  virtual void Print(Option_t *op) const {;};
+    Leaf_base(int itag, int inum, const string &name, const string &desc): TNamed(name, desc), tag(itag),num(inum){;};
+  void Clear(Option_t *) override {;};
+  virtual size_t Size(){cerr<<"ERROR-Must have override!\n";return(-99);};  // Pure virtual; Must have an override, but =0 does not work with rootcling.
+  virtual size_t size(){ return(this->Size());}
+  void Print(Option_t *op) const override{;};
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
   ClassDef(Leaf_base,1);
+#pragma clang diagnostic pop
 };
 
 template <class T> class Leaf : public Leaf_base {
@@ -45,15 +50,15 @@ public:
   
 public:
   Leaf(){;};
-  Leaf(Leaf const&cp):Leaf_base(cp.tag,cp.num), data(cp.data){ SetName(cp.GetName()); SetTitle(cp.GetTitle());};
-  Leaf(Leaf *cp): Leaf_base(cp->tag,cp->num),data(cp->data){ SetName(cp->GetName()); SetTitle(cp->GetTitle());};
-  Leaf(string n,int ta, int nu,string desc): Leaf_base(ta,nu) {SetName(n.c_str()); SetTitle(desc.c_str());}
+  Leaf(Leaf const&cp):Leaf_base(cp.tag,cp.num, cp.GetName(), cp.GetTitle()), data(cp.data){ };
+  explicit Leaf(Leaf *cp): Leaf_base(cp->tag,cp->num, cp->GetName(), cp->GetTitle()), data(cp->data){ };
+  Leaf(const string &n,int ta, int nu,const string &desc): Leaf_base(ta,nu, n.c_str(), desc.c_str()) {;}
   
-  virtual void CallBack(void){
-    // Could be implemented in a derived class to futher process the data right after the class is filled from an EVIO bank.
+  virtual void CallBack(){
+    // Could be implemented in a derived class to further process the data right after the class is filled from an EVIO bank.
   }
   
-  virtual void Clear(Option_t *opt=""){
+  void Clear(Option_t *opt) override{
     // Clear out the contents of the leaf, but do not delete the leaf.
     data.clear();
   }
@@ -76,11 +81,11 @@ public:
   void PushBack(T dat){
     data.push_back(dat);
   }
-  vector<T> GetDataVector(void){
+  vector<T> GetDataVector(){
     // Get the data vector. Creates a copy of the data. This is safe.
     return data;
   }
-  vector<T> *GetDataVectorPtr(void){
+  vector<T> *GetDataVectorPtr(){
     // Get the pointer to the data vector. This is not safe, but faster.
     // The data pointed to may disappear (i.e. at the next event.)
     return &data;
@@ -101,23 +106,23 @@ public:
     return(data.at(indx));
   }
 
-  size_t Size(void){
+  size_t Size() override{
     // Get the size in the data vector. (ROOT has capital first idiom)
     return(data.size());
   }
   
-  size_t size(void){
+  size_t size() override{
     // Get the size in the data vector. (std:: style size)
     return(data.size());
   }
   
-  static int Type(void){
+  static int Type(){
     // Return the type stored in this leaf. Static so can be used as
     // Leaf<int>::Type() etc.
     return(Leaf_None);
   };
   
-  virtual void Print(Option_t *op) const{
+  virtual void Print(Option_t *op) const override{
     // Print your self, and num of the contents.
     // To be compatible with TObject::Print(), which is needed for virtual use,
     // the num and level are encoded in the opt= "N10L3" is num=10, level=3

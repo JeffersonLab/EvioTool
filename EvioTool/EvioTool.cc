@@ -6,11 +6,6 @@
 //  Copyright (c) 2014 University of New Hampshire. All rights reserved.
 //
 
-// TODO:
-// - Add a type for 0x0f - FADC format banks = Mode 7
-// - Add types for uint32_t = unsigned int
-// - A
-
 #include "EvioTool.h"
 
 //----------------------------------------------------------------------------------
@@ -26,24 +21,109 @@ EvioTool::EvioTool(string infile): Bank("EvioTool",{},0,"The top node of the EVI
 int EvioTool::Open(const char *filename,const char *dictf){
   // Open an EVIO file for parsing.
   int stat;
-  string title="Evio tree for ";
-  title.append(filename);
-  if((stat=evOpen((char *)filename,(char *)"r",&evio_handle))!=S_SUCCESS){
+//  string title="Evio tree for ";
+//  title.append(filename);
+  if((stat=evOpen((char *)filename,(char *)"r",&fEvioHandle)) != S_SUCCESS){
     cerr << "EvioTool::Open -- ERROR -- Could not open file " << filename << endl;
+    fIsOpen = false;
     return(1);
   }
-  
-  char *d;
-  uint32_t len;
-  stat=evGetDictionary(evio_handle,&d,&len);
-  if((stat==S_SUCCESS)&&(d!=NULL)&&(len>0)){
-    cout << "The Evio file has a dictionary, but I don't have a parser yet.\n";
-  }
+  fIsOpen = true;
+//  char *d;
+//  uint32_t len;
+//  stat=evGetDictionary(fEvioHandle,&d,&len);
+//  if((stat==S_SUCCESS)&&(d!=NULL)&&(len>0)){
+//    cout << "The Evio file has a dictionary, but I don't have a parser yet.\n";
+//  }
   return(0);
 }
 
+int EvioTool::OpenEt(const string station_name, const string et_name, const string host,
+                     unsigned short port, int pos, int ppos, bool no_block){
+   // Open an ET system channel to read the events from.
+   // Arguments:
+   // station_name  - Arbitrary station name
+   // et_name       - File name of the ET buffer, see -f for et_start.
+   // host          - host name the ET system is running on.
+   // port          - port number the ET system is listening on, default 11111
+   // pos           - requested relative position in the ET system ring.
+   // ppos          - requested parallel position in the ET system.
+
+   fReadFromEt = true;
+   et_openconfig   openconfig;
+   et_statconfig   sconfig;
+   et_stat_id      my_stat;
+   int sendBufSize=0;
+   int recvBufSize=0;
+   int queue_size = 1;
+   int noDelay=0;
+
+   // Open the ET system
+   et_open_config_init(&openconfig);
+   et_open_config_sethost(openconfig, host.c_str());
+   et_open_config_setcast(openconfig, ET_DIRECT);
+   et_open_config_setserverport(openconfig, port);
+   et_open_config_settcp(openconfig, recvBufSize, sendBufSize, noDelay);
+   if (et_open(&fEventId, et_name.c_str(), openconfig) != ET_OK) {
+      std::cout << "EvioTool::OpenEt - et_open problems\n";
+      return(ET_ERROR);
+   }
+   et_open_config_destroy(openconfig);
+   if(fDebug & EvioTool_Debug_Info2) et_system_setdebug(fEventId, ET_DEBUG_INFO);
+
+   // Configure the ET Station.
+   et_station_config_init(&sconfig);
+   int             flowMode=ET_STATION_SERIAL;
+   et_station_config_setflow(sconfig, flowMode);
+   if (no_block) {
+      et_station_config_setblock(sconfig, ET_STATION_NONBLOCKING);
+      if (queue_size > 0) {
+         et_station_config_setcue(sconfig, queue_size);
+      }
+   }
+
+   int status;
+   if ((status = et_station_create(fEventId, &my_stat, station_name.c_str(), sconfig)) != ET_OK) {
+      if (status == ET_ERROR_EXISTS) {
+         /* my_stat contains pointer to existing station */
+         std::cout << "EvioTool:OpenET() -- Station '"<< station_name  << " already exists\n";
+         return(ET_ERROR);
+      }
+      else if (status == ET_ERROR_TOOMANY) {
+         std::cout << "EvioTool:OpenET() -- Too many stations created.\n";
+         return(ET_ERROR);
+      }
+      else {
+         std::cout << "EvioTool:OpenET() -- Error creating station.\n";
+         return(ET_ERROR);
+      }
+   }
+   et_station_config_destroy(sconfig);
+
+   if (et_station_attach(fEventId, my_stat, &fEtAttach) != ET_OK) {
+      std::cout << "EvioTool:OpenET() -- Error attaching station. "<< station_name <<"\n";
+      return(ET_ERROR);
+   }
+   /* allocate some memory */
+   fPEventBuffer = (et_event **) calloc(fEtReadChunkSize, sizeof(et_event *));
+   if (fPEventBuffer == NULL) {
+      std::cout << "EvioTool:OpenET() -- Unable to allocate event buffer header.\n";
+      return(ET_ERROR);
+   }
+
+   return(ET_OK);
+}
+
 void EvioTool::Close(){
-  evClose(evio_handle);
+   if (fReadFromEt){
+      et_station_detach(fEventId, fEtAttach);
+      et_close(fEventId);
+      fReadFromEt = false;
+   }
+   if(fIsOpen) {
+      evClose(fEvioHandle);
+      fIsOpen = false;
+   }
 }
 
 void EvioTool::parseDictionary(const char *dictf){
@@ -55,33 +135,114 @@ void EvioTool::parseDictionary(const char *dictf){
 
 int EvioTool::NextNoParse(){
   // Read an event from the EVIO file, but don't parse it.
-  
-  int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
-  if(stat==EOF) return(0);
-  if(stat!=S_SUCCESS){
-    cerr << "EvioTool::Next() -- ERROR -- problem reading file. \n";
-    return(-1);
-  }
-  
-  return 1;
+   int stat = ET_OK;
+   if(fReadFromEt){
+      if(fEventValid) EndEvent();   // User should have called this, but didn't, so put the last event back on ET.
+      // This is a *blocking* read. If no events are available, this will hang.
+#ifdef __APPLE__
+      stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, ET_SLEEP, NULL);
+      fNumRead=1;
+      fCurrentChunk = 0;
+#else
+      if(fCurrentChunk <= 0){   // Need to read more events.
+         stat = et_events_get(id, fEtAttach, fPEventBuffer, ET_SLEEP, NULL, fEtReadChunkSize, &fNumRead);
+         fCurrentChunk = fNumRead -1;
+      }
+#endif
+      switch(stat){
+         case ET_OK:
+            break;
+         case ET_ERROR_DEAD:
+            cout << "EvioTool:Next() - ET system is dead.\n";
+            return(stat);
+         case ET_ERROR_TIMEOUT:
+            cout << "EvioTool:Next() - ET system timeout.\n";
+            return(stat);
+         case ET_ERROR_EMPTY:
+            cout << "EvioTool:Next() - ET system got no events.\n";
+            return(stat);
+         case ET_ERROR_BUSY:
+            cout << "EvioTool:Next() - ET system station is busy\n";
+            return(stat);
+         case ET_ERROR_READ:
+         case ET_ERROR_WRITE:
+            cout << "EvioTool:Next() - ET system socket communication error.\n";
+            return(stat);
+         default:
+            cout << "EvioTool:Next() - ERROR number:" << stat << " Lookup in ET system manual. \n";
+            return(stat);
+      }
+
+      size_t len4;
+      et_event_getdata(fPEventBuffer[fCurrentChunk], (void **) &fEvioBuf);
+      et_event_getlength(fPEventBuffer[fCurrentChunk], &len4);
+      size_t len = len4/4;
+      if( len > 10) {
+         if (fEvioBuf[7] != 0xc0da0100) {
+            cout << "EvioTool::Next() - Warning - EVIO ET Buffer has wrong magic number.\n";
+            return (ET_ERROR_READ);
+         }
+         fEvioBuf += 8;  // The data starts after the 8 word header.
+      }else{
+         return (EvioTool_Status_ERROR);
+      }
+   }else {
+      stat = evReadNoCopy(fEvioHandle, &fEvioBuf, &fEvioBufLen);
+      if (stat == EOF) return (EvioTool_Status_EOF);
+      if (stat != S_SUCCESS) {
+         cerr << "EvioTool::Next() -- ERROR -- problem reading file. -- evio status = " << stat << "\n";
+         return (EvioTool_Status_ERROR);
+      }
+   }
+  fEventValid = true;
+  return stat;
 }
 
 int EvioTool::Next(){
   // Read an event from the EVIO file and parse it.
   // Returns 0 on success, or an error code if not.
-  
-  int stat=evReadNoCopy(evio_handle,&evio_buf,&evio_buflen);
-  if(stat==EOF) return(-1);
-  if(stat!=S_SUCCESS){
-    cerr << "EvioTool::Next() -- ERROR -- problem reading file. \n";
-    return(-2);
-  }
-  if(fFullErase) Clear("Full"); // Clear out old data.
+
+  int stat = NextNoParse();
+  if(stat != S_SUCCESS) return stat;
+
+  if (fFullErase) Clear("Full"); // Clear out old data.
   else Clear();
-  
-  stat=ParseEvioBuff(evio_buf);  // Recursively parse the banks in the buffer.
-  
+
+  stat = ParseEvioBuff(fEvioBuf);  // Recursively parse the banks in the buffer.
+  // We can call EndEvent here, because the ParseEvioBuff will *copy* the data (just once) into the
+  // allocated structure of the EvioTool. So in EndEvent, we no longer rely on the fEvioBuf to contain the data.
+  EndEvent();  // We are done with the event, so it can be put back on ET.
   return stat;
+
+}
+
+int EvioTool::EndEvent() {
+   // End of the Event. This is not important for reading from a file, but is very important for reading from ET.
+   // At the end of the event, it needs to be put back on the ET ring for the next consumer. If not, the ET ring will
+   // block.
+   // For safety, when reading from ET, the EndEvent() will be called at the top of NextNoParse() if there is an event active.
+   if(fEventValid && fReadFromEt){
+#ifdef __APPLE__
+      int status = et_event_put(fEventId, fEtAttach, fPEventBuffer[0]);
+#else
+      int status = et_events_put(fEventId, fEtAttach, fPEventBuffer, fNumRead);
+#endif
+      if (status == ET_ERROR_DEAD) {
+         cout << "EvioTool::EndEvent() -- ERROR -- ET system seems dead.\n";
+         return status;
+      }
+      else if ((status == ET_ERROR_WRITE) || (status == ET_ERROR_READ)) {
+         cout << "EvioTool::EndEvent() -- ERROR -- ET system socket error. \n";
+         return status;
+      }
+      else if (status != ET_OK) {
+         cout << "EvioTool::EndEvent() -- ERROR -- ET system error: " << status << ". \n";
+         return status;
+      }
+   }
+   fEventValid = false;
+   fCurrentChunk--;   // Done with this event.
+   return ET_OK;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -101,7 +262,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
     if(fAutoAdd){
       char str[100];
       sprintf(str,"FADC-%u-%u",tag,num);
-      if(fDebug&Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Adding a new Leaf node to node: " << node->GetNum() << " with name: " << str << endl;
       node->AddLeaf<FADCdata>(str,tag,num,"Auto added string leaf");
       loc= node->leafs->GetEntriesFast()-1;
     }else{
@@ -109,7 +270,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
     }
   }
   
-  if(fDebug&Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " with specified AddOrFillLeaf<FADCdata> \n";
+  if(fDebug & EvioTool_Debug_L2) cout << "Adding data to Leaf at idx = " << loc << " with specified AddOrFillLeaf<FADCdata> \n";
 
 #ifdef DEBUG
   unsigned short formatTag  = (buf[0]>>20)&0xfff;
@@ -118,7 +279,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
 
 #ifdef DEBUG
   string formatString       = string((const char *) &(((uint32_t*)buf)[1]));
-  if(fDebug&Debug_L2) cout << "FADC formatTag " << formatTag << " len: " << formatLen << " String: " << formatString << "\n";
+  if(fDebug&EvioTool_Debug_L2) cout << "FADC formatTag " << formatTag << " len: " << formatLen << " String: " << formatString << "\n";
 #endif
 
   int dataLen               = buf[1+formatLen]-1;
@@ -170,7 +331,7 @@ int EvioTool::AddOrFillLeaf_FADCdata(const unsigned int *buf,int len,unsigned sh
             //      ll->data.emplace_back(indx, cbuf);
         }
     }else{
-        if(fDebug&Debug_L1) std::cout << "Not processing tag = " << tag << std::endl;
+        if(fDebug & EvioTool_Debug_L1) std::cout << "Not processing tag = " << tag << std::endl;
     }
   }
   
@@ -203,7 +364,7 @@ int EvioTool::ParseEvioBuff(const unsigned int *buf){
     }
     // Check if the event has the desired tag number. Skip if not.
     if(!CheckTag(this_tag)){ // Event tag not found in tags list, so skip it.
-      if(fDebug&Debug_Info2) cout << "Event of tag = " << this_tag << " skipped \n";
+      if(fDebug & EvioTool_Debug_Info2) cout << "Event of tag = " << this_tag << " skipped \n";
       return(S_SUCCESS);
     }
     
@@ -281,7 +442,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
   buf += dataOffset;
   int len = length-dataOffset;
   
-  if( (fDebug & Debug_Info2) && contentType < 0x10){
+  if((fDebug & EvioTool_Debug_Info2) && contentType < 0x10){
     for(i=0;i<depth;i++) cout << "    ";
     cout<< "L["<<depth<<"] parent= "<<node->GetName() <<" type = "<< contentType << " tag= " << tag << " num= " << (int)num<< endl;
   }
@@ -352,7 +513,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
       data    = buf;
       mask    = ((contentType==0xe)||(contentType==0x10))?0xffffffff:0xffff;
       
-      if(fDebug & Debug_Info2){
+      if(fDebug & EvioTool_Debug_Info2){
         for(i=0;i<depth;i++) cout << "    ";
         if(new_node)  cout<< "C["<<depth<<"] parent= "<<node->GetName() << " node= " << new_node->GetName() << "  tag= " << tag << " num= " << (int)num<<  endl;
         else          cout<< "C["<<depth<<"] parent= "<<node->GetName() << " node=  skipped   tag= " << tag << " num= " << (int)num<<  endl;
@@ -363,7 +524,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
         p+=(data[p]&mask)+1;
       }
       depth--;
-      if(fDebug & Debug_Info2){
+      if(fDebug & EvioTool_Debug_Info2){
         for(i=0;i<depth;i++) cout << "    ";
         cout<< "C["<<depth<<"] parent= "<<node->GetName() <<  endl;
       }
@@ -380,7 +541,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
 Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType, unsigned short tag,unsigned char num, Bank *node,int depth){
   
   if(depth<fChop_level || depth > fMax_level){  // We are pruning the tree.
-    if(fDebug & Debug_L2) cout << "EvioTool::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
+    if(fDebug & EvioTool_Debug_L2) cout << "EvioTool::ContainNodeHandler -- pruning the tree depth=" << depth << endl;
     node->this_tag = tag; // TODO: VERIFY that this is correct and needed here.
     node->this_num = num;
     return node;
@@ -391,11 +552,11 @@ Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int paddi
     if(fAutoAdd){
       char str[100];
       sprintf(str,"Bank-%d-%d",tag,num);
-      if(fDebug&Debug_L2) cout << "Adding a new Bank to " << node->GetName() << " with name: " << str << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Adding a new Bank to " << node->GetName() << " with name: " << str << endl;
       loc=node->banks->GetEntriesFast();
       node->AddBank(str,tag,num,"Auto added Bank");
     }else{
-      if(fDebug&Debug_L2) cout << "Not adding a new bank for tag= " << tag<< " num= " << num << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Not adding a new bank for tag= " << tag << " num= " << num << endl;
       return NULL;
     }
   }

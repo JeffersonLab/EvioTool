@@ -271,13 +271,13 @@ int main(int argc,char **argv) {
     /* if we're local, do an et_look not an et_open */
     if (locality != ET_REMOTE) {
         if (et_look(&sys_id, et_name) != ET_OK) {
-            printf("%s: et_attach problems\n", argv[0]);
+            printf("%s: fEtAttach problems\n", argv[0]);
             exit(1);
         }
     }
     else {
         if (et_open(&sys_id, et_name, openconfig) != ET_OK) {
-            printf("%s: et_attach problems\n", argv[0]);
+            printf("%s: fEtAttach problems\n", argv[0]);
             exit(1);
         }
     }

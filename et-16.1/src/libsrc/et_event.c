@@ -98,8 +98,8 @@ static int et_event_make(et_id *id, et_event *pe, size_t size)
  *
  * @param id   id of the ET system of interest.
  * @param att  the attachment id. This is obtained by attaching the user process to a station with et_station_attach.
- * @param pe   a pointer to a pointer to an event. Declare it a pointer to an event such as "et_event *pe;"
- *             and pass it as "&pe".
+ * @param pe   a pointer to a pointer to an event. Declare it a pointer to an event such as "et_event *fPEventBuffer;"
+ *             and pass it as "&fPEventBuffer".
  * @param mode either ET_SLEEP, ET_ASYNC, or ET_TIMED. The sleep option waits until an event is available before
  *             it returns and therefore may "hang". The timed option returns after a time set by the last argument.
  *             Finally, the async option returns immediately whether or not it was successful in obtaining a new
@@ -590,8 +590,8 @@ int et_events_new(et_sys_id id, et_att_id att, et_event *pe[],
  *
  * @param id    id of the ET system of interest.
  * @param att   the attachment id. This is obtained by attaching the user process to a station with et_station_attach.
- * @param pe    a pointer to a pointer to an event. Declare it a pointer to an event such as "et_event *pe;"
- *              and pass it as "&pe".
+ * @param pe    a pointer to a pointer to an event. Declare it a pointer to an event such as "et_event *fPEventBuffer;"
+ *              and pass it as "&fPEventBuffer".
  * @param mode  either ET_SLEEP, ET_ASYNC, or ET_TIMED. The sleep option waits until an event is available before
  *              it returns and therefore may "hang". The timed option returns after a time set by the last argument.
  *              Finally, the async option returns immediately whether or not it was successful in obtaining a new
@@ -913,8 +913,8 @@ int et_events_new_group(et_sys_id id, et_att_id att, et_event *pe[],
  *
  * @param id    id of the ET system of interest.
  * @param att   the attachment id. This is obtained by attaching the user process to a station with et_station_attach.
- * @param pe    a pointer to a pointer to an event. Declare it a pointer to an event such as "et_event *pe;"
- *              and pass it as "&pe".
+ * @param pe    a pointer to a pointer to an event. Declare it a pointer to an event such as "et_event *fPEventBuffer;"
+ *              and pass it as "&fPEventBuffer".
  * @param mode  either ET_SLEEP, ET_ASYNC, or ET_TIMED.
  *
  * @param deltatime  used only with the mode = ET_TIMED option, where it gives the time to wait before returning.
@@ -1390,7 +1390,7 @@ int et_event_put(et_sys_id id, et_att_id att, et_event *pe) {
         return ET_ERROR_CLOSED;
     }
 
-    /* if length bigger than memory size, we got problems (pe accesses shared mem) */
+    /* if length bigger than memory size, we got problems (fPEventBuffer accesses shared mem) */
     if (pe->length > pe->memsize) {
         et_mem_unlock(etid);
         if (etid->debug >= ET_DEBUG_ERROR) {
@@ -1825,7 +1825,7 @@ int et_event_getgroup(et_event *pe, int *grp) {
  * @param pri   event priority, either ET_LOW or ET_HIGH.
  *
  * @returns @ref ET_OK     if successful.
- * @returns @ref ET_ERROR  if pe is NULL, pri arg is neither ET_LOW or ET_HIGH.
+ * @returns @ref ET_ERROR  if fPEventBuffer is NULL, pri arg is neither ET_LOW or ET_HIGH.
  */
 int et_event_setpriority(et_event *pe, int pri) {
 
@@ -1860,7 +1860,7 @@ int et_event_getpriority(et_event *pe, int *pri) {
  * @param len   length of data in bytes.
  *
  * @returns @ref ET_OK     if successful.
- * @returns @ref ET_ERROR  if pe is NULL, len is negative, or len is bigger than event memory.
+ * @returns @ref ET_ERROR  if fPEventBuffer is NULL, len is negative, or len is bigger than event memory.
  */
 int et_event_setlength(et_event *pe, size_t len) {
 
@@ -1911,7 +1911,7 @@ int et_event_getdata(et_event *pe, void **data) {
  * @param num   number of elements in control array.
  *
  * @returns @ref ET_OK     if successful.
- * @returns @ref ET_ERROR  if pe is NULL, con is NULL, num < 1, or num > ET_STATION_SELECT_INTS.
+ * @returns @ref ET_ERROR  if fPEventBuffer is NULL, con is NULL, num < 1, or num > ET_STATION_SELECT_INTS.
  */
 int et_event_setcontrol(et_event *pe, int con[], int num) {
 
@@ -1968,7 +1968,7 @@ int et_event_getcontrol(et_event *pe, int con[]) {
  * @param datastatus  status of an event's data.
  *
  * @returns @ref ET_OK     if successful.
- * @returns @ref ET_ERROR  if pe is NULL or datastatus is not ET_DATA_OK,
+ * @returns @ref ET_ERROR  if fPEventBuffer is NULL or datastatus is not ET_DATA_OK,
  *                         ET_DATA_CORRUPT, or ET_DATA_POSSIBLY_CORRUPT
  */
 int et_event_setdatastatus(et_event *pe, int datastatus) {
@@ -2025,7 +2025,7 @@ int et_event_getdatastatus(et_event *pe, int *datastatus) {
  * @param endian   endian value of event's data.
  *
  * @returns @ref ET_OK     if successful.
- * @returns @ref ET_ERROR  if pe is NULL or endian is not ET_ENDIAN_BIG, ET_ENDIAN_LITTLE,
+ * @returns @ref ET_ERROR  if fPEventBuffer is NULL or endian is not ET_ENDIAN_BIG, ET_ENDIAN_LITTLE,
  *                         ET_ENDIAN_LOCAL, ET_ENDIAN_NOTLOCAL, or ET_ENDIAN_SWITCH.
  */
 int et_event_setendian(et_event *pe, int endian) {
