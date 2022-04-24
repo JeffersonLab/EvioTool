@@ -32,13 +32,13 @@ set(INCLUDE_INSTALL_DIR ${INSTALL_INCLUDE_DIR}/evio)
 set(LIB_INSTALL_DIR ${INSTALL_LIB_DIR})
 
 #include_directories($ENV{CODA}/common/include)
-include_directories(src/libsrc src/libsrc++)
+include_directories(src/libsrc ) # src/libsrc++
 
-message("--------------- ${EVIO_LIBRARY} -------------------------")
+message("--------------- ${PROJECT_NAME} ${PROJECT_VERSION} -------------------------")
 message("We have CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 # message("CMAKE_C_FLAGS_RELEASE    = ${CMAKE_C_FLAGS_RELEASE}")
 # message("CMAKE_C_FLAGS_DEBUG      = ${CMAKE_C_FLAGS_DEBUG}")
-# message("CMAKE_C_FLAGS            = ${CMAKE_C_FLAGS}")
+message("CMAKE_C_FLAGS              = ${CMAKE_C_FLAGS}")
 message("CMAKE_CXX_FLAGS            = ${CMAKE_CXX_FLAGS}")
 # message("CMAKE_CXX_FLAGS_RELEASE  = ${CMAKE_CXX_FLAGS_RELEASE}")
 # message("CMAKE_CXX_FLAGS_DEBUG    = ${CMAKE_CXX_FLAGS_DEBUG}")
