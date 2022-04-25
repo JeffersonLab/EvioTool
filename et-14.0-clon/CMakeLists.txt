@@ -92,7 +92,7 @@ add_library(et SHARED ${SOURCE_FILES})
 target_include_directories(et
         PUBLIC
         $<INSTALL_INTERFACE:include/et>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsrc>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/et.s>
         )
 
 install(TARGETS et
