@@ -88,6 +88,7 @@ set(HEADER_FILES_ET
 
 #Generate the shared library from the sources
 add_library(et SHARED ${SOURCE_FILES})
+target_link_libraries(et dl m pthread)
 
 target_include_directories(et
         PUBLIC
