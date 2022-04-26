@@ -145,7 +145,7 @@ int EvioTool::NextNoParse(){
       fCurrentChunk = 0;
 #else
       if(fCurrentChunk <= 0){   // Need to read more events.
-         stat = et_events_get(id, fEtAttach, fPEventBuffer, ET_SLEEP, NULL, fEtReadChunkSize, &fNumRead);
+         stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, ET_SLEEP, NULL, fEtReadChunkSize, &fNumRead);
          fCurrentChunk = fNumRead -1;
       }
 #endif
