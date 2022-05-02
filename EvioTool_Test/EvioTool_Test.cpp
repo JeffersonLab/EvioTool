@@ -45,7 +45,7 @@ int main(int argc, const char * argv[])
 
    int stat = 0;
    if(args.use_et){
-      stat = etool->OpenEt("EvioToolTest");
+      stat = etool->OpenEt("EvioToolTest", "/tmp/clasprod", "localhost", 1111);
    }else{
       stat = etool->Open(args.filename.c_str());
    }

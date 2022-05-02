@@ -108,8 +108,8 @@ public:
       if(fPEventBuffer) free(fPEventBuffer); // Clean up memory explicitly allocated by ET.
    };
    int Open(const char *filename,const char *dictf=NULL);
-   int OpenEt(string station_name = "EvioTool", string et_name = "/tmp/clasprod", string host = "localhost",
-              unsigned short port = 11111, int pos = 1, int ppos = 1, bool no_block = true);
+   int OpenEt(string station_name, string et_name, string host,
+              unsigned short port, int pos = 1, int ppos = 1, bool no_block = true);
 
    bool IsOpen(){ return fIsOpen;}
    bool IsReadingFromEt(){return fReadFromEt;}
