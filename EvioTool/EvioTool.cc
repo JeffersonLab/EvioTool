@@ -118,6 +118,7 @@ void EvioTool::Close(){
    if (fReadFromEt){
       et_station_detach(fEventId, fEtAttach);
       et_close(fEventId);
+      delete fPEventBuffer;
       fReadFromEt = false;
    }
    if(fIsOpen) {
