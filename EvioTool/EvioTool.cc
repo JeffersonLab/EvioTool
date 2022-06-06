@@ -66,6 +66,8 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
    et_open_config_settcp(openconfig, recvBufSize, sendBufSize, noDelay);
    if (et_open(&fEventId, et_name.c_str(), openconfig) != ET_OK) {
       std::cout << "EvioTool::OpenEt - et_open problems\n";
+      et_open_config_destroy(openconfig);
+      fReadFromEt = false;
       return(ET_ERROR);
    }
    et_open_config_destroy(openconfig);
@@ -73,7 +75,7 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
 
    // Configure the ET Station.
    et_station_config_init(&sconfig);
-   int             flowMode=ET_STATION_SERIAL;
+   int flowMode=ET_STATION_SERIAL;
    et_station_config_setflow(sconfig, flowMode);
    if (no_block) {
       et_station_config_setblock(sconfig, ET_STATION_NONBLOCKING);
@@ -87,14 +89,17 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
       if (status == ET_ERROR_EXISTS) {
          /* my_stat contains pointer to existing station */
          std::cout << "EvioTool:OpenET() -- Station '"<< station_name  << " already exists\n";
+         fReadFromEt = false;
          return(ET_ERROR);
       }
       else if (status == ET_ERROR_TOOMANY) {
          std::cout << "EvioTool:OpenET() -- Too many stations created.\n";
+         fReadFromEt = false;
          return(ET_ERROR);
       }
       else {
          std::cout << "EvioTool:OpenET() -- Error creating station.\n";
+         fReadFromEt = false;
          return(ET_ERROR);
       }
    }
@@ -102,12 +107,14 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
 
    if (et_station_attach(fEventId, my_stat, &fEtAttach) != ET_OK) {
       std::cout << "EvioTool:OpenET() -- Error attaching station. "<< station_name <<"\n";
+      fReadFromEt = false;
       return(ET_ERROR);
    }
    /* allocate some memory */
    fPEventBuffer = (et_event **) calloc(fEtReadChunkSize, sizeof(et_event *));
    if (fPEventBuffer == NULL) {
       std::cout << "EvioTool:OpenET() -- Unable to allocate event buffer header.\n";
+      fReadFromEt = false;
       return(ET_ERROR);
    }
 
