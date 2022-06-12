@@ -148,18 +148,20 @@ int EvioTool::NextNoParse(){
       if(fEventValid) EndEvent();   // User should have called this, but didn't, so put the last event back on ET.
       // This is a *blocking* read. If no events are available, this will hang.
 
-//#ifdef __APPLE__
+#ifdef __APPLE__
 // For now we only do single event reads. If it is needed, it is possible to do multi event reads
 // on Linux. Multi event reads still need to be tested and likely have some added infrastructure.
       stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, ET_SLEEP, NULL);
       fNumRead=1;
       fCurrentChunk = 0;
-//#else
-//      if(fCurrentChunk <= 0){   // Need to read more events.
-//         stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, ET_SLEEP, NULL, fEtReadChunkSize, &fNumRead);
-//         fCurrentChunk = fNumRead -1;
-//      }
-// #endif
+#else
+      if(fCurrentChunk <= 0){   // Need to read more events.
+         stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, ET_SLEEP, NULL, fEtReadChunkSize, &fNumRead);
+         fCurrentChunk = fNumRead -1;
+      }else{
+         fCurrentChunk--;
+      }
+#endif
       switch(stat){
          case ET_OK:
             break;
