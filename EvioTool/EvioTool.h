@@ -42,6 +42,16 @@ using namespace std;
 #include "FADCdata.h"
 #include "Bank.h"
 
+#ifndef ET_DEFAULT_PORT
+#define ET_DEFAULT_PORT 11111
+#endif
+#ifndef ET_DEFAULT_NAME
+#define ET_DEFAULT_NAME "/et/clasprod"
+#endif
+#ifndef ET_DEFAULT_HOST
+#define ET_DEFAULT_HOST "clondaq6"
+#endif
+
 #define TOP_BANK_TYPE 0x10   // Standard container type.
 
 class EvioTool: public Bank {
@@ -57,7 +67,8 @@ public:
    enum StatusCodeType_t {
       EvioTool_Status_OK  =  0,
       EvioTool_Status_EOF = -1,
-      EvioTool_Status_ERROR = -2
+      EvioTool_Status_ERROR = -2,
+      EvioTool_Status_No_Data = -3
    };
    // None of these control variables need to be written to root files, so all are //!
    //
@@ -80,11 +91,20 @@ public:
 
 private:
 public:
+   string fETStationName = "EvioTool";
+   int    fETPort = ET_DEFAULT_PORT;
+   string fETHost = ET_DEFAULT_HOST;
+   string fETName = ET_DEFAULT_NAME;
+   int fETPos=1;
+   int fETPpos=1;
+   bool fETNoBlock=true;
+
    bool fIsOpen = false;    //!- True when a file or ET connection has been opened.
    bool fReadFromEt = false;           //!- True of reading from ET.
    unsigned int fEtReadChunkSize = 10; //!- Number of chunks (events) to grab at once from ET.
    int fNumRead = 1;                  //!- Number of chunks actually read from ET
-   int fCurrentChunk=0;               //!- Current chunk being processed.
+   int fCurrentChunk= -1;               //!- Current chunk being processed.
+   int fETWaitMode = ET_SLEEP;         //! - How to wait for an event.
    bool fEventValid = false;            //!- Set to true in Next() when the event buffer becomes valid, and false in EndEvent();
    et_event    **fPEventBuffer = nullptr;   //!- ET event header buffer
    et_sys_id   fEventId;
@@ -110,11 +130,25 @@ public:
    int Open(const char *filename,const char *dictf=NULL);
    int OpenEt(string station_name, string et_name, string host,
               unsigned short port, int pos = 1, int ppos = 1, bool no_block = true);
-
+   int ReOpenEt();
+   int GetWaitMode(){ return fETWaitMode; }
+   void SetWaitMode(int mode){ fETWaitMode = mode;}
    bool IsOpen(){ return fIsOpen;}
    bool IsReadingFromEt(){return fReadFromEt;}
    bool IsValid(){return fEventValid;}
+   bool IsETAlive();
    void Close();
+
+   void SetETHost(string host) { fETHost = host; }
+   string GetETHost() const { return fETHost;}
+   void SetETPort(int port){ fETPort = port;}
+   int GetETPort() const { return fETPort; }
+   void SetETName(string name){ fETName = name;}
+   string GetETName() const {return fETName;}
+
+   void SetETStation(string station){ fETStationName = station;}
+   string GetETStation(){ return fETStationName;}
+
    const uint32_t *GetBufPtr(void){  // Useful if you want to write the evio buffer.
       return(fEvioBuf);
    }
