@@ -174,12 +174,16 @@ int EvioTool::NextNoParse(){
       fNumRead=1;
       fCurrentChunk = 0;
 #else
-      if(fCurrentChunk < 0){   // Need to read more events.
-         stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL, fEtReadChunkSize, &fNumRead);
-         fCurrentChunk = fNumRead -1;
-      }
+      stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL);
+      fNumRead=1;
+      fCurrentChunk = 0;
 
-      if(fDebug) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
+//      if(fCurrentChunk < 0){   // Need to read more events.
+//         stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL, fEtReadChunkSize, &fNumRead);
+//         fCurrentChunk = fNumRead -1;
+//      }
+
+//      if(fDebug) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
 
 #endif
       switch(stat){
