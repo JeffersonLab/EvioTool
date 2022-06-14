@@ -191,7 +191,7 @@ int EvioTool::NextNoParse(){
          fCurrentChunk = 0;
       }
 
-      if(fDebug) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
+      // if(fDebug) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
 
 #endif
       switch(stat){
