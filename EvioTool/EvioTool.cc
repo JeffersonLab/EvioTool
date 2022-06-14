@@ -7,6 +7,7 @@
 //
 
 #include "EvioTool.h"
+#include "et_private.h"
 
 //----------------------------------------------------------------------------------
 // EvioTool
@@ -174,16 +175,23 @@ int EvioTool::NextNoParse(){
       fNumRead=1;
       fCurrentChunk = 0;
 #else
-      stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL);
-      fNumRead=1;
-      fCurrentChunk = 0;
+//      stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL);
+//      fNumRead=1;
+//      fCurrentChunk = 0;
 
-//      if(fCurrentChunk < 0){   // Need to read more events.
-//         stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL, fEtReadChunkSize, &fNumRead);
-//         fCurrentChunk = fNumRead -1;
-//      }
+      et_id *et_sys_id = (et_id *) fEventId;
+      if(et_sys_id->locality == ET_LOCAL) {
+         if (fCurrentChunk < 0) {   // Need to read more events.
+            stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL, fEtReadChunkSize, &fNumRead);
+            fCurrentChunk = fNumRead - 1;
+         }
+      }else{
+         stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL);
+         fNumRead=1;
+         fCurrentChunk = 0;
+      }
 
-//      if(fDebug) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
+      if(fDebug) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
 
 #endif
       switch(stat){

@@ -101,7 +101,7 @@ public:
 
    bool fIsOpen = false;    //!- True when a file or ET connection has been opened.
    bool fReadFromEt = false;           //!- True of reading from ET.
-   unsigned int fEtReadChunkSize = 10; //!- Number of chunks (events) to grab at once from ET.
+   unsigned int fEtReadChunkSize = 5; //!- Number of chunks (events) to grab at once from ET.
    int fNumRead = 1;                  //!- Number of chunks actually read from ET
    int fCurrentChunk= -1;               //!- Current chunk being processed.
    int fETWaitMode = ET_SLEEP;         //! - How to wait for an event.
