@@ -51,6 +51,9 @@ using namespace std;
 #ifndef ET_DEFAULT_HOST
 #define ET_DEFAULT_HOST "clondaq6"
 #endif
+#ifndef ET_DEFAULT_STATION
+#define ET_DEFAULT_STATION "EvioTool"
+#endif
 
 #define TOP_BANK_TYPE 0x10   // Standard container type.
 

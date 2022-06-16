@@ -226,7 +226,7 @@ int EvioTool::NextNoParse(){
       size_t len = len4/4;
       if( len > 10) {
          if (fEvioBuf[7] != 0xc0da0100) {
-            cout << "EvioTool::Next() - Warning - EVIO ET Buffer has wrong magic number.\n";
+            if(fDebug) std::cout << "EvioTool::Next() - Warning - EVIO ET Buffer has wrong magic number.\n";
             return (ET_ERROR_READ);
          }
          fEvioBuf += 8;  // The data starts after the 8 word header.
@@ -608,7 +608,7 @@ Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int paddi
       loc=node->banks->GetEntriesFast();
       node->AddBank(str,tag,num,"Auto added Bank");
     }else{
-      if(fDebug & EvioTool_Debug_L2) cout << "Not adding a new bank for tag= " << tag << " num= " << num << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Not adding a new bank for tag= " << tag << " num= " << (int)num << endl;
       return NULL;
     }
   }
