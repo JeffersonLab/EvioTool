@@ -104,10 +104,16 @@ public:
 
    bool fIsOpen = false;    //!- True when a file or ET connection has been opened.
    bool fReadFromEt = false;           //!- True of reading from ET.
-   unsigned int fEtReadChunkSize = 5; //!- Number of chunks (events) to grab at once from ET.
+   unsigned int fEtReadChunkSize = 10; //!- Number of chunks (events) to grab at once from ET.
    int fNumRead = 1;                  //!- Number of chunks actually read from ET
    int fCurrentChunk= -1;               //!- Current chunk being processed.
    int fETWaitMode = ET_SLEEP;         //! - How to wait for an event.
+   //  ET_SLEEP, ET_ASYNC, or ET_TIMED. The sleep option waits until an event is available before it returns
+   //  and therefore may "hang". The timed option returns after a time set by the last argument.
+   //  Finally, the async option returns immediately whether or not it was successful in obtaining a new event for the caller.
+   //  For remote users, the mentioned macros may be ORed with ET_MODIFY. This indicates to the ET server that the user
+   //  intends to modify the data and so the server must NOT place the event immediately back into the ET system,
+   //  but must do so only when et_events_put is called.
    bool fEventValid = false;            //!- Set to true in Next() when the event buffer becomes valid, and false in EndEvent();
    et_event    **fPEventBuffer = nullptr;   //!- ET event header buffer
    et_sys_id   fEventId;

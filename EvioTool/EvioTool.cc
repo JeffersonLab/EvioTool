@@ -185,13 +185,14 @@ int EvioTool::NextNoParse(){
             stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL, fEtReadChunkSize, &fNumRead);
             fCurrentChunk = fNumRead - 1;
          }
+         // if(fDebug & EvioTool_Debug_L1) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
+
       }else{
          stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL);
          fNumRead=1;
          fCurrentChunk = 0;
       }
 
-      // if(fDebug) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
 
 #endif
       switch(stat){
@@ -226,7 +227,12 @@ int EvioTool::NextNoParse(){
       size_t len = len4/4;
       if( len > 10) {
          if (fEvioBuf[7] != 0xc0da0100) {
-            if(fDebug) std::cout << "EvioTool::Next() - Warning - EVIO ET Buffer has wrong magic number.\n";
+            if(fDebug & EvioTool_Debug_L1) {
+               printf("EvioTool::Next() - Warning - EVIO ET Buffer has wrong magic number: 0x%08x \n",fEvioBuf[7]);
+//               for (int i; i < 10; ++i) printf("0x%08x ", fEvioBuf[i]);
+//               printf("\n");
+            }
+            fCurrentChunk--;
             return (ET_ERROR_READ);
          }
          fEvioBuf += 8;  // The data starts after the 8 word header.
