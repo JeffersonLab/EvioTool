@@ -69,9 +69,9 @@ public:
 
    enum StatusCodeType_t {
       EvioTool_Status_OK  =  0,
-      EvioTool_Status_EOF = -1,
-      EvioTool_Status_ERROR = -2,
-      EvioTool_Status_No_Data = -3
+      EvioTool_Status_EOF =  1,
+      EvioTool_Status_ERROR =  2,
+      EvioTool_Status_No_Data = 3
    };
    // None of these control variables need to be written to root files, so all are //!
    //
