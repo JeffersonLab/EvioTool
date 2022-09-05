@@ -165,7 +165,7 @@ public:
    virtual int NextNoParse(void);
    virtual int Next(void);
    virtual int EndEvent(void);
-   virtual int ParseEvioBuff(const unsigned int *buf);                                  // Top level buffer parser.
+   virtual int ParseEvioBuff(const unsigned int *buf);                           // Top level buffer parser.
    int ParseBank(const unsigned int *buf, int bankType, int depth, Bank *node); // Recursive buffer parser.
    int LeafNodeHandler(const unsigned int *buf,int len, int padding, int contentType,unsigned short tag,unsigned char num,Bank *node);
    Bank *ContainerNodeHandler(const unsigned int *buf, int len, int padding, int contentType,unsigned short tag, unsigned char num, Bank *node, int depth);
@@ -215,7 +215,6 @@ public:
    }
 
    void SetDebug(int bits=0x0F){ fDebug = bits; }
-//  int AddBank(Bank &b);
 
    void Test(void);
 

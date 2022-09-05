@@ -581,6 +581,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
         if(new_node) ParseBank(&data[p],contentType,depth,new_node);  // Recurse to read one level deeper.
         p+=(data[p]&mask)+1;
       }
+      if(new_node) new_node->CallBack();   // Done with the sub-banks (and leaves), now call the call-back.
       depth--;
       if(fDebug & EvioTool_Debug_Info2){
         for(i=0;i<depth;i++) cout << "    ";
