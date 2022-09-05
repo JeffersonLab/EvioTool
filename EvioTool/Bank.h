@@ -114,7 +114,12 @@ public:
     banks = new TObjArray();
     banks->SetOwner(kTRUE);
   }
-  
+
+   virtual void CallBack() {
+      // Could be implemented in a derived class to further process the data right after the sub-bank
+      // and leaves is filled from an EVIO bank.
+  };
+
   unsigned char GetNum(){ return(this_num);};
   unsigned short GetTag(){ return(this_tag);};
   vector<unsigned short> &GetTags(){return(tags);}
@@ -255,11 +260,16 @@ public:
   virtual int FindLeaf(unsigned short itag,unsigned char inum){
     // Find the location of the leaf with num, tag.
     // Returns the location, or -1 if not found.
-    // If a leaf has num=0, or inum = 0 then inum is ignored.
+    // If a leaf has num=0, then inum is ignored.
+    // This is rarely a problem, BUT, rarely there are duplicate leafs distinguished only by the leaf num.
+    // We used to test inum == 0, but then there is no longer any way to distinguish these leaves.
+    // So now, if you expect multiple leafs with different num, you should book them with 0 last, as a catchall.
     // TODO: Make this an efficient search.
     for(int i=0;i<leafs->GetEntriesFast();++i){
       if( ((Leaf_base *)leafs->At(i))->tag == itag &&
-          ( ((Leaf_base *)leafs->At(i))->num==0 || inum==0 || ((Leaf_base *)leafs->At(i))->num == inum ) ){
+          ( ((Leaf_base *)leafs->At(i))->num == 0 ||
+             // inum==0 ||
+             ((Leaf_base *)leafs->At(i))->num == inum ) ){
         return(i);
       }
     }
