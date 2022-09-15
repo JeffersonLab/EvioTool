@@ -30,7 +30,7 @@ public:
   Leaf_base(): tag(0),num(0){;};
   Leaf_base(int itag, int inum): tag(itag),num(inum){;};
     Leaf_base(int itag, int inum, const string &name, const string &desc): TNamed(name, desc), tag(itag),num(inum){;};
-  void Clear(Option_t *) override {;};
+  virtual void Clear(Option_t *opt="") override {;};
   virtual size_t Size(){cerr<<"ERROR-Must have override!\n";return(-99);};  // Pure virtual; Must have an override, but =0 does not work with rootcling.
   virtual size_t size(){ return(this->Size());}
   void Print(Option_t *op) const override{;};
@@ -58,7 +58,7 @@ public:
     // Could be implemented in a derived class to further process the data right after the class is filled from an EVIO bank.
   }
   
-  void Clear(Option_t *opt) override{
+  virtual void Clear(Option_t *opt="") override{
     // Clear out the contents of the leaf, but do not delete the leaf.
     data.clear();
   }
