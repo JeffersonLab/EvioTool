@@ -183,14 +183,23 @@ public:
     name_index.erase(name);         // Remove from the index
   }
   
-  virtual Bank *AddBank(const string &name,unsigned short itag,unsigned char inum, const string &desc){
+  virtual Bank *AddBank(const string &name,unsigned short itag,unsigned char inum, const string &desc,
+                        bool override=false){
     // Add a Bank witn name,tag,num,description.
     // Returns a pointer to the new bank.
     // int location = banks->GetEntriesFast();
     // name=StoreLocation(name,location);
-    Bank *newbank = new Bank(name,itag,inum, desc);
-    banks->Add(newbank);
-    return(newbank);
+    // Modification for 2022: First check if *that* combination of bank with tag and num is added already.
+    // If it is, then return the pointer to the bank that was added before *unless* you specify override=true.
+    int idx = FindBank(itag, inum);
+    if( idx < 0 || override) {
+       Bank *newbank = new Bank(name, itag, inum, desc);
+       banks->Add(newbank);
+       return (newbank);
+    }else{
+       Bank *foundbank = (Bank *)banks->At(idx);
+       return foundbank;
+    }
   }
 
   virtual Bank *AddBank(const string &name,std::vector<unsigned short> itags, unsigned char inum, const string &desc){
