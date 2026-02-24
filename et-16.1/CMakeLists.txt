@@ -141,5 +141,10 @@ add_executable(et_killer src/execsrc/et_killer.c)
 add_dependencies(et_killer et)
 target_link_libraries(et_killer et dl m pthread)
 
+add_executable(et_consumer src/examples/et_consumer.c)
+add_dependencies(et_consumer et)
+target_link_libraries(et_consumer et dl m pthread)
+
+
 install(TARGETS et_start et_monitor et_2_et et_killer DESTINATION bin)
 

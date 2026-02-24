@@ -98,7 +98,6 @@ void Bank::Clear(Option_t*opt){
     for(int i=0; i< banks->GetEntriesFast(); ++i){
       banks->At(i)->Clear();
     }
-
   }
 }
 

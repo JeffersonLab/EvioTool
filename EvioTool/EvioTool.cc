@@ -7,6 +7,7 @@
 //
 
 #include "EvioTool.h"
+#include "et_private.h"
 
 //----------------------------------------------------------------------------------
 // EvioTool
@@ -39,7 +40,7 @@ int EvioTool::Open(const char *filename,const char *dictf){
 }
 
 int EvioTool::OpenEt(const string station_name, const string et_name, const string host,
-                     unsigned short port, int pos, int ppos, bool no_block){
+                     unsigned short port, int pos, int ppos, bool no_block) {
    // Open an ET system channel to read the events from.
    // Arguments:
    // station_name  - Arbitrary station name
@@ -49,22 +50,35 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
    // pos           - requested relative position in the ET system ring.
    // ppos          - requested parallel position in the ET system.
 
+   fETStationName = station_name;
+   fETPort = port;
+   fETHost = host;
+   fETName = et_name;
+   fETPos = pos;
+   fETPpos = ppos;
+   fETNoBlock = no_block;
+   return ReOpenEt();
+}
+
+int EvioTool::ReOpenEt(){
+   // Open the ET system with the same parameters as before.
+   // Called by OpenET after the parameters are setup.
    fReadFromEt = true;
    et_openconfig   openconfig;
    et_statconfig   sconfig;
    et_stat_id      my_stat;
    int sendBufSize=0;
    int recvBufSize=0;
-   int queue_size = 1;
+   int queue_size = 0;  // 0 will keep the default which is 10.
    int noDelay=0;
 
    // Open the ET system
    et_open_config_init(&openconfig);
-   et_open_config_sethost(openconfig, host.c_str());
+   et_open_config_sethost(openconfig, fETHost.c_str());
    et_open_config_setcast(openconfig, ET_DIRECT);
-   et_open_config_setserverport(openconfig, port);
+   et_open_config_setserverport(openconfig, fETPort);
    et_open_config_settcp(openconfig, recvBufSize, sendBufSize, noDelay);
-   if (et_open(&fEventId, et_name.c_str(), openconfig) != ET_OK) {
+   if (et_open(&fEventId, fETName.c_str(), openconfig) != ET_OK) {
       std::cout << "EvioTool::OpenEt - et_open problems\n";
       et_open_config_destroy(openconfig);
       fReadFromEt = false;
@@ -77,7 +91,7 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
    et_station_config_init(&sconfig);
    int flowMode=ET_STATION_SERIAL;
    et_station_config_setflow(sconfig, flowMode);
-   if (no_block) {
+   if (fETNoBlock) {
       et_station_config_setblock(sconfig, ET_STATION_NONBLOCKING);
       if (queue_size > 0) {
          et_station_config_setcue(sconfig, queue_size);
@@ -85,10 +99,10 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
    }
 
    int status;
-   if ((status = et_station_create(fEventId, &my_stat, station_name.c_str(), sconfig)) != ET_OK) {
+   if ((status = et_station_create(fEventId, &my_stat, fETStationName.c_str(), sconfig)) != ET_OK) {
       if (status == ET_ERROR_EXISTS) {
          /* my_stat contains pointer to existing station */
-         std::cout << "EvioTool:OpenET() -- Station '"<< station_name  << " already exists\n";
+         std::cout << "EvioTool:OpenET() -- Station '"<< fETStationName  << " already exists\n";
          fReadFromEt = false;
          return(ET_ERROR);
       }
@@ -106,7 +120,7 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
    et_station_config_destroy(sconfig);
 
    if (et_station_attach(fEventId, my_stat, &fEtAttach) != ET_OK) {
-      std::cout << "EvioTool:OpenET() -- Error attaching station. "<< station_name <<"\n";
+      std::cout << "EvioTool:OpenET() -- Error attaching station. "<< fETStationName <<"\n";
       fReadFromEt = false;
       return(ET_ERROR);
    }
@@ -121,10 +135,16 @@ int EvioTool::OpenEt(const string station_name, const string et_name, const stri
    return(ET_OK);
 }
 
+bool EvioTool::IsETAlive() {
+   // Check the status of the ET system, so we can destroy a connection to a dead one.
+   if(!fReadFromEt) return(false);
+   return et_alive(fEventId);
+}
+
 void EvioTool::Close(){
    if (fReadFromEt){
       et_station_detach(fEventId, fEtAttach);
-      et_close(fEventId);
+      et_forcedclose(fEventId);
       delete fPEventBuffer;
       fReadFromEt = false;
    }
@@ -148,20 +168,32 @@ int EvioTool::NextNoParse(){
       if(fEventValid) EndEvent();   // User should have called this, but didn't, so put the last event back on ET.
       // This is a *blocking* read. If no events are available, this will hang.
 
-#ifdef __APPLE__X
+#ifdef __APPLE__
 // For now we only do single event reads. If it is needed, it is possible to do multi event reads
 // on Linux. Multi event reads still need to be tested and likely have some added infrastructure.
-      stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, ET_SLEEP, NULL);
+      stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL);
       fNumRead=1;
       fCurrentChunk = 0;
 #else
-      if(fCurrentChunk <= 0){   // Need to read more events.
-         stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, ET_SLEEP, NULL, fEtReadChunkSize, &fNumRead);
-         fCurrentChunk = fNumRead -1;
+//      stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL);
+//      fNumRead=1;
+//      fCurrentChunk = 0;
+
+      et_id *et_sys_id = (et_id *) fEventId;
+      if(et_sys_id->locality == ET_LOCAL) {
+         if (fCurrentChunk < 0) {   // Need to read more events.
+            stat = et_events_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL, fEtReadChunkSize, &fNumRead);
+            fCurrentChunk = fNumRead - 1;
+         }
+         // if(fDebug & EvioTool_Debug_L1) std::cout << "NextNoParse() -- num_read = " << fNumRead  << "  current chunk = " << fCurrentChunk << std::endl;
+
       }else{
-         fCurrentChunk--;
+         stat = et_event_get(fEventId, fEtAttach, fPEventBuffer, fETWaitMode, NULL);
+         fNumRead=1;
+         fCurrentChunk = 0;
       }
-      if(fDebug>1) std::cout << "NextNoParse() -- current chunk = " << fCurrentChunk << std::endl;
+
+
 #endif
       switch(stat){
          case ET_OK:
@@ -173,10 +205,10 @@ int EvioTool::NextNoParse(){
             cout << "EvioTool:Next() - ET system timeout.\n";
             return(stat);
          case ET_ERROR_EMPTY:
-            cout << "EvioTool:Next() - ET system got no events.\n";
+            // cout << "EvioTool:Next() - ET system got no events.\n";
             return(stat);
          case ET_ERROR_BUSY:
-            cout << "EvioTool:Next() - ET system station is busy\n";
+            // cout << "EvioTool:Next() - ET system station is busy\n";
             return(stat);
          case ET_ERROR_READ:
          case ET_ERROR_WRITE:
@@ -187,13 +219,20 @@ int EvioTool::NextNoParse(){
             return(stat);
       }
 
+      if( fCurrentChunk < 0) return(ET_ERROR_EMPTY);
+
       size_t len4;
       et_event_getdata(fPEventBuffer[fCurrentChunk], (void **) &fEvioBuf);
       et_event_getlength(fPEventBuffer[fCurrentChunk], &len4);
       size_t len = len4/4;
       if( len > 10) {
          if (fEvioBuf[7] != 0xc0da0100) {
-            cout << "EvioTool::Next() - Warning - EVIO ET Buffer has wrong magic number.\n";
+            if(fDebug & EvioTool_Debug_L1) {
+               printf("EvioTool::Next() - Warning - EVIO ET Buffer has wrong magic number: 0x%08x \n",fEvioBuf[7]);
+//               for (int i; i < 10; ++i) printf("0x%08x ", fEvioBuf[i]);
+//               printf("\n");
+            }
+            fCurrentChunk--;
             return (ET_ERROR_READ);
          }
          fEvioBuf += 8;  // The data starts after the 8 word header.
@@ -235,13 +274,18 @@ int EvioTool::EndEvent() {
    // At the end of the event, it needs to be put back on the ET ring for the next consumer. If not, the ET ring will
    // block.
    // For safety, when reading from ET, the EndEvent() will be called at the top of NextNoParse() if there is an event active.
+   int status=0;
+
+   // std::cout << "EndEvent() -- event valid = " << fEventValid << " current chunk = " << fCurrentChunk << std::endl;
    if(fEventValid && fReadFromEt){
 #ifdef __APPLE__
-      int status = et_event_put(fEventId, fEtAttach, fPEventBuffer[0]);
+      status = et_event_put(fEventId, fEtAttach, fPEventBuffer[0]);
 #else
-      int status = et_events_put(fEventId, fEtAttach, fPEventBuffer, fNumRead);
+      if(fCurrentChunk == 0) {
+         status = et_events_put(fEventId, fEtAttach, fPEventBuffer, fNumRead);
+      }
 #endif
-      if (status == ET_ERROR_DEAD) {
+      if(status == ET_ERROR_DEAD) {
          cout << "EvioTool::EndEvent() -- ERROR -- ET system seems dead.\n";
          return status;
       }
@@ -537,6 +581,7 @@ int EvioTool::ParseBank(const unsigned int *buf, int bankType, int depth, Bank *
         if(new_node) ParseBank(&data[p],contentType,depth,new_node);  // Recurse to read one level deeper.
         p+=(data[p]&mask)+1;
       }
+      if(new_node) new_node->CallBack();   // Done with the sub-banks (and leaves), now call the call-back.
       depth--;
       if(fDebug & EvioTool_Debug_Info2){
         for(i=0;i<depth;i++) cout << "    ";
@@ -570,7 +615,7 @@ Bank *EvioTool::ContainerNodeHandler(const unsigned int *buf, int len, int paddi
       loc=node->banks->GetEntriesFast();
       node->AddBank(str,tag,num,"Auto added Bank");
     }else{
-      if(fDebug & EvioTool_Debug_L2) cout << "Not adding a new bank for tag= " << tag << " num= " << num << endl;
+      if(fDebug & EvioTool_Debug_L2) cout << "Not adding a new bank for tag= " << tag << " num= " << (int)num << endl;
       return NULL;
     }
   }

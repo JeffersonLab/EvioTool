@@ -342,7 +342,7 @@ int main(int argc,char **argv) {
     /*status = et_events_get(id, attach1, fPEventBuffer, ET_TIMED, &timeout, chunk, &numRead);*/
     
     /* example of reading array of up to "chunk" events -- This DOES NOT WORK on MACs */
-#ifdef __APPLE__
+#ifdef __APPLE__X
     status = et_event_get(id, attach1, pe, ET_SLEEP, NULL);
     numRead=1;
 #else

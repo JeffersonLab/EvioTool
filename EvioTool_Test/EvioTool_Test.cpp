@@ -45,7 +45,7 @@ int main(int argc, const char * argv[])
 
    int stat = 0;
    if(args.use_et){
-      stat = etool->OpenEt("EvioToolTest", "/tmp/clasprod", "localhost", 1111);
+      stat = etool->OpenEt("EvioToolTest", args.et_name, args.et_host_name, args.et_port);
    }else{
       stat = etool->Open(args.filename.c_str());
    }
@@ -67,21 +67,21 @@ int main(int argc, const char * argv[])
       etool->fDebug = 0xFF;
    }
 
-   // Setup the Event structure"
+   // Setup the Event structure
    etool->fAutoAdd=false;
    etool->fChop_level=1;
 //  etool->tags={136,132,130,129};  // Parse HPS physics events only.
    Leaf<unsigned int> *Header = etool->AddLeaf<unsigned int>("Header",49152,0,"Header bank");
-   Bank *ECAL = etool->AddBank("Ecal",{37,39},0,"Ecal banks");
-   Leaf<FADCdata> *FADC = ECAL->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
-   Bank *SVTraw = etool->AddBank("SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
-   Leaf<unsigned int> *SVTint = SVTraw->AddLeaf<unsigned int>("SVTint",3,0,"SVT unparsed");
+//   Bank *ECAL = etool->AddBank("Ecal",{37,39},0,"Ecal banks");
+//   Leaf<FADCdata> *FADC = ECAL->AddLeaf<FADCdata>("FADC",57601,0,"FADC mode 1 data");
+//   Bank *SVTraw = etool->AddBank("SVT",{51,52,53,54,55,56,57,58,59,60,61,62,63,64,65},0,"SVT banks");
+//   Leaf<unsigned int> *SVTint = SVTraw->AddLeaf<unsigned int>("SVTint",3,0,"SVT unparsed");
 
    etool->fAutoAdd = args.auto_add;
 
    cout << "Debug set to " << etool->fDebug << " Auto add = " << etool->fAutoAdd << endl;
 
-   etool->PrintBank(5);
+//   etool->PrintBank(5);
 
    long evt_count=0;
    long totalCount=0;
@@ -101,16 +101,11 @@ int main(int argc, const char * argv[])
             break;
          }
       }
-      if(args.debug) cout<<"EVIO Event " << evt_count << " Data event: " << Header->data[0] << endl;
+      if(args.debug>2) cout<<"EVIO Event " << evt_count << " Data event: " << Header->data[0] << endl;
       evt_count++;
-      if(args.debug) cout << "Header: size= " << Header->Size() << endl;
-      vector<unsigned int> hdat = etool->GetDataVector<unsigned int>(0);
-      if(args.debug) cout << "hdat: size= " << hdat.size() << endl;
+      if(args.debug>2) cout << "Header: size= " << Header->Size() << endl;
       if(args.print_evt) {
          etool->PrintBank(10);
-//      if(args.show_head) {};
-//      if(args.show_svt)  {};
-//      if(args.show_ecal) {};
       }
       if(!args.quiet && evt_count%100000 ==0 ){
 //      /* statistics */
