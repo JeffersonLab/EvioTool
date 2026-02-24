@@ -35,7 +35,7 @@
 static int  display_remotedata(et_sys_id sys_id, double tperiod, uint64_t *prev_out);
 static int  display_localdata(et_sys_id sys_id, double tperiod, uint64_t *prev_out);
 static int  test_mutex(pthread_mutex_t *mp);
-static void usage();
+static void usage(char *programName);
 
 /******************************************************/
 
